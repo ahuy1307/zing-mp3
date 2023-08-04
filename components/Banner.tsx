@@ -40,7 +40,7 @@ function Banner() {
 	}
 
 	return (
-		<div className="mt-[56px] text-white px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] lg:pl-[270px] xl:px-[60px]">
+		<div className="mt-[56px] text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
 			<Slider
 				slidesToShow={3}
 				className="pt-[32px] pb-[50px] group"

@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
-import { AiOutlineRight, AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineDownload } from "react-icons/ai";
+import { AiOutlineRight } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
-import { BsThreeDots, BsFillPlayFill } from "react-icons/bs";
-import { Tooltip } from "antd";
 import MusicSong from "./MusicSong";
 
 function MusicContent() {
@@ -14,23 +12,36 @@ function MusicContent() {
 	};
 	let data: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	return (
-		<div className="text-white px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] lg:pl-[270px] xl:px-[60px]">
+		<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
 			<div className="flex justify-between items-center">
-				<h1 className="font-bold text-xl">Trending</h1>
-				<div className="flex items-center text-gray-500 cursor-pointer">
+				<h1 className="font-bold text-xl xl:text-2xl">Trending</h1>
+				<div className="flex items-center text-[var(--text-secondary)] cursor-pointer">
 					<span className="uppercase text-xs font-bold">Tất cả</span>
 					<AiOutlineRight className="w-[18px] h-[18px]" strokeWidth={3} />
 				</div>
 			</div>
 			<div className="flex gap-x-6 items-center mt-6">
-				<button className={twMerge(`uppercase text-xs px-6 py-1 border rounded-full bg-black`, type === "all" && `bg-[#9b4ddf] border-[#9b4ddf]`)} onClick={() => handleChangeType("all")}>
+				<button
+					className={twMerge(
+						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+						type === "all" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
+					)}
+					onClick={() => handleChangeType("all")}>
 					Tất cả
 				</button>
-				<button className={twMerge(`uppercase text-xs px-6 py-1 border rounded-full bg-black`, type === "vn" && `bg-[#9b4ddf] border-[#9b4ddf]`)} onClick={() => handleChangeType("vn")}>
+				<button
+					className={twMerge(
+						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+						type === "vn" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
+					)}
+					onClick={() => handleChangeType("vn")}>
 					Việt Nam
 				</button>
 				<button
-					className={twMerge(`uppercase text-xs px-6 py-1 border rounded-full bg-black`, type === "foreign" && `bg-[#9b4ddf] border-[#9b4ddf]`)}
+					className={twMerge(
+						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+						type === "foreign" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
+					)}
 					onClick={() => handleChangeType("foreign")}>
 					Quốc tế
 				</button>

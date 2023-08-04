@@ -15,71 +15,119 @@ function SideBar() {
 	return (
 		<div
 			className={twMerge(
-				`w-[70px] bg-[#231c2e] h-[100vh] fixed flex flex-col justify-between bottom-0 left-0 items-center transition-all duration-500 z-30 lg:w-[240px]`,
-				extend && `w-[240px] items-start bg-[#2a223a]`
+				`w-[70px] bg-[var(--sidebar-bg)] h-[100vh] fixed flex flex-col justify-between bottom-0 left-0 items-center transition-all duration-500 z-30 xl:w-[240px]`,
+				extend && `w-[240px] items-start bg-[var(--sidebar-popup-bg)]`
 			)}>
 			<div className="w-full">
 				{!extend ? (
-					<img src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.24/static/media/icon_zing_mp3_60.f6b51045.svg" className="m-auto my-3 lg:hidden" alt="" />
+					<img src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.24/static/media/icon_zing_mp3_60.f6b51045.svg" className="m-auto my-3 xl:hidden" alt="" />
 				) : (
 					<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="w-[120px] h-[40px] m-auto mt-6" />
 				)}
-				<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="w-[120px] h-[40px] m-auto mt-6 hidden lg:block" />
-				<div className={twMerge(`flex flex-col items-center w-full box-border lg:mt-4`)}>
+				<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="w-[120px] h-[40px] m-auto mt-6 hidden xl:block" />
+				<div className={twMerge(`flex flex-col items-center w-full box-border xl:mt-4`)}>
 					<Link
 						href="/profile"
 						className={twMerge(
-							`h-[48px] flex items-center w-full justify-center border-l-2 border-[#393242] gap-x-2 transition-all duration-500 lg:justify-start lg:px-[25px] lg:py-[10px] group`,
-							pathName === "/profile" && `bg-[#393242] border-[#9b4de0]`,
+							`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+							pathName === "/profile" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
 							extend && `justify-start p-[20px]`
 						)}>
-						<MusicIcon className="text-white group-hover:text-[#9b4de0]" />
-						<p className={twMerge(`text-white text-sm font-bold hidden flex-shrink-0 lg:block group-hover:text-[#9b4de0]`, extend && `block`)}>Cá nhân</p>
+						<MusicIcon
+							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`, pathName === "/profile" && `text-[var(--text-primary)]`)}
+						/>
+						<p
+							className={twMerge(
+								`text-[var(--text-primary)] xl:text-white  text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
+								pathName === "/profile" && `xl:text-[var(--text-primary)]`,
+								extend && `block`
+							)}>
+							Cá nhân
+						</p>
 					</Link>
 					<Link
 						href="/"
 						className={twMerge(
-							`h-[48px] flex items-center w-full justify-center border-l-2 border-[#393242] gap-x-2 transition-all duration-500 lg:justify-start lg:px-[25px] lg:py-[10px] group`,
-							pathName === "/" && `bg-[#393242] border-[#9b4de0]`,
+							`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+							pathName === "/" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)] !text-2xl`,
 							extend && `justify-start p-[20px]`
 						)}>
-						<RadioIcon className="text-white group-hover:text-[#9b4de0]" />
-						<p className={twMerge(`text-white text-sm font-bold hidden flex-shrink-0 lg:block group-hover:text-[#9b4de0]`, extend && `block`)}>Khám phá</p>
+						<RadioIcon
+							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`, pathName === "/" && `text-[var(--text-primary)]`)}
+						/>
+						<p
+							className={twMerge(
+								`text-[var(--text-primary)] xl:text-white text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
+								pathName === "/" && `xl:text-[var(--text-primary)]`,
+								extend && `block`
+							)}>
+							Khám phá
+						</p>
 					</Link>
 					<Link
 						href="/radio"
 						className={twMerge(
-							`h-[48px] flex items-center w-full justify-center border-l-2 border-[#393242] gap-x-2 transition-all duration-500 lg:justify-start lg:px-[25px] lg:py-[10px] group`,
-							pathName === "/radio" && `bg-[#393242] border-[#9b4de0]`,
+							`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+							pathName === "/radio" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
 							extend && `justify-start p-[20px]`
 						)}>
-						<RadioMusicIcon className="text-white group-hover:text-[#9b4de0]" />
-						<p className={twMerge(`text-white text-sm font-bold hidden flex-shrink-0 lg:block group-hover:text-[#9b4de0]`, extend && `block`)}>Radio</p>
+						<RadioMusicIcon
+							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`, pathName === "/radio" && `text-[var(--text-primary)]`)}
+						/>
+						<p
+							className={twMerge(
+								`text-[var(--text-primary)] xl:text-white text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
+								pathName === "/radio" && `xl:text-[var(--text-primary)]`,
+								extend && `block`
+							)}>
+							Radio
+						</p>
 					</Link>
 					<Link
 						href="/new-songs"
 						className={twMerge(
-							`h-[48px] flex items-center w-full justify-center border-l-2 border-[#393242] gap-x-2 transition-all duration-500 lg:justify-start lg:px-[25px] lg:py-[10px] group`,
-							pathName === "/new-songs" && `bg-[#393242] border-[#9b4de0]`,
+							`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+							pathName === "/new-songs" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
 							extend && `justify-start p-[20px]`
 						)}>
-						<FiMusic className="text-white group-hover:text-[#9b4de0]" />
-						<p className={twMerge(`text-white text-sm font-bold hidden flex-shrink-0 lg:block group-hover:text-[#9b4de0]`, extend && `block`)}>Nhạc mới</p>
+						<FiMusic
+							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`)}
+							color={pathName === "/new-songs" ? "text-[var(--text-primary)]" : ""}
+						/>
+						<p
+							className={twMerge(
+								`text-[var(--text-primary)] xl:text-white text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
+								pathName === "/new-songs" && `xl:text-[var(--text-primary)]`,
+								extend && `block`
+							)}>
+							Nhạc mới
+						</p>
 					</Link>
 					<Link
 						href="/top-100-song"
 						className={twMerge(
-							`h-[48px] flex items-center w-full justify-center border-l-2 border-[#393242] gap-x-2 transition-all duration-500 lg:justify-start lg:px-[25px] lg:py-[10px] group`,
-							pathName === "/top-100-song" && `bg-[#393242] border-[#9b4de0]`,
+							`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+							pathName === "/top-100-song" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
 							extend && `justify-start p-[20px]`
 						)}>
-						<CiStar className="text-white w-6 h-6 group-hover:text-[#9b4de0]" />
-						<p className={twMerge(`text-white text-sm font-bold hidden flex-shrink-0 lg:block group-hover:text-[#9b4de0]`, extend && `block`)}>Top 100</p>
+						<CiStar
+							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`)}
+							color={pathName === "/top-100-song" ? "text-[var(--text-primary)]" : ""}
+							size={20}
+						/>
+						<p
+							className={twMerge(
+								`text-[var(--text-primary)] xl:text-white text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
+								pathName === "/top-100-song" && `xl:text-[var(--text-primary)]`,
+								extend && `block`
+							)}>
+							Top 100
+						</p>
 					</Link>
 				</div>
 			</div>
-			<div className={twMerge(`bg-[#ffffff1a] rounded-full hover:bg-black p-2 mb-6 lg:hidden`, extend && `ml-auto mr-4`)} onClick={() => setExtend(!extend)}>
-				{!extend ? <AiOutlineRight color="white" className="w-6 h-6 cursor-pointer" /> : <AiOutlineLeft color="white" className="w-6 h-6 cursor-pointer " />}
+			<div className={twMerge(`bg-[#ffffff1a] rounded-full hover:bg-[var(--hover-blur-bg-button)] p-2 mb-6 xl:hidden shadow-xl`, extend && `ml-auto mr-4`)} onClick={() => setExtend(!extend)}>
+				{!extend ? <AiOutlineRight color="var(--text-primary)" className="w-6 h-6 cursor-pointer" /> : <AiOutlineLeft color="var(--text-primary)" className="w-6 h-6 cursor-pointer " />}
 			</div>
 		</div>
 	);
