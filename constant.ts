@@ -154,3 +154,5 @@ export const listThemeCard = [
 	},
 	,
 ];
+
+export const apiUrl = "https://api-kaito-music.vercel.app/api";

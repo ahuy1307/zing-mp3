@@ -7,7 +7,7 @@ function Footer() {
 			<div className="grid grid-cols-3 px-[10px] md:px-[0px] gap-4 sm:grid-cols-4 xl:grid-cols-8 lg:grid-cols-4s">
 				{ImgFooter.map((item) => {
 					return (
-						<div className="relative bg-white rounded-md flex items-center justify-center aspect-[1/0.5]">
+						<div key={item.src} className="relative bg-white rounded-md flex items-center justify-center aspect-[1/0.5]">
 							<img src={item.src} alt="" className="object-cover h-auto w-auto max-h-[80%] max-w-[80%]" />
 						</div>
 					);

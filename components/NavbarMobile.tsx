@@ -5,17 +5,24 @@ import { IoCloseSharp } from "react-icons/io5";
 import { PiMusicNotesSimple } from "react-icons/pi";
 import { AiOutlineStar } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import ThemeModal from "./ThemeModal";
 import { useThemeModal } from "@/hooks/useThemeModal";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import FormModal from "./FormModal";
+import { useFormModal } from "@/hooks/useFormModal";
+import { useAuth } from "@/context/AuthProvider";
+import toast from "react-hot-toast";
 
 function NavbarMobile() {
 	const [showNav, setShowNav] = useState(false);
 	const [heightCurrent, setHeightCurrent] = useState(0);
-	const { onOpen } = useThemeModal();
+	const themeModal = useThemeModal();
+	const formModal = useFormModal();
 	const pathName = usePathname();
+	const { userData, accessToken, getUserProfile, logout } = useAuth();
+	const router = useRouter();
 
 	const handleScrollScreen = () => {
 		setHeightCurrent(window.pageYOffset);
@@ -25,6 +32,8 @@ function NavbarMobile() {
 		if (typeof window !== "undefined") {
 			setHeightCurrent(window.pageYOffset);
 		}
+
+		getUserProfile(accessToken);
 
 		window.addEventListener("scroll", handleScrollScreen, { passive: true });
 
@@ -38,7 +47,7 @@ function NavbarMobile() {
 				<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="h-[40px] cursor-pointer" alt="" />
 				<div className="flex items-center gap-x-2">
 					<HiMagnifyingGlass className="w-6 h-6 cursor-pointer mr-2" color="var(--text-primary)" />
-					<div className="bg-[var(--border-player)] rounded-full p-2" onClick={() => onOpen()}>
+					<div className="bg-[var(--border-player)] rounded-full p-2" onClick={() => themeModal.onOpen()}>
 						<img src="/images/theme.png" className="w-[20px] aspect-square cursor-pointer" alt="" />
 					</div>
 				</div>
@@ -46,8 +55,25 @@ function NavbarMobile() {
 				<div className={twMerge(`absolute top-0 left-0 max-w-[100vw] w-[80vw] bg-white shadow h-[100vh] translate-x-[-100%] transition-all duration-300`, showNav && `translate-x-[0]`)}>
 					<IoCloseSharp className="w-8 h-8 absolute top-2 right-2" color="black" onClick={() => setShowNav(false)} />
 					<div className="bg-gray-400/10 flex items-center py-10 gap-x-6 pl-6">
-						<img src="/images/default-user.png" className="w-[60px] aspect-square rounded-full" alt="" />
-						<button className="bg-[var(--purple-primary)] text-white px-7 py-2 rounded-full font-bold">Đăng nhập</button>
+						<img src={accessToken === "" ? `/images/default-user.png` : userData?.image} className="w-[60px] aspect-square rounded-full" alt="" />
+						<div className="flex flex-col gap-y-1">
+							<p className="pl-2 text-gray-500 font-bold">{accessToken !== "" && userData?.user_name}</p>
+							<button
+								className="bg-[var(--purple-primary)] text-white px-7 py-2 rounded-full font-bold"
+								onClick={() => {
+									if (accessToken === "") {
+										formModal.onOpen();
+										setShowNav(false);
+									} else {
+										logout();
+										toast.success("Đăng xuất thành công");
+										setShowNav(false);
+										router.refresh();
+									}
+								}}>
+								{accessToken === "" ? `Đăng nhập` : `Đăng xuất`}
+							</button>
+						</div>
 					</div>
 					<ul className="flex flex-col  text-black/60 pt-6">
 						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/profile" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
@@ -84,6 +110,7 @@ function NavbarMobile() {
 				</div>
 			</div>
 			<ThemeModal />
+			<FormModal />
 		</>
 	);
 }

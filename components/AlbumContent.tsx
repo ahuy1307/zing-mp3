@@ -25,7 +25,11 @@ function AlbumContent({ title, data }: { title: string; data: any[] }) {
 							<h3 className="font-bold line-clamp-1 text-sm hover:text-[var(--purple-primary)]">{item.title}</h3>
 							<div className="flex gap-x-1">
 								{item.singer.map((item: string) => {
-									return <p className="text-sm hover:underline hover:text-[var(--purple-primary)]">{item}</p>;
+									return (
+										<p key={item} className="text-sm hover:underline hover:text-[var(--purple-primary)]">
+											{item}
+										</p>
+									);
 								})}
 							</div>
 						</div>

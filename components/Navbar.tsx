@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ThemeModal from "./ThemeModal";
 import { useThemeModal } from "@/hooks/useThemeModal";
+import FormModal from "./FormModal";
 
 function Navbar() {
 	const [heightCurrent, setHeightCurrent] = useState(0);
@@ -64,6 +65,7 @@ function Navbar() {
 				</div>
 			</div>
 			<ThemeModal />
+			<FormModal />
 		</>
 	);
 }

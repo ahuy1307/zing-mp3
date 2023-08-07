@@ -1,7 +1,7 @@
 "use client";
 import { useTheme } from "@/context/ThemeProvider";
 import { useThemeModal } from "@/hooks/useThemeModal";
-import { listThemeCard } from "@/listTheme";
+import { listThemeCard } from "@/constant";
 import { useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
@@ -81,7 +81,7 @@ function ThemeModal() {
 									src={item.img}
 									className={twMerge(
 										`rounded-md group-hover:brightness-50 group-hover:scale-110 duration-300 transition-all`,
-										item.title === themeCurrent.title && `border-2 border-[var(--purple-primary)]`
+										themeCurrent.title && item.title == themeCurrent.title && `border-2 border-[var(--purple-primary)]`
 									)}
 									alt=""
 								/>
