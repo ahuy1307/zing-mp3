@@ -12,15 +12,6 @@ function ToasterProvider() {
 					background: "#363636",
 					color: "#fff",
 				},
-
-				// Default options for specific types
-				success: {
-					duration: 3000,
-					theme: {
-						primary: "green",
-						secondary: "black",
-					},
-				},
 			}}
 		/>
 	);
