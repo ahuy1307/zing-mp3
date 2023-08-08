@@ -22,9 +22,9 @@ function SideBar() {
 				{!extend ? (
 					<img src="/images/logo-mini.png" className="m-auto my-3 xl:hidden bg-transparen w-[45px]" alt="" />
 				) : (
-					<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="w-[120px] h-[40px] m-auto mt-6" />
+					<img src="/images/logo.png" className="w-[120px] h-[40px] m-auto mt-6" />
 				)}
-				<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="w-[120px] h-[40px] m-auto mt-6 hidden xl:block" />
+				<img src="/images/logo.png" className="w-[120px] h-[40px] m-auto mt-6 hidden xl:block" />
 				<div className={twMerge(`flex flex-col items-center w-full box-border xl:mt-4`)}>
 					<Link
 						href="/profile"

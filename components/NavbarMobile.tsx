@@ -6,11 +6,9 @@ import { PiMusicNotesSimple } from "react-icons/pi";
 import { AiOutlineClose, AiOutlineStar } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
-import ThemeModal from "./ThemeModal";
 import { useThemeModal } from "@/hooks/useThemeModal";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import FormModal from "./FormModal";
 import { useFormModal } from "@/hooks/useFormModal";
 import { useAuth } from "@/context/AuthProvider";
 import toast from "react-hot-toast";
@@ -20,8 +18,8 @@ import { apiUrl } from "@/constant";
 import { ClipLoader } from "react-spinners";
 import SearchItem from "./SearchItem";
 import { Song } from "@/interface";
-import MusicSong from "./MusicSong";
 import formatNumber from "@/utils/formatNumber";
+import Image from "next/image";
 
 function NavbarMobile() {
 	const [showNav, setShowNav] = useState(false);
@@ -31,7 +29,6 @@ function NavbarMobile() {
 	const pathName = usePathname();
 	const { userData, accessToken, getUserProfile, logout } = useAuth();
 	const router = useRouter();
-	const [isClient, setIsClient] = useState(false);
 	const hasWindow = typeof window !== "undefined";
 	const [searchTitle, setSearchTitle] = useState("");
 	const [searchResult, setSearchResult] = useState<Song[]>([]);
@@ -44,8 +41,6 @@ function NavbarMobile() {
 	};
 
 	useEffect(() => {
-		setIsClient(true);
-
 		const fetchSearch = async () => {
 			if (debounceSearch === "") {
 				setSearchResult([]);
@@ -74,8 +69,6 @@ function NavbarMobile() {
 		return () => window.removeEventListener("scroll", handleScrollScreen);
 	}, [debounceSearch]);
 
-	if (!isClient) return null;
-
 	return (
 		<>
 			<div className={twMerge(`flex justify-between items-center navbar-mb px-1 py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
@@ -87,7 +80,9 @@ function NavbarMobile() {
 						setShowSearch(false);
 					}}
 				/>
-				<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="h-[40px] cursor-pointer" alt="" />
+				<div className="relative w-[120px] h-[40px]">
+					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" />
+				</div>
 				<div className="flex items-center gap-x-2">
 					{!showSearch ? (
 						<HiMagnifyingGlass className="w-6 h-6 cursor-pointer mr-2" color="var(--text-primary)" onClick={() => setShowSearch(true)} />
@@ -216,8 +211,6 @@ function NavbarMobile() {
 					</ul>
 				</div>
 			</div>
-			<ThemeModal />
-			<FormModal />
 		</>
 	);
 }

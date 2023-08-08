@@ -8,9 +8,7 @@ import { Tooltip } from "antd";
 import { VscDesktopDownload } from "react-icons/vsc";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import ThemeModal from "./ThemeModal";
 import { useThemeModal } from "@/hooks/useThemeModal";
-import FormModal from "./FormModal";
 import { useFormModal } from "@/hooks/useFormModal";
 import { useAuth } from "@/context/AuthProvider";
 import { Popover } from "antd";
@@ -25,7 +23,6 @@ function Navbar() {
 	const themeModal = useThemeModal();
 	const formModal = useFormModal();
 	const { accessToken, userData, getUserProfile, logout } = useAuth();
-	const [isMounted, setIsMounted] = useState(false);
 	const router = useRouter();
 
 	const handleScrollScreen = () => {
@@ -37,13 +34,10 @@ function Navbar() {
 			setHeightCurrent(window.pageYOffset);
 		}
 		getUserProfile(accessToken);
-		setIsMounted(true);
 		window.addEventListener("scroll", handleScrollScreen, { passive: true });
 
 		return () => window.removeEventListener("scroll", handleScrollScreen);
 	}, []);
-
-	if (!isMounted) return null;
 
 	return (
 		<>
@@ -146,8 +140,6 @@ function Navbar() {
 					</div>
 				</div>
 			</div>
-			<ThemeModal />
-			<FormModal />
 		</>
 	);
 }
