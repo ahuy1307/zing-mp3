@@ -85,3 +85,28 @@ body {
 ::-webkit-scrollbar-thumb {
 	background-color: hsla(0, 0%, 100%, 0.1);
 }
+
+.scroll-search::-webkit-scrollbar {
+	width: 6px;
+}
+
+.scroll-search::-webkit-scrollbar-track {
+	background: transparent;
+	background: var(--primary-bg);
+	margin: 10px 0;
+}
+
+.scroll-search::-webkit-scrollbar-thumb {
+	background-color: gray;
+	border-radius: 100rem;
+}
+
+.scroll-search::-webkit-scrollbar-track-piece:end {
+	background: transparent;
+	margin-bottom: 10px;
+}
+
+.scroll-search::-webkit-scrollbar-track-piece:start {
+	background: transparent;
+	margin-top: 10px;
+}

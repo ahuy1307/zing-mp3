@@ -1,16 +1,42 @@
 "use client";
-import { useState } from "react";
+import { apiUrl } from "@/constant";
+import { Song } from "@/interface";
+import { useGetTrendingSong } from "@/utils/useGetTrendingSong";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
+import { isTryStatement } from "typescript";
 import MusicSong from "./MusicSong";
 
 function MusicContent() {
 	const [type, setType] = useState("all");
+	const [listSong, setListSong] = useState<Song[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			setIsLoading(true);
+			try {
+				const res = await axios.get(`${apiUrl}/music/trending`, {
+					params: {
+						_limit: 100,
+					},
+				});
+
+				const list = useGetTrendingSong(res.data.data, type);
+				setListSong(list.filter((item, index) => index < 12));
+				setIsLoading(false);
+			} catch (error) {
+				setIsLoading(false);
+			}
+		};
+		fetchData();
+	}, [type]);
 
 	const handleChangeType = (type: string) => {
 		setType(type);
 	};
-	let data: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	return (
 		<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
 			<div className="flex justify-between items-center">
@@ -40,15 +66,15 @@ function MusicContent() {
 				<button
 					className={twMerge(
 						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
-						type === "foreign" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
+						type === "lobal" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
 					)}
-					onClick={() => handleChangeType("foreign")}>
+					onClick={() => handleChangeType("lobal")}>
 					Quốc tế
 				</button>
 			</div>
 			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
-				{data.map((item) => {
-					return <MusicSong key={item} />;
+				{listSong.map((item) => {
+					return <MusicSong key={item._id} song={item} />;
 				})}
 			</div>
 		</div>

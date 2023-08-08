@@ -81,7 +81,7 @@ function ThemeModal() {
 									src={item.img}
 									className={twMerge(
 										`rounded-md group-hover:brightness-50 group-hover:scale-110 duration-300 transition-all`,
-										themeCurrent.title && item.title == themeCurrent.title && `border-2 border-[var(--purple-primary)]`
+										themeCurrent.title && item.title === themeCurrent.title && `border-2 border-[var(--purple-primary)]`
 									)}
 									alt=""
 								/>

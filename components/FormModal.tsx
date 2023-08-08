@@ -191,14 +191,14 @@ function FormModal() {
 								onChange={(e) => onChangeForm(e)}
 							/>
 							<span className="text-red-500">{msgValidator.user}</span>
-							<label htmlFor="email" className="text-[var(--text-primary)] font-semibold">
+							<label htmlFor="emailRegister" className="text-[var(--text-primary)] font-semibold">
 								Email
 							</label>
 							<input
 								disabled={isLoading}
 								type="email"
 								name="email"
-								id="email"
+								id="emailRegister"
 								value={form.email}
 								required
 								placeholder="Nhập email..."

@@ -4,8 +4,10 @@ import { twMerge } from "tailwind-merge";
 import { BsThreeDots, BsFillPlayFill } from "react-icons/bs";
 import { Tooltip } from "antd";
 import { useState } from "react";
+import { Song } from "@/interface";
+import formatNumber from "@/utils/formatNumber";
 
-function MusicSong() {
+function MusicSong({ song }: { song: Song }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 
@@ -18,27 +20,23 @@ function MusicSong() {
 				setShowOther(false);
 			}}>
 			<div className="col-span-3 flex gap-x-4 relative">
-				<img
-					src="https://res.cloudinary.com/phuockaito/image/upload/v1664964713/image_music/oam3yetbai0esn8gednk.jpg"
-					className="w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700"
-					alt=""
-				/>
+				<img src={song.image_music} className="w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700" alt="" />
 				<BsFillPlayFill className="w-7 h-7 absolute top-[50%] translate-y-[-50%] left-5 hidden group-hover:block" color="white" />
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)]">
-					<h3 className="font-bold">Alone</h3>
-					<p className="text-[var(--text-secondary)]">Alan Walker</p>
+					<h3 className="font-bold">{song.name_music}</h3>
+					<p className="text-[var(--text-secondary)] line-clamp-1">{song.name_singer}</p>
 					<div className="flex items-center gap-x-2 text-[var(--text-secondary)]">
 						<AiFillHeart />
-						11.3M
+						{formatNumber(song.favorite, 0)}
 					</div>
 				</div>
 			</div>
-			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)]">3:19</span>
+			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)]">{song.time_format}</span>
 			<div className="absolute right-4">
 				<Tooltip title="Khác" color="black">
 					<BsThreeDots
-						className="w-8 h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible"
 						color="var(--text-primary)"
+						className="w-8 h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible"
 						onClick={() => setShowOther(true)}
 					/>
 				</Tooltip>
@@ -48,14 +46,14 @@ function MusicSong() {
 						showOther && checkHover && `scale-100`
 					)}>
 					<div className="flex items-center gap-x-2 p-2">
-						<img src="https://res.cloudinary.com/phuockaito/image/upload/v1664964713/image_music/oam3yetbai0esn8gednk.jpg" className="w-[45px] h-[45px] object-cover rounded-md" alt="" />
+						<img src={song.image_music} className="w-[45px] h-[45px] object-cover rounded-md" alt="" />
 						<div className="text-[var(--text-primary)]">
-							<h1 className="font-bold">Alone</h1>
+							<h1 className="font-bold">{song.name_music}</h1>
 							<div className="flex items-center gap-x-1 text-[var(--text-secondary)]">
 								<AiOutlineHeart />
-								<span>11.3M</span>
+								<span>{formatNumber(song.favorite, 0)}</span>
 								<AiOutlineEye />
-								<span>8.3M</span>
+								<span>{formatNumber(song.view, 0)}</span>
 							</div>
 						</div>
 					</div>

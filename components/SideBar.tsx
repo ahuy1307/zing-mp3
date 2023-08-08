@@ -6,7 +6,7 @@ import { CiStar } from "react-icons/ci";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function SideBar() {
 	const pathName = usePathname();
@@ -20,7 +20,7 @@ function SideBar() {
 			)}>
 			<div className="w-full">
 				{!extend ? (
-					<img src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.24/static/media/icon_zing_mp3_60.f6b51045.svg" className="m-auto my-3 xl:hidden" alt="" />
+					<img src="/images/logo-mini.png" className="m-auto my-3 xl:hidden bg-transparen w-[45px]" alt="" />
 				) : (
 					<img src="https://static-zmp3.zmdcdn.me/skins/zmp3-mobile-v5.2/images/logo-mp-3.svg" className="w-[120px] h-[40px] m-auto mt-6" />
 				)}
