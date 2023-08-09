@@ -110,3 +110,9 @@ body {
 	background: transparent;
 	margin-top: 10px;
 }
+
+@media (max-width: 800px) {
+	.banner-load {
+		display: none !important;
+	}
+}

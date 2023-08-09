@@ -2,7 +2,7 @@
 import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineDownload } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
 import { BsThreeDots, BsFillPlayFill } from "react-icons/bs";
-import { Tooltip } from "antd";
+import { Skeleton, Tooltip } from "antd";
 import { useState } from "react";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";

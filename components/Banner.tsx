@@ -5,9 +5,11 @@ import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
+import { Skeleton } from "antd";
 
 function Banner() {
 	const [widthCurrent, setWidthCurrent] = useState(0);
+	const [isClient, setIsClient] = useState(false);
 
 	const handleResizeScreen = () => {
 		setWidthCurrent(window.innerWidth);
@@ -19,7 +21,7 @@ function Banner() {
 		}
 
 		window.addEventListener("resize", handleResizeScreen, { passive: true });
-
+		setIsClient(true);
 		return () => window.removeEventListener("resize", handleResizeScreen);
 	}, []);
 
@@ -38,6 +40,34 @@ function Banner() {
 			</div>
 		);
 	}
+	if (!isClient)
+		return (
+			<div className="mt-[56px] text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+				<div className="flex h-[180px] gap-x-3 min-[800px]:h-[150px] lg:h-[240px] px-2 pt-8 pb-4 ">
+					<Skeleton.Input
+						rootClassName="flex-1 bg-gray-700/20"
+						style={{
+							width: "100%",
+							height: "100%",
+						}}
+					/>
+					<Skeleton.Input
+						rootClassName="flex-1 bg-gray-700/20"
+						style={{
+							width: "100%",
+							height: "100%",
+						}}
+					/>
+					<Skeleton.Input
+						rootClassName="flex-1 bg-gray-700/20 banner-load"
+						style={{
+							width: "100%",
+							height: "100%",
+						}}
+					/>
+				</div>
+			</div>
+		);
 
 	return (
 		<div className="mt-[56px] text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
@@ -48,6 +78,7 @@ function Banner() {
 				prevArrow={<PrevArrow />}
 				nextArrow={<NextArrow />}
 				swipeToSlide={true}
+				lazyLoad="progressive"
 				infinite={true}
 				autoplay={true}
 				responsive={[

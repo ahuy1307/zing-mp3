@@ -28,7 +28,7 @@ function ThemeModal() {
 			document.documentElement.style.setProperty("--border-player", testTheme?.properties?.borderPlayer);
 			document.documentElement.style.setProperty("--background-section-size", testTheme?.properties?.backgrondSize ?? "1920px auto");
 			document.documentElement.style.setProperty("--sidebar-popup-bg", testTheme?.properties?.sidebarPoup);
-		} else if (testTheme.title === "" && themeCurrent?.title !== undefined) {
+		} else if (themeCurrent?.title !== "") {
 			document.documentElement.style.setProperty("--purple-primary", themeCurrent?.properties?.purplePrimary);
 			document.documentElement.style.setProperty("--primary", themeCurrent?.properties?.layoutBg ?? "trenparent");
 

@@ -13,7 +13,13 @@ function SearchItem({ song }: { song: Song }) {
 	const [showOther, setShowOther] = useState(false);
 
 	return (
-		<div className="grid grid-cols-4 items-center p-[10px] md:px-[10px] text-[#ffffff80] text-sm border-b-2 border-[var(--border-player)] cursor-pointer group hover:bg-[var(--border-player)] rounded-md relative scroll-p-5">
+		<div
+			className="grid grid-cols-4 items-center p-[10px] md:px-[10px] text-[#ffffff80] text-sm border-b-2 border-[var(--border-player)] cursor-pointer group hover:bg-[var(--border-player)] rounded-md relative scroll-p-5"
+			onMouseEnter={() => setCheckHover(true)}
+			onMouseLeave={() => {
+				setCheckHover(false);
+				setShowOther(false);
+			}}>
 			<div className="col-span-3 flex gap-x-4 relative">
 				<img src={song.image_music} className="w-[40px] h-[40px] object-cover auto-cols-[40px] rounded-md group-hover:brightness-[70%] transition-all duration-700" alt="" />
 				<BsFillPlayFill className="w-6 h-6 absolute top-[50%] translate-y-[-50%] left-2 hidden group-hover:block" color="white" />
@@ -33,11 +39,6 @@ function SearchItem({ song }: { song: Song }) {
 							color="var(--text-primary)"
 							className="w-7 h-7 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible"
 							onClick={() => setShowOther(true)}
-							onMouseEnter={() => setCheckHover(true)}
-							onMouseLeave={() => {
-								setCheckHover(false);
-								setShowOther(false);
-							}}
 						/>
 					</Tooltip>
 				</div>

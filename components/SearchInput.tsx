@@ -4,7 +4,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { ClipLoader } from "react-spinners";
@@ -18,6 +18,15 @@ function SearchInput() {
 	const [isSearching, setIsSearching] = useState(false);
 	const debounceSearch = useDebounce(searchTitle, 1000);
 	const [searchFocus, setSearchFocus] = useState(false);
+	const wrapperRef = useRef<HTMLDivElement>(null);
+
+	const handleClickOutside = (event: Event) => {
+		if (wrapperRef?.current?.contains(event.target as Node)) {
+			setSearchFocus(true);
+		} else {
+			setSearchFocus(false);
+		}
+	};
 
 	useEffect(() => {
 		const fetchSearch = async () => {
@@ -35,11 +44,17 @@ function SearchInput() {
 			setSearchResult(res.data.data);
 			setIsSearching(false);
 		};
+
 		fetchSearch();
 	}, [debounceSearch]);
 
+	useEffect(() => {
+		window.addEventListener("click", (e) => handleClickOutside(e));
+		return () => window.removeEventListener("click", (e) => handleClickOutside(e));
+	}, [searchFocus]);
+
 	return (
-		<div className="relative ">
+		<div className="relative" ref={wrapperRef}>
 			<label htmlFor="search">
 				<HiMagnifyingGlass className="absolute top-[50%] left-2 translate-y-[-50%] w-5 h-5" color="var(--text-primary)" />
 			</label>
@@ -59,18 +74,13 @@ function SearchInput() {
 				value={searchTitle}
 				onChange={(e) => setSearchTitle(e.target.value)}
 				onFocus={() => setIsFocus(true)}
-				onBlur={() => {
-					setTimeout(() => {
-						setIsFocus(false);
-					}, 100);
-					setSearchFocus(false);
-				}}
+				onBlur={() => setIsFocus(false)}
 				type="text"
 				name=""
 				placeholder="Tìm kiếm bài hát, nghệ sĩ,..."
-				id="search"
+				id="find"
 				className={twMerge(
-					`bg-gray-500/40 h-[40px] rounded-full pl-8 w-[350px] placeholder:text-[var(--text-primary)] placeholder:text-sm outline-none border-none text-[var(--text-primary)] xl:w-[500px] pr-12`,
+					`bg-[var(--border-color)] shadow h-[40px] rounded-full pl-8 w-[350px] placeholder:text-[var(--text-primary)] placeholder:text-sm outline-none border-none text-[var(--text-primary)] xl:w-[500px] pr-12`,
 					(searchFocus || isFocus) && `bg-[var(--primary-bg)] rounded-tl-2xl rounded-tr-2xl rounded-bl-none rounded-br-none`
 				)}
 			/>
