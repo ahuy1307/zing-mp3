@@ -45,7 +45,7 @@ function FormModal() {
 		} else {
 			if (form.user !== "") {
 				const testUser = new RegExp("^[a-z0-9_-]{8,20}$");
-				if (!testUser.test(form.user)) msg.user = "User phải từ 8-20 kí tự";
+				if (!testUser.test(form.user)) msg.user = "User phải từ 8-20 kí tự bao gồm số";
 			}
 			if (form.password !== "") {
 				const testPassword = new RegExp("^.{8,}$");

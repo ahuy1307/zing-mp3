@@ -4,6 +4,7 @@ import { Song } from "@/interface";
 import { useGetTrendingSong } from "@/utils/useGetTrendingSong";
 import { Skeleton } from "antd";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
@@ -43,14 +44,16 @@ function MusicContent() {
 			<div className="flex justify-between items-center">
 				<h1 className="font-bold text-xl xl:text-2xl">Trending</h1>
 				<div className="flex items-center text-[var(--text-secondary)] cursor-pointer">
-					<span className="uppercase text-xs font-bold">Tất cả</span>
+					<Link href="/top-trending" className="uppercase text-xs font-bold md:text-base">
+						Tất cả
+					</Link>
 					<AiOutlineRight className="w-[18px] h-[18px]" strokeWidth={3} />
 				</div>
 			</div>
 			<div className="flex gap-x-6 items-center mt-6">
 				<button
 					className={twMerge(
-						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+						`uppercase text-xs px-6 md:px-10 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
 						type === "all" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
 					)}
 					onClick={() => handleChangeType("all")}>
@@ -58,7 +61,7 @@ function MusicContent() {
 				</button>
 				<button
 					className={twMerge(
-						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+						`uppercase text-xs px-6 md:px-8 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
 						type === "vn" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
 					)}
 					onClick={() => handleChangeType("vn")}>
@@ -66,7 +69,7 @@ function MusicContent() {
 				</button>
 				<button
 					className={twMerge(
-						`uppercase text-xs px-6 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+						`uppercase text-xs px-6 md:px-8 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
 						type === "lobal" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
 					)}
 					onClick={() => handleChangeType("lobal")}>
@@ -75,7 +78,7 @@ function MusicContent() {
 			</div>
 			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
 				{listSong.length === 0 &&
-					Array(12)
+					Array(7)
 						.fill(0)
 						.map((item, index) => {
 							return (
@@ -93,10 +96,10 @@ function MusicContent() {
 					return !isLoading ? (
 						<MusicSong key={item._id} song={item} />
 					) : (
-						<div key={item._id} className="flex gap-x-4 pb-3">
+						<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 							<Skeleton.Button
 								active
-								rootClassName="bg-gray-700/30"
+								rootClassName="bg-gray-700/30 rounded-md"
 								style={{
 									width: "60px",
 									height: "60px",

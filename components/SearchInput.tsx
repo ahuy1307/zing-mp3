@@ -102,7 +102,7 @@ function SearchInput() {
 									<p className="font-bold text-[var(--text-primary)]">{searchResult[searchResult.length - 1].name_singer}</p>
 									<div className="text-[var(--text-secondary)] flex gap-x-1">
 										<span>{searchResult[searchResult.length - 1].category}</span>
-										<span>.</span>
+										<span>-</span>
 										<span>{formatNumber(searchResult[searchResult.length - 1].favorite, 0)} quan tâm</span>
 									</div>
 								</div>

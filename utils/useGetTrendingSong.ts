@@ -7,6 +7,12 @@ export const useGetTrendingSong = (data: Song[] = [], type: string = "all") => {
 			case "all": {
 				return category;
 			}
+			case "usuk": {
+				return category === "edm" || category === "pop-au-my";
+			}
+			case "kpop": {
+				return category === "nhac-han";
+			}
 			case "vn": {
 				return category === "nhac-tre";
 			}

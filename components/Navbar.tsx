@@ -18,6 +18,7 @@ import { DiBootstrap } from "react-icons/di";
 import { FiLogOut, FiPhone } from "react-icons/fi";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function Navbar() {
 	const [heightCurrent, setHeightCurrent] = useState(0);
@@ -160,7 +161,12 @@ function Navbar() {
 											<span>Tải nhạc lên</span>
 										</div>
 										<span className="w-full h-[1px] bg-black"></span>
-										<div className="flex items-center gap-x-2 hover:bg-[var(--hover-blur-bg-button)] p-2 rounded-md text-[var(--text-primary)]" onClick={() => logout()}>
+										<div
+											className="flex items-center gap-x-2 hover:bg-[var(--hover-blur-bg-button)] p-2 rounded-md text-[var(--text-primary)]"
+											onClick={() => {
+												logout();
+												toast.success("Đăng xuất thành công");
+											}}>
 											<FiLogOut className="w-5 h-5" />
 											<span>Đăng xuất</span>
 										</div>

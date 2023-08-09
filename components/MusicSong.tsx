@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 
-function MusicSong({ song }: { song: Song }) {
+function MusicSong({ song, trending }: { song: Song; trending?: boolean }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 
@@ -20,26 +20,37 @@ function MusicSong({ song }: { song: Song }) {
 				setShowOther(false);
 			}}>
 			<div className="col-span-3 flex gap-x-4 relative">
-				<img src={song.image_music} className="w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700" alt="" />
-				<BsFillPlayFill className="w-7 h-7 absolute top-[50%] translate-y-[-50%] left-5 hidden group-hover:block" color="white" />
+				<img
+					src={song.image_music}
+					className={twMerge(`w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700`, trending && `w-[50px] h-[50px]`)}
+					alt=""
+				/>
+				<BsFillPlayFill className={twMerge(`w-7 h-7 absolute top-[50%] translate-y-[-50%] left-5 hidden group-hover:block`, trending && `left-2`)} color="white" />
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)]">
 					<h3 className="font-bold">{song.name_music}</h3>
-					<p className="text-[var(--text-secondary)] line-clamp-1">{song.name_singer}</p>
-					<div className="flex items-center gap-x-2 text-[var(--text-secondary)]">
-						<AiFillHeart />
-						{formatNumber(song.favorite, 0)}
-					</div>
+					<p className="text-[var(--text-secondary)] line-clamp-1 hover:underline">{song.name_singer}</p>
+					{!trending && (
+						<div className="flex items-center gap-x-2 text-[var(--text-secondary)]">
+							<AiFillHeart />
+							{formatNumber(song.favorite, 0)}
+						</div>
+					)}
 				</div>
 			</div>
-			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)]">{song.time_format}</span>
+			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)] font-bold">{song.time_format}</span>
 			<div className="absolute right-4">
-				<Tooltip title="Khác" color="black">
-					<BsThreeDots
-						color="var(--text-primary)"
-						className="w-8 h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible"
-						onClick={() => setShowOther(true)}
-					/>
-				</Tooltip>
+				<div className="flex items-center gap-x-2 md:gap-x-4">
+					<Tooltip title="Thêm vào thư viện" color="black">
+						<AiOutlineHeart color="var(--text-primary)" className="w-7 h-7 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible" />
+					</Tooltip>
+					<Tooltip title="Khác" color="black">
+						<BsThreeDots
+							color="var(--text-primary)"
+							className="w-8 h-8 md:w-9 md:h-9 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible"
+							onClick={() => setShowOther(true)}
+						/>
+					</Tooltip>
+				</div>
 				<div
 					className={twMerge(
 						`absolute right-0 top-0 translate-y-[-100%] bg-[var(--primary-bg)] w-[240px] flex-col rounded-md py-1 scale-0 transition-all duration-300 origin-bottom`,

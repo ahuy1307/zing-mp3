@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import ThemeContextProvider from "@/context/ThemeProvider";
 import AuthProvider from "@/context/AuthProvider";
 import ToasterProvider from "@/context/ToasterProvider";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<AuthProvider>
 					<ThemeContextProvider>{children}</ThemeContextProvider>
 				</AuthProvider>
+				<ScrollToTop />
 			</body>
 		</html>
 	);

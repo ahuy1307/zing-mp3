@@ -76,9 +76,9 @@ function NavbarMobile() {
 		return (
 			<div className={twMerge(`flex justify-between items-center navbar-mb px-1 py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
 				<HiBars3 className="w-6 h-6 cursor-pointer" color="var(--text-primary)" />
-				<div className="relative w-[120px] h-[40px]">
+				<Link href="/" className="relative w-[120px] h-[40px]">
 					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" />
-				</div>
+				</Link>
 				<div className="flex items-center gap-x-2">
 					<HiMagnifyingGlass className="w-6 h-6 cursor-pointer mr-2" color="var(--text-primary)" onClick={() => setShowSearch(true)} />
 					<div className="bg-[var(--border-player)] rounded-full p-2" onClick={() => themeModal.onOpen()}>
@@ -99,9 +99,9 @@ function NavbarMobile() {
 						setShowSearch(false);
 					}}
 				/>
-				<div className="relative w-[120px] h-[40px]">
+				<Link href="/" className="relative w-[120px] h-[40px]">
 					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" />
-				</div>
+				</Link>
 				<div className="flex items-center gap-x-2">
 					{!showSearch ? (
 						<HiMagnifyingGlass className="w-6 h-6 cursor-pointer mr-2" color="var(--text-primary)" onClick={() => setShowSearch(true)} />
@@ -118,7 +118,7 @@ function NavbarMobile() {
 					{isClient && (
 						<div
 							className={twMerge(
-								`absolute w-[100vw] h-[70vh] bg-[var(--primary-bg)] top-[56px] translate-y-[calc(-100%-56px)] left-0 p-3 overflow-y-scroll transition-all duration-100 opacity-0`,
+								`absolute w-[100vw] h-[70vh] bg-[var(--primary-bg)] top-[56px] translate-y-[calc(-100%-56px)] left-0 p-3 overflow-y-scroll transition-all duration-300 opacity-0`,
 								showSearch && `translate-y-0 opacity-100`
 							)}>
 							{!isSearching && searchTitle !== "" && <AiOutlineClose className="w-5 h-5 absolute top-4 right-5" onClick={() => setSearchTitle("")} />}
@@ -149,9 +149,9 @@ function NavbarMobile() {
 										<img src={searchResult[searchResult.length - 1].image_music} className="w-[52px] h-[52px] rounded-full object-cover" alt="" />
 										<div className="text-sm">
 											<p className="font-bold">{searchResult[searchResult.length - 1].name_singer}</p>
-											<div className="text-[var(--text-secondary)]">
+											<div className="text-[var(--text-secondary)] flex gap-x-2">
 												<span>{searchResult[searchResult.length - 1].category}</span>
-												<span>.</span>
+												<span>-</span>
 												<span>{formatNumber(searchResult[searchResult.length - 1].favorite, 0)} quan tâm</span>
 											</div>
 										</div>

@@ -77,14 +77,7 @@ function ThemeModal() {
 					{listThemeCard.map((item: any) => {
 						return (
 							<div key={item.img} className="rounded-md overflow-hidden cursor-pointer group relative">
-								<img
-									src={item.img}
-									className={twMerge(
-										`rounded-md group-hover:brightness-50 group-hover:scale-110 duration-300 transition-all`,
-										themeCurrent.title && item.title === themeCurrent.title && `border-2 border-[var(--purple-primary)]`
-									)}
-									alt=""
-								/>
+								<img src={item.img} className={twMerge(`rounded-md group-hover:brightness-50 group-hover:scale-110 duration-300 transition-all`)} alt="" />
 								<div className="absolute top-[calc(50%-12px)] left-[50%] translate-x-[-50%] translate-y-[-50%] hidden group-hover:block">
 									<button className="bg-[var(--purple-primary)] text-xs text-[var(--white)] py-1 rounded-full font-bold w-[120px]" onClick={() => activeTheme(item)}>
 										Áp dụng

@@ -116,3 +116,11 @@ body {
 		display: none !important;
 	}
 }
+
+.trending-skeleton {
+	width: 50px !important;
+	height: 50px;
+}
+.ant-skeleton-button {
+	min-width: 0px !important;
+}
