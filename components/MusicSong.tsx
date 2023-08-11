@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 
-function MusicSong({ song, trending }: { song: Song; trending?: boolean }) {
+function MusicSong({ song, trending, news }: { song: Song; trending?: boolean; news?: number }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 
@@ -19,13 +19,16 @@ function MusicSong({ song, trending }: { song: Song; trending?: boolean }) {
 				setCheckHover(false);
 				setShowOther(false);
 			}}>
-			<div className="col-span-3 flex gap-x-4 relative">
-				<img
-					src={song.image_music}
-					className={twMerge(`w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700`, trending && `w-[50px] h-[50px]`)}
-					alt=""
-				/>
-				<BsFillPlayFill className={twMerge(`w-7 h-7 absolute top-[50%] translate-y-[-50%] left-5 hidden group-hover:block`, trending && `left-2`)} color="white" />
+			<div className="col-span-3 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]">
+				{news && <span className={twMerge(`stroke-rank`, news === 1 && `rank-1`, news === 2 && `rank-2`, news === 3 && `rank-3`)}>{news}</span>}
+				<div className="relative">
+					<img
+						src={song.image_music}
+						className={twMerge(`w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700`, trending && `w-[50px] h-[50px]`)}
+						alt=""
+					/>
+					<BsFillPlayFill className={twMerge(`w-7 h-7 absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] hidden group-hover:block`)} color="white" />
+				</div>
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)]">
 					<h3 className="font-bold">{song.name_music}</h3>
 					<p className="text-[var(--text-secondary)] line-clamp-1 hover:underline">{song.name_singer}</p>

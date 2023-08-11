@@ -72,7 +72,11 @@ function SideBar() {
 							extend && `justify-start p-[20px]`
 						)}>
 						<RadioMusicIcon
-							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`, pathName === "/radio" && `text-[var(--text-primary)]`)}
+							className={twMerge(
+								`text-white group-hover:text-[var(--purple-primary)]`,
+								extend && `text-[var(--text-primary)]`,
+								pathName === "/radio text-[var(--text-primary)]" && `text-[var(--text-primary)]`
+							)}
 						/>
 						<p
 							className={twMerge(
@@ -91,8 +95,11 @@ function SideBar() {
 							extend && `justify-start p-[20px]`
 						)}>
 						<FiMusic
-							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`)}
-							color={pathName === "/new-songs" ? "text-[var(--text-primary)]" : ""}
+							className={twMerge(
+								`text-white group-hover:text-[var(--purple-primary)]`,
+								extend && `text-[var(--text-primary)]`,
+								pathName === "/new-songs" && "text-[var(--text-primary)]"
+							)}
 						/>
 						<p
 							className={twMerge(
@@ -111,8 +118,11 @@ function SideBar() {
 							extend && `justify-start p-[20px]`
 						)}>
 						<CiStar
-							className={twMerge(`text-white group-hover:text-[var(--purple-primary)]`, extend && `text-[var(--text-primary)]`)}
-							color={pathName === "/top-100-song" ? "text-[var(--text-primary)]" : ""}
+							className={twMerge(
+								`text-white group-hover:text-[var(--purple-primary)]`,
+								extend && `text-[var(--text-primary)]`,
+								pathName === "/top-100-song" && "text-[var(--text-primary)]"
+							)}
 							size={20}
 						/>
 						<p

@@ -4,7 +4,7 @@ import { HiOutlineArrowLeft, HiOutlineArrowRight } from "react-icons/hi";
 import SearchInput from "./SearchInput";
 import { IoDiamondOutline } from "react-icons/io5";
 import { AiOutlineInfoCircle, AiOutlinePlayCircle, AiOutlineSetting, AiOutlineUpload } from "react-icons/ai";
-import { Tooltip } from "antd";
+import { Skeleton, Tooltip } from "antd";
 import { VscDesktopDownload } from "react-icons/vsc";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -172,7 +172,8 @@ function Navbar() {
 										</div>
 									</div>
 								}>
-								<img src={accessToken !== "" ? userData.image : "/images/default-user.png"} alt="fail" className="w-[40px] h-[40px] cursor-pointer" />
+								{userData.image === "" && <div className="bg-[var(--border-player)] w-[42px] h-[42px] rounded-full"></div>}
+								{userData.image !== "" && <img src={accessToken !== "" ? userData.image : "/images/default-user.png"} alt="fail" className="w-[40px] h-[40px] cursor-pointer" />}
 							</Popover>
 						) : (
 							<button className="bg-[var(--purple-primary)] text-white px-3 py-2 text-sm rounded-full font-bold xl:px-4" onClick={() => formModal.onOpen()}>
