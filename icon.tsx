@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import { StringMappingType } from "typescript";
 
 export const MusicIcon = ({ className }: { className?: string }) => {
 	return (
@@ -53,17 +54,17 @@ export const ScrollToTopIcon = ({ className }: { className?: string }) => {
 	);
 };
 
-export const RandomIcon = ({ className }: { className?: string }) => {
+export const RandomIcon = ({ className, width, height }: { className?: string; width?: string; height?: string }) => {
 	return (
 		<svg
 			aria-hidden="true"
 			focusable="false"
 			data-prefix="fal"
 			data-icon="shuffle"
-			width="22px"
-			height="22px"
+			width={width || "22px"}
+			height={height || "22px"}
 			color="black"
-			className="svg-inline--fa fa-shuffle "
+			className={twMerge(`svg-inline--fa fa-shuffle`, className)}
 			role="img"
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 512 512">

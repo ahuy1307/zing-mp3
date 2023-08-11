@@ -194,3 +194,7 @@ body img {
 	height: auto;
 	max-width: 100%;
 }
+
+.scroll-artist::-webkit-scrollbar {
+	display: none;
+}
