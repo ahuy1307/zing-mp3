@@ -6,6 +6,7 @@ import { Skeleton, Tooltip } from "antd";
 import { useState } from "react";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
+import FavoriteButton from "./FavoriteButton";
 
 function MusicSong({ song, trending, news }: { song: Song; trending?: boolean; news?: number }) {
 	const [checkHover, setCheckHover] = useState(false);
@@ -43,9 +44,7 @@ function MusicSong({ song, trending, news }: { song: Song; trending?: boolean; n
 			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)] font-bold">{song.time_format}</span>
 			<div className="absolute right-4">
 				<div className="flex items-center gap-x-2 md:gap-x-4">
-					<Tooltip title="Thêm vào thư viện" color="black">
-						<AiOutlineHeart color="var(--text-primary)" className="w-7 h-7 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible" />
-					</Tooltip>
+					<FavoriteButton id={song._id} />
 					<Tooltip title="Khác" color="black">
 						<BsThreeDots
 							color="var(--text-primary)"

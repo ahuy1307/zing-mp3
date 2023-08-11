@@ -121,10 +121,11 @@ function NavbarMobile() {
 								`absolute w-[100vw] h-[70vh] bg-[var(--primary-bg)] top-[56px] translate-y-[calc(-100%-56px)] left-0 p-3 overflow-y-scroll transition-all duration-300 opacity-0`,
 								showSearch && `translate-y-0 opacity-100`
 							)}>
-							{!isSearching && searchTitle !== "" && <AiOutlineClose className="w-5 h-5 absolute top-4 right-5" onClick={() => setSearchTitle("")} />}
+							{!isSearching && searchTitle !== "" && <AiOutlineClose className="w-5 h-5 absolute top-4 right-5 text-[var(--text-primary)]" onClick={() => setSearchTitle("")} />}
 							{isSearching && (
 								<ClipLoader
 									size={20}
+									color="var(--text-primary)"
 									cssOverride={{
 										position: "absolute",
 										top: "12px",
@@ -138,14 +139,15 @@ function NavbarMobile() {
 									value={searchTitle}
 									type="text"
 									placeholder="Tìm kiếm bài hát, nghệ sĩ..."
-									className="bg-transparent border-none outline-none placeholder:text-[var(--text-primary)]"
+									className="bg-transparent border-none outline-none placeholder:text-[var(--text-primary)] text-[var(--text-primary)]"
 									onChange={(e) => setSearchTitle(e.target.value)}
 								/>
 							</div>
-							<p className="font-bold mt-4 text-sm">{debounceSearch !== "" && searchResult.length > 0 ? "Kết quả tìm kiếm" : "Nhập thông tin tìm kiếm"}</p>
+							<p className="font-bold mt-4 text-sm text-[var(--text-primary)]">{debounceSearch !== "" ? "Kết quả tìm kiếm" : "Nhập thông tin tìm kiếm"}</p>
+							{debounceSearch !== "" && searchResult.length === 0 && <h3 className="font-bold text-[var(--text-primary)] text-center mt-6">Không tìm thấy kết quả!</h3>}
 							{searchResult.length > 0 && (
 								<div className="mt-4">
-									<div className="flex items-center gap-x-2 p-2 hover:bg-[var(--border-player)] rounded-md cursor-pointer">
+									<div className="flex items-center gap-x-2 p-2 hover:bg-[var(--border-player)] rounded-md cursor-pointer text-[var(--text-primary)]">
 										<img src={searchResult[searchResult.length - 1].image_music} className="w-[52px] h-[52px] rounded-full object-cover" alt="" />
 										<div className="text-sm">
 											<p className="font-bold">{searchResult[searchResult.length - 1].name_singer}</p>

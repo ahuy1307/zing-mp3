@@ -6,15 +6,14 @@ import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
 import { Song } from "@/interface";
-import { useGetTrendingSong } from "@/utils/useGetTrendingSong";
 import { Skeleton } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 
-function TopTrending() {
-	const [type, setType] = useState("all");
+function Top100() {
+	const [type, setType] = useState("view");
 	const [listSong, setListSong] = useState<Song[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -22,14 +21,22 @@ function TopTrending() {
 		const fetchData = async () => {
 			setIsLoading(true);
 			try {
-				const res = await axios.get(`${apiUrl}/music/trending`, {
-					params: {
-						_limit: 100,
-					},
-				});
+				let res;
+				if (type === "view") {
+					res = await axios.get(`${apiUrl}/music/top-views`, {
+						params: {
+							_limit: 100,
+						},
+					});
+				} else {
+					res = await axios.get(`${apiUrl}/music/top-favorite`, {
+						params: {
+							_limit: 100,
+						},
+					});
+				}
 
-				const list = useGetTrendingSong(res.data.data, type);
-				setListSong(list);
+				setListSong(res?.data.data);
 				setIsLoading(false);
 			} catch (error) {
 				setIsLoading(false);
@@ -41,7 +48,6 @@ function TopTrending() {
 	const handleChangeType = (type: string) => {
 		setType(type);
 	};
-
 	return (
 		<>
 			<Navbar />
@@ -56,35 +62,19 @@ function TopTrending() {
 				<div className="flex gap-x-6 items-center mt-6 text-[var(--text-primary)] px-[10px]">
 					<button
 						className={twMerge(
-							`uppercase text-xs px-6 md:px-10 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
-							type === "all" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
+							`uppercase text-sm px-6 md:px-10 py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+							type === "view" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
 						)}
-						onClick={() => handleChangeType("all")}>
-						Tất cả
+						onClick={() => handleChangeType("view")}>
+						Top View
 					</button>
 					<button
 						className={twMerge(
-							`uppercase text-xs px-5 md:px-8  py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
-							type === "vn" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
+							`uppercase text-sm px-5 md:px-8  py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
+							type === "favorite" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
 						)}
-						onClick={() => handleChangeType("vn")}>
-						Việt Nam
-					</button>
-					<button
-						className={twMerge(
-							`uppercase text-xs px-5 md:px-8  py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
-							type === "kpop" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
-						)}
-						onClick={() => handleChangeType("kpop")}>
-						Hàn Quốc
-					</button>
-					<button
-						className={twMerge(
-							`uppercase text-xs px-5 md:px-10  py-1 border-[var(--border-player)] rounded-full bg-[var(--primary-blur-bg)] border`,
-							type === "usuk" && `bg-[var(--purple-primary)] border-[var(--purple-primary)] text-white`
-						)}
-						onClick={() => handleChangeType("usuk")}>
-						Âu Mỹ
+						onClick={() => handleChangeType("favorite")}>
+						Top Favorite
 					</button>
 				</div>
 				<div className="mt-5 grid grid-cols-1 gap-x-2">
@@ -141,4 +131,4 @@ function TopTrending() {
 	);
 }
 
-export default TopTrending;
+export default Top100;

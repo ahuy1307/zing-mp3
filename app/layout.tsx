@@ -5,6 +5,7 @@ import ThemeContextProvider from "@/context/ThemeProvider";
 import AuthProvider from "@/context/AuthProvider";
 import ToasterProvider from "@/context/ToasterProvider";
 import ScrollToTop from "@/components/ScrollToTop";
+import FavoriteProvider from "@/context/FavoriteProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className={inter.className}>
 				<ToasterProvider />
 				<AuthProvider>
-					<ThemeContextProvider>{children}</ThemeContextProvider>
+					<FavoriteProvider>
+						<ThemeContextProvider>{children}</ThemeContextProvider>
+					</FavoriteProvider>
 				</AuthProvider>
 				<ScrollToTop />
 			</body>

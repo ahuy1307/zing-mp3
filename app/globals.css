@@ -42,9 +42,6 @@ body,
 }
 
 html {
-}
-
-body {
 	background-attachment: fixed;
 	background-image: var(--background-section);
 	background-size: var(--background-section-size);
@@ -141,4 +138,59 @@ body {
 
 .stroke-rank.rank-3 {
 	-webkit-text-stroke-color: #e35050;
+}
+
+.MuiPagination-ul li button {
+	font-size: 18px;
+}
+.MuiPagination-root {
+	width: 100%;
+}
+.MuiPagination-ul {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+}
+
+.MuiPagination-ul li {
+	width: 24px;
+}
+
+.MuiPagination-ul li button {
+	font-size: 16px;
+	color: var(--text-primary) !important;
+}
+
+.MuiPagination-ul li button svg {
+	width: 24px;
+	height: 24px;
+}
+
+@media only screen and (max-width: 739px) {
+	.MuiPagination-ul li {
+		/* padding: 0 1px; */
+	}
+}
+
+@media (min-width: 768px) {
+	.MuiPagination-ul li button {
+		font-size: 20px;
+	}
+	.MuiPagination-ul li button svg {
+		width: 24px;
+		height: 24px;
+	}
+	.MuiPagination-ul li {
+		padding: 0 10px;
+	}
+}
+
+.Mui-selected {
+	color: #fff !important;
+	background-color: var(--purple-primary) !important;
+}
+
+body img {
+	height: auto;
+	max-width: 100%;
 }

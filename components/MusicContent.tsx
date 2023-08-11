@@ -78,7 +78,7 @@ function MusicContent() {
 			</div>
 			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
 				{listSong.length === 0 &&
-					Array(7)
+					Array(12)
 						.fill(0)
 						.map((item, index) => {
 							return (
