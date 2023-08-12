@@ -8,7 +8,7 @@ import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 import FavoriteButton from "./FavoriteButton";
 
-function MusicSong({ song, trending, news }: { song: Song; trending?: boolean; news?: number }) {
+function MusicSong({ song, trending, top }: { song: Song; trending?: boolean; top?: number }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 
@@ -21,7 +21,7 @@ function MusicSong({ song, trending, news }: { song: Song; trending?: boolean; n
 				setShowOther(false);
 			}}>
 			<div className="col-span-3 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]">
-				{news && <span className={twMerge(`stroke-rank`, news === 1 && `rank-1`, news === 2 && `rank-2`, news === 3 && `rank-3`)}>{news}</span>}
+				{top && <span className={twMerge(`stroke-rank`, top === 1 && `rank-1`, top === 2 && `rank-2`, top === 3 && `rank-3`)}>{top}</span>}
 				<div className="relative">
 					<img
 						src={song.image_music}

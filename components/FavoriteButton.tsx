@@ -11,6 +11,10 @@ function FavoriteButton({ id }: { id: string }) {
 	const { accessToken } = useAuth();
 
 	useEffect(() => {
+		if (accessToken === "") {
+			setIsFavorite(false);
+			return;
+		}
 		const fetchData = async () => {
 			getFavoriteSongs(accessToken);
 
@@ -19,14 +23,16 @@ function FavoriteButton({ id }: { id: string }) {
 			else setIsFavorite(true);
 		};
 		fetchData();
-	}, []);
+	}, [accessToken, favoriteSongs.length]);
 
 	const favoriteMusic = async () => {
+		if (accessToken === "") return;
 		await addFavoriteSong(accessToken, id);
 		setIsFavorite(true);
 	};
 
 	const unFavoriteMusic = async () => {
+		if (accessToken === "") return;
 		await removeFavoriteSong(accessToken, id);
 		setIsFavorite(false);
 	};

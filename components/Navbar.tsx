@@ -36,7 +36,8 @@ function Navbar() {
 		if (typeof window !== "undefined") {
 			setHeightCurrent(window.pageYOffset);
 		}
-		getUserProfile(accessToken);
+		if (accessToken !== "") getUserProfile(accessToken);
+
 		setIsMounted(true);
 		window.addEventListener("scroll", handleScrollScreen, { passive: true });
 

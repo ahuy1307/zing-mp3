@@ -29,7 +29,9 @@ function SingerPage() {
 	};
 
 	useEffect(() => {
-		getFavoriteSongs(accessToken);
+		if (accessToken !== "") {
+			getFavoriteSongs(accessToken);
+		}
 		let list: {
 			singer: string;
 			song: Song;
@@ -53,11 +55,11 @@ function SingerPage() {
 			<div className="px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
 				<h2 className="mt-[100px] text-2xl text-[var(--text-primary)] font-bold px-[10px]">Nghệ Sĩ</h2>
 				<div className="mt-8 overflow-x-scroll scroll-artist flex w-full flex-col gap-y-2 px-[10px]">
-					<div className="flex w-full flex-wrap gap-y-6">
+					<div className="flex w-full flex-wrap gap-y-8">
 						{listSinger.map((item, index) => {
 							return (
 								<>
-									<div key={item.singer} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]">
+									<div key={item.singer} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[24px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]">
 										<Link href={`/${item.song.slug_name_singer}`}>
 											<div className="relative ">
 												<div className="overflow-hidden rounded-full h-0 pb-[100%]">
@@ -73,14 +75,16 @@ function SingerPage() {
 											</div>
 										</Link>
 										<Link href={`${item.song.slug_name_singer}`}>
-											<p className="text-center pt-2 text-sm hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1">{item.singer}</p>
+											<p className="text-center pt-4 text-sm hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1 text-[var(--text-primary)]">
+												{item.singer}
+											</p>
 										</Link>
 										<Link href={`${item.song.slug_name_singer}`}>
 											<p className="text-center pt-2 cursor-pointer text-xs text-[var(--text-secondary)]">{formatNumber(item.song.favorite)} quan tâm</p>
 										</Link>
 										<button className="flex gap-x-3 mt-2 items-center hover:border-[var(--purple-primary)] border-2 border-transparent group m-auto py-1 px-2 rounded-full">
-											<RandomIcon width="18px" height="18px" className="group-hover:text-[var(--purple-primary)]" />
-											<span className="text-xs font-bold group-hover:text-[var(--purple-primary)]">GÓC NHẠC</span>
+											<RandomIcon width="18px" height="18px" className="group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]" />
+											<span className="text-xs font-bold group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]">GÓC NHẠC</span>
 										</button>
 									</div>
 								</>

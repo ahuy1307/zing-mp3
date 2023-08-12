@@ -72,31 +72,6 @@ function SideBar() {
 							</p>
 						</Link>
 					</abbr>
-					<abbr title="Radio" className="w-full">
-						<Link
-							href="/radio"
-							className={twMerge(
-								`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
-								pathName === "/radio" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
-								extend && `justify-start p-[20px]`
-							)}>
-							<RadioMusicIcon
-								className={twMerge(
-									`text-white group-hover:text-[var(--purple-primary)]`,
-									extend && `text-[var(--text-primary)]`,
-									pathName === "/radio text-[var(--text-primary)]" && `text-[var(--text-primary)]`
-								)}
-							/>
-							<p
-								className={twMerge(
-									`text-[var(--text-primary)] xl:text-white text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
-									pathName === "/radio" && `xl:text-[var(--text-primary)]`,
-									extend && `block`
-								)}>
-								Radio
-							</p>
-						</Link>
-					</abbr>
 					<abbr title="Nhạc mới" className="w-full">
 						<Link
 							href="/new-songs"
@@ -145,6 +120,31 @@ function SideBar() {
 									extend && `block`
 								)}>
 								Top 100
+							</p>
+						</Link>
+					</abbr>
+					<abbr title="History" className="w-full">
+						<Link
+							href="/history"
+							className={twMerge(
+								`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+								pathName === "/history" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
+								extend && `justify-start p-[20px]`
+							)}>
+							<RadioMusicIcon
+								className={twMerge(
+									`text-white group-hover:text-[var(--purple-primary)]`,
+									extend && `text-[var(--text-primary)]`,
+									pathName === "/history" && `text-[var(--text-primary)]`
+								)}
+							/>
+							<p
+								className={twMerge(
+									`text-[var(--text-primary)] xl:text-white text-sm font-bold hidden flex-shrink-0 xl:block group-hover:text-[var(--purple-primary)]`,
+									pathName === "/history" && `xl:text-[var(--text-primary)]`,
+									extend && `block`
+								)}>
+								History
 							</p>
 						</Link>
 					</abbr>

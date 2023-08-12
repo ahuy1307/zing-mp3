@@ -92,9 +92,9 @@ function Top100() {
 									</div>
 								);
 							})}
-					{listSong.map((item) => {
+					{listSong.map((item, index) => {
 						return !isLoading ? (
-							<MusicSong key={item._id} song={item} trending={true} />
+							<MusicSong key={item._id} song={item} trending={true} top={index + 1} />
 						) : (
 							<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 								<Skeleton.Button

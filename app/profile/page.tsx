@@ -8,15 +8,18 @@ import { useAuth } from "@/context/AuthProvider";
 import { useFavorite } from "@/context/FavoriteProvider";
 import { RandomIcon } from "@/icon";
 import { Song } from "@/interface";
+import SkeletonAvatar from "antd/es/skeleton/Avatar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
+import { twMerge } from "tailwind-merge";
 
 function ProfilePage() {
 	const { favoriteSongs, getFavoriteSongs, isLoading } = useFavorite();
 	const { accessToken } = useAuth();
 	const [listSinger, setListSinger] = useState<{ singer: string; song: Song }[]>([]);
+	const [widthCurrent, setWidthCurrent] = useState(0);
 
 	const checkValueInArray = (
 		singer: string,
@@ -29,8 +32,14 @@ function ProfilePage() {
 		return index !== -1;
 	};
 
+	const handleSize = () => {
+		if (typeof window !== "undefined") setWidthCurrent(window.innerWidth);
+	};
 	useEffect(() => {
-		getFavoriteSongs(accessToken);
+		if (accessToken !== "") {
+			getFavoriteSongs(accessToken);
+		}
+
 		let list: {
 			singer: string;
 			song: Song;
@@ -44,8 +53,13 @@ function ProfilePage() {
 				});
 			}
 		});
-
 		setListSinger([...list]);
+
+		if (typeof window !== "undefined") setWidthCurrent(window.innerWidth);
+
+		window.addEventListener("resize", handleSize, { passive: true });
+
+		return () => window.removeEventListener("resize", handleSize);
 	}, [favoriteSongs.length]);
 
 	return (
@@ -62,11 +76,29 @@ function ProfilePage() {
 				<div className="px-[10px]">
 					<h2 className="text-2xl font-bold">Nghệ Sĩ</h2>
 					<div className="mt-8 overflow-x-scroll scroll-artist flex w-full flex-col gap-y-2">
+						{!isLoading && favoriteSongs.length === 0 && <span className="text-[var(--text-primary)]">Chưa thêm nghệ sĩ nào vào thư viện...</span>}
 						<div className="flex w-full">
+							{isLoading &&
+								favoriteSongs.length === 0 &&
+								Array(5)
+									.fill(0)
+									.map((item, index) => {
+										return (
+											<div key={index} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] xl:w-[20%] group cursor-pointer">
+												<div className="relative h-[200px] rounded-full shadow bg-gray-700/20"></div>
+											</div>
+										);
+									})}
 							{listSinger.map((item, index) => {
 								return (
 									<>
-										<div key={item.singer} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]">
+										<div
+											key={item.singer}
+											className={twMerge(
+												`w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] xl:w-[20%]`,
+												widthCurrent <= 1279 && index > 2 && `lg:hidden`,
+												widthCurrent >= 1280 && index > 3 && `xl:hidden`
+											)}>
 											<Link href={`/${item.song.slug_name_singer}`}>
 												<div className="relative ">
 													<div className="overflow-hidden rounded-full h-0 pb-[100%]">
@@ -106,7 +138,13 @@ function ProfilePage() {
 							{listSinger.map((item, index) => {
 								return (
 									<>
-										<div key={item.singer} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]">
+										<div
+											key={item.singer}
+											className={twMerge(
+												`w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]`,
+												widthCurrent <= 1279 && index > 2 && `lg:hidden`,
+												widthCurrent >= 1280 && index > 3 && `xl:hidden`
+											)}>
 											<Link href={`${item.song.slug_name_singer}`}>
 												<p className="text-center pt-2 text-sm hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1">{item.singer}</p>
 											</Link>
@@ -143,7 +181,7 @@ function ProfilePage() {
 						{favoriteSongs.map((item) => {
 							return <MusicSong song={item.music} key={item.music._id} trending={true} />;
 						})}
-						{!isLoading && favoriteSongs.length === 0 && <span className="text-white">Chưa thêm bài hát nào vào thư viện...</span>}
+						{!isLoading && favoriteSongs.length === 0 && <span className="text-[var(--text-primary)]">Chưa thêm bài hát nào vào thư viện...</span>}
 					</div>
 				</div>
 			</div>

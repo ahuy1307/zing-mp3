@@ -36,11 +36,18 @@ function NavbarMobile() {
 	const [isSearching, setIsSearching] = useState(false);
 	const debounceSearch = useDebounce(searchTitle, 1000);
 	const [showSearch, setShowSearch] = useState(false);
-
 	const handleScrollScreen = () => {
 		if (hasWindow) setHeightCurrent(window.pageYOffset);
 	};
 
+	const handleToProfile = () => {
+		if (accessToken === "") {
+			setShowNav(false);
+			formModal.onOpen();
+			return;
+		}
+		router.push("/profile");
+	};
 	useEffect(() => {
 		setIsClient(true);
 
@@ -77,7 +84,7 @@ function NavbarMobile() {
 			<div className={twMerge(`flex justify-between items-center navbar-mb px-1 py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
 				<HiBars3 className="w-6 h-6 cursor-pointer" color="var(--text-primary)" />
 				<Link href="/" className="relative w-[120px] h-[40px]">
-					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" />
+					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
 				</Link>
 				<div className="flex items-center gap-x-2">
 					<HiMagnifyingGlass className="w-6 h-6 cursor-pointer mr-2" color="var(--text-primary)" onClick={() => setShowSearch(true)} />
@@ -100,7 +107,7 @@ function NavbarMobile() {
 					}}
 				/>
 				<Link href="/" className="relative w-[120px] h-[40px]">
-					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" />
+					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
 				</Link>
 				<div className="flex items-center gap-x-2">
 					{!showSearch ? (
@@ -201,22 +208,19 @@ function NavbarMobile() {
 						</div>
 					</div>
 					<ul className="flex flex-col  text-black/60 pt-6">
-						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/profile" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
-							<Link className="flex items-center gap-x-4" href="/profile">
-								<MusicIcon />
-								<span className="uppercase">Cá nhân</span>
-							</Link>
+						<li
+							className={twMerge(
+								`hover:text-[var(--purple-primary)] pl-6 py-2 flex items-center gap-x-4 cursor-pointer`,
+								pathName === "/profile" && `bg-[var(--border-player)] text-[var(--purple-primary)]`
+							)}
+							onClick={() => handleToProfile()}>
+							<MusicIcon />
+							<span className="uppercase">Cá nhân</span>
 						</li>
 						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
 							<Link className="flex items-center gap-x-4" href="/">
 								<RadioIcon />
 								<span className="uppercase">Khám phá</span>
-							</Link>
-						</li>
-						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/radio" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
-							<Link className="flex items-center gap-x-4" href="/radio">
-								<RadioMusicIcon />
-								<span className="uppercase">Radio</span>
 							</Link>
 						</li>
 						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/new-songs" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
@@ -229,6 +233,12 @@ function NavbarMobile() {
 							<Link className="flex items-center gap-x-4" href="/top-100">
 								<AiOutlineStar className="w-5 h-5" />
 								<span className="uppercase">Top 100</span>
+							</Link>
+						</li>
+						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/history" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
+							<Link className="flex items-center gap-x-4" href="/history">
+								<RadioMusicIcon />
+								<span className="uppercase">History</span>
 							</Link>
 						</li>
 					</ul>
