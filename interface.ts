@@ -19,4 +19,5 @@ export interface Song {
 	slug_name_music: string;
 	category: string;
 	slug_category: string;
+	createdAt: Date;
 }

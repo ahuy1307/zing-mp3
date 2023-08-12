@@ -21,6 +21,9 @@ function HistoryPage() {
 	const { accessToken } = useAuth();
 
 	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/play-history/get-by-token`, {

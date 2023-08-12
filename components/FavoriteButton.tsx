@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useFavorite } from "@/context/FavoriteProvider";
 import { Tooltip } from "antd";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 function FavoriteButton({ id }: { id: string }) {
@@ -26,7 +27,10 @@ function FavoriteButton({ id }: { id: string }) {
 	}, [accessToken, favoriteSongs.length]);
 
 	const favoriteMusic = async () => {
-		if (accessToken === "") return;
+		if (accessToken === "") {
+			toast.error("Vui lòng đăng nhập!");
+			return;
+		}
 		await addFavoriteSong(accessToken, id);
 		setIsFavorite(true);
 	};

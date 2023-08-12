@@ -18,6 +18,9 @@ function Top100() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			try {

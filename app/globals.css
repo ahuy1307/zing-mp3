@@ -198,3 +198,33 @@ body img {
 .scroll-artist::-webkit-scrollbar {
 	display: none;
 }
+
+.background-album {
+	backdrop-filter: blur(30px);
+	background-image: linear-gradient(135deg, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+	border-radius: 4px;
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+@media (min-width: 768px) {
+	.background-album {
+		background-image: none;
+		backdrop-filter: blur(0px);
+		box-shadow: none;
+	}
+}
+
+.album-scroll::-webkit-scrollbar {
+	width: 6px;
+	height: 10px;
+}
+
+.album-scroll::-webkit-scrollbar-track {
+	background: transparent;
+	margin: 10px 0;
+}
+
+.album-scroll::-webkit-scrollbar-thumb {
+	background-color: rgb(233, 226, 226, 0.2);
+	border-radius: 100rem;
+}

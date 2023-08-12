@@ -69,9 +69,7 @@ function Navbar() {
 						<div className="bg-[var(--border-player)] rounded-full p-3 hover:bg-[var(--hover-blur-bg-button)] cursor-pointer">
 							<AiOutlineSetting className="w-5 h-5" color="var(--text-primary)" />
 						</div>
-						<button className="bg-[var(--purple-primary)] text-white px-3 py-2 text-sm rounded-full font-bold xl:px-4" onClick={() => formModal.onOpen()}>
-							Đăng nhập
-						</button>
+						<div className="bg-[var(--border-player)] w-[42px] h-[42px] rounded-full"></div>
 					</div>
 				</div>
 			</div>

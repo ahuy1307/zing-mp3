@@ -12,13 +12,16 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 
-function AlbumSingerPage() {
+function SingerAlbum() {
 	const pathName = usePathname();
 	const nameSinger = pathName.split("/album")[0].split("/")[1];
 	const [isLoading, setIsLoading] = useState(false);
 	const [listSong, setListSong] = useState<Song[]>([]);
 
 	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/music/get-singer-name`, {
@@ -109,4 +112,4 @@ function AlbumSingerPage() {
 	);
 }
 
-export default AlbumSingerPage;
+export default SingerAlbum;

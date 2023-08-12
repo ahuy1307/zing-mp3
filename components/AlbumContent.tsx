@@ -1,4 +1,5 @@
 import { Tooltip } from "antd";
+import Link from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsPlayCircle, BsThreeDots } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
@@ -9,9 +10,9 @@ function AlbumContent({ title, data }: { title: string; data: any[] }) {
 			<div className="grid grid-cols-2 gap-4 px-[10px] md:px-[0px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-6">
 				{data.map((item, index) => {
 					return (
-						<div key={index} className={twMerge(`flex flex-col gap-y-2 overflow-hidden cursor-pointer rounded-md`, index === 4 && `lg:hidden xl:block`)}>
+						<Link href={item.link} key={index} className={twMerge(`flex flex-col gap-y-2 overflow-hidden cursor-pointer rounded-md`, index === 4 && `lg:hidden xl:block`)}>
 							<div className="relative group">
-								<img src={item.thumbnail} className="rounded-md group-hover:scale-105   duration-500 origin-bottom select-none group-hover:brightness-[0.6]" alt="" loading="lazy" />
+								<img src={item.thumbnail} className="rounded-md group-hover:scale-105  duration-500 origin-bottom select-none group-hover:brightness-[0.6]" alt="" loading="lazy" />
 								<div className="items-center justify-between absolute top-[50%] translate-y-[-50%] w-full px-5 hidden group-hover:flex">
 									<Tooltip title="Add album">
 										<AiOutlineHeart className="w-6 h-6" color="white" />
@@ -32,7 +33,7 @@ function AlbumContent({ title, data }: { title: string; data: any[] }) {
 									);
 								})}
 							</div>
-						</div>
+						</Link>
 					);
 				})}
 			</div>

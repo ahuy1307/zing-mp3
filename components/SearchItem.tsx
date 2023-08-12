@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AiOutlineDownload, AiOutlineEye, AiOutlineHeart } from "react-icons/ai";
 import { BsFillPlayFill, BsThreeDots } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
+import FavoriteButton from "./FavoriteButton";
 
 function SearchItem({ song }: { song: Song }) {
 	const [checkHover, setCheckHover] = useState(false);
@@ -31,9 +32,7 @@ function SearchItem({ song }: { song: Song }) {
 			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)]">{song.time_format}</span>
 			<div className="absolute right-4">
 				<div className="flex items-center gap-x-2">
-					<Tooltip title="Thêm vào thư viện" color="black">
-						<AiOutlineHeart color="var(--text-primary)" className="w-7 h-7 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible" />
-					</Tooltip>
+					<FavoriteButton id={song._id} />
 					<Tooltip title="Khác" color="black">
 						<BsThreeDots
 							color="var(--text-primary)"

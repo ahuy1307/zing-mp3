@@ -6,11 +6,11 @@ import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
 import { Song } from "@/interface";
-import formatNumber from "@/utils/formatNumber";
 import { Skeleton } from "antd";
 import axios from "axios";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
@@ -21,11 +21,14 @@ function OnlySingerPage() {
 	const [listSong, setListSong] = useState<Song[]>([]);
 
 	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/music/get-singer-name`, {
 				params: {
-					_singer: pathName.split("/")[1],
+					_singer: decodeURIComponent(pathName.split("/")[1]),
 				},
 			});
 			setListSong(res.data.data);

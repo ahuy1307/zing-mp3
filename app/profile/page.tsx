@@ -10,6 +10,7 @@ import { RandomIcon } from "@/icon";
 import { Song } from "@/interface";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
@@ -20,6 +21,7 @@ function ProfilePage() {
 	const { accessToken } = useAuth();
 	const [listSinger, setListSinger] = useState<{ singer: string; song: Song }[]>([]);
 	const [widthCurrent, setWidthCurrent] = useState(0);
+	const router = useRouter();
 
 	const checkValueInArray = (
 		singer: string,
@@ -36,8 +38,14 @@ function ProfilePage() {
 		if (typeof window !== "undefined") setWidthCurrent(window.innerWidth);
 	};
 	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		if (accessToken !== "") {
 			getFavoriteSongs(accessToken);
+		} else {
+			router.push("/");
+			router.refresh();
 		}
 
 		let list: {
@@ -60,7 +68,7 @@ function ProfilePage() {
 		window.addEventListener("resize", handleSize, { passive: true });
 
 		return () => window.removeEventListener("resize", handleSize);
-	}, [favoriteSongs.length]);
+	}, [favoriteSongs.length, router]);
 
 	return (
 		<>
@@ -104,7 +112,7 @@ function ProfilePage() {
 													<div className="overflow-hidden rounded-full h-0 pb-[100%]">
 														<img
 															src={item.song.image_music}
-															className="rounded-full hover:scale-125 transition-all duration-500 cursor-pointer w-full overflow-hidden"
+															className="rounded-full hover:scale-125 transition-all duration-500 cursor-pointer w-full overflow-hidden min-h-[160px] h-auto"
 															alt=""
 														/>
 													</div>

@@ -49,6 +49,9 @@ function NavbarMobile() {
 		router.push("/profile");
 	};
 	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 		setIsClient(true);
 
 		const fetchSearch = async () => {
@@ -154,7 +157,9 @@ function NavbarMobile() {
 							{debounceSearch !== "" && searchResult.length === 0 && <h3 className="font-bold text-[var(--text-primary)] text-center mt-6">Không tìm thấy kết quả!</h3>}
 							{searchResult.length > 0 && (
 								<div className="mt-4">
-									<div className="flex items-center gap-x-2 p-2 hover:bg-[var(--border-player)] rounded-md cursor-pointer text-[var(--text-primary)]">
+									<Link
+										href={`${searchResult[searchResult.length - 1].slug_name_singer}`}
+										className="flex items-center gap-x-2 p-2 hover:bg-[var(--border-player)] rounded-md cursor-pointer text-[var(--text-primary)]">
 										<img src={searchResult[searchResult.length - 1].image_music} className="w-[52px] h-[52px] rounded-full object-cover" alt="" />
 										<div className="text-sm">
 											<p className="font-bold">{searchResult[searchResult.length - 1].name_singer}</p>
@@ -164,7 +169,7 @@ function NavbarMobile() {
 												<span>{formatNumber(searchResult[searchResult.length - 1].favorite, 0)} quan tâm</span>
 											</div>
 										</div>
-									</div>
+									</Link>
 									{searchResult.map((item: Song) => {
 										return <SearchItem song={item} key={item._id} />;
 									})}

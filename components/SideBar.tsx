@@ -3,14 +3,27 @@ import { MusicIcon, RadioIcon, RadioMusicIcon } from "@/icon";
 import Link from "next/link";
 import { FiMusic } from "react-icons/fi";
 import { CiStar } from "react-icons/ci";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthProvider";
+import { useFormModal } from "@/hooks/useFormModal";
 
 function SideBar() {
 	const pathName = usePathname();
 	const [extend, setExtend] = useState(false);
+	const formModal = useFormModal();
+	const router = useRouter();
+	const { accessToken } = useAuth();
+
+	const handleChangePage = (url: string) => {
+		if (accessToken === "") {
+			formModal.onOpen();
+			return;
+		}
+		router.push(url);
+	};
 
 	return (
 		<div
@@ -27,10 +40,10 @@ function SideBar() {
 				<img src="/images/logo.png" className="w-[120px] h-[40px] m-auto mt-6 hidden xl:block" />
 				<div className={twMerge(`flex flex-col items-center w-full box-border xl:mt-4`)}>
 					<abbr title="Cá nhân" className="w-full">
-						<Link
-							href="/profile"
+						<div
+							onClick={() => handleChangePage("/profile")}
 							className={twMerge(
-								`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+								`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group cursor-pointer`,
 								pathName === "/profile" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
 								extend && `justify-start p-[20px]`
 							)}>
@@ -49,7 +62,7 @@ function SideBar() {
 								)}>
 								Cá nhân
 							</p>
-						</Link>
+						</div>
 					</abbr>
 					<abbr title="Khám phá" className="w-full">
 						<Link
@@ -124,10 +137,10 @@ function SideBar() {
 						</Link>
 					</abbr>
 					<abbr title="History" className="w-full">
-						<Link
-							href="/history"
+						<div
+							onClick={() => handleChangePage("/history")}
 							className={twMerge(
-								`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group`,
+								`h-[48px] flex items-center w-full justify-center gap-x-2 transition-all duration-500 xl:justify-start xl:px-[25px] xl:py-[10px] group cursor-pointer`,
 								pathName === "/history" && `border-l-2 bg-[var(--border-player)] border-[var(--purple-primary)]`,
 								extend && `justify-start p-[20px]`
 							)}>
@@ -146,7 +159,7 @@ function SideBar() {
 								)}>
 								History
 							</p>
-						</Link>
+						</div>
 					</abbr>
 				</div>
 			</div>
