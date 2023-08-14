@@ -1,6 +1,7 @@
 "use client";
 import { useAuth } from "@/context/AuthProvider";
 import { useFavorite } from "@/context/FavoriteProvider";
+import { usePlayer } from "@/context/PlayProvider";
 import { Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -11,6 +12,7 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const { favoriteSongs, getFavoriteSongs, addFavoriteSong, removeFavoriteSong } = useFavorite();
 	const { accessToken } = useAuth();
+	const { songActive } = usePlayer();
 
 	useEffect(() => {
 		if (accessToken === "") {
@@ -25,7 +27,7 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 			else setIsFavorite(true);
 		};
 		fetchData();
-	}, [accessToken, favoriteSongs.length]);
+	}, [accessToken, favoriteSongs.length, songActive._id]);
 
 	const favoriteMusic = async () => {
 		if (accessToken === "") {
