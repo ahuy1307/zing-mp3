@@ -20,6 +20,8 @@ import SearchItem from "./SearchItem";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 import Image from "next/image";
+import MusicSong from "./MusicSong";
+import { usePlayer } from "@/context/PlayProvider";
 
 function NavbarMobile() {
 	const [showNav, setShowNav] = useState(false);
@@ -39,6 +41,7 @@ function NavbarMobile() {
 	const handleScrollScreen = () => {
 		if (hasWindow) setHeightCurrent(window.pageYOffset);
 	};
+	const { handleSetListSong } = usePlayer();
 
 	const handleToProfile = () => {
 		if (accessToken === "") {
@@ -82,6 +85,9 @@ function NavbarMobile() {
 		return () => window.removeEventListener("scroll", handleScrollScreen);
 	}, [debounceSearch]);
 
+	const handlePlay = () => {
+		handleSetListSong(searchResult);
+	};
 	if (!isClient)
 		return (
 			<div className={twMerge(`flex justify-between items-center navbar-mb px-1 py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
@@ -171,7 +177,7 @@ function NavbarMobile() {
 										</div>
 									</Link>
 									{searchResult.map((item: Song) => {
-										return <SearchItem song={item} key={item._id} />;
+										return <MusicSong song={item} key={item._id} search={true} onClick={handlePlay} />;
 									})}
 								</div>
 							)}

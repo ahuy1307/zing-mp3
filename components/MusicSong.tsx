@@ -12,7 +12,7 @@ import { usePlayer } from "@/context/PlayProvider";
 import { useSound } from "use-sound";
 import MusicWaves from "./MusicWaves";
 
-function MusicSong({ song, trending, top, onClick, list }: { song: Song; trending?: boolean; top?: number; onClick?: () => void; list?: boolean }) {
+function MusicSong({ song, trending, top, onClick, list, search }: { song: Song; trending?: boolean; top?: number; onClick?: () => void; list?: boolean; search?: boolean }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -52,15 +52,21 @@ function MusicSong({ song, trending, top, onClick, list }: { song: Song; trendin
 					onClick?.();
 					handleSetNewActiveSong(song);
 					handleClick();
+				}}
+				onTouchStart={() => {
+					onClick?.();
+					handleSetNewActiveSong(song);
+					handleClick();
 				}}>
 				{top && <span className={twMerge(`stroke-rank`, top === 1 && `rank-1`, top === 2 && `rank-2`, top === 3 && `rank-3`)}>{top}</span>}
-				<div className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`)}>
+				<div className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`, search && `min-w-[50px] w-[50px]`)}>
 					<img
 						src={song.image_music}
 						className={twMerge(
 							`w-full h-[50px] object-cover auto-cols-[60px] rounded-md transition-all duration-700 group-hover:brightness-[70%]`,
 							trending && `h-[60px]`,
-							isPlaying && `brightness-[70%]`
+							isPlaying && `brightness-[70%]`,
+							search && `h-[50px]`
 						)}
 						alt=""
 					/>
