@@ -45,16 +45,15 @@ function MusicSong({ song, trending, top, onClick, list }: { song: Song; trendin
 			onMouseLeave={() => {
 				setCheckHover(false);
 				setShowOther(false);
+			}}
+			onClick={() => {
+				onClick?.();
+				handleSetNewActiveSong(song);
+				handleClick();
 			}}>
 			<div className="col-span-3 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]">
 				{top && <span className={twMerge(`stroke-rank`, top === 1 && `rank-1`, top === 2 && `rank-2`, top === 3 && `rank-3`)}>{top}</span>}
-				<div
-					className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`)}
-					onClick={() => {
-						onClick?.();
-						handleSetNewActiveSong(song);
-						handleClick();
-					}}>
+				<div className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`)}>
 					<img
 						src={song.image_music}
 						className={twMerge(

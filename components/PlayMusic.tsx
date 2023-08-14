@@ -62,7 +62,7 @@ function PlayMusic() {
 			<div className="fixed h-[70px] bottom-0 left-0 right-0 bg-[var(--player-bg)] text-[var(--text-primary)] z-[99] md:h-[90px] md:px-[20px]">
 				<div className="flex items-center gap-x-4 h-full px-[10px]">
 					<img src={songActive.image_music} className={twMerge(`w-[40px] h-[40px] md:w-[64px] md:h-[64px] rounded-full`, isPlayingSong ? `spin` : `returnSpin`)} alt="" />
-					<div className="flex flex-col gap-y-1 w-[120px]">
+					<div className="flex flex-col gap-y-1 w-[100px]">
 						<h3 className="line-clamp-1">{songActive.name_music}</h3>
 						<span className="text-[var(--text-secondary)] text-xs line-clamp-1">{songActive.name_singer}</span>
 					</div>

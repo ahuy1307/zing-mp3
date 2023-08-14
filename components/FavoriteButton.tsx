@@ -25,7 +25,7 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 			else setIsFavorite(true);
 		};
 		fetchData();
-	}, [accessToken]);
+	}, [accessToken, favoriteSongs.length]);
 
 	const favoriteMusic = async () => {
 		if (accessToken === "") {

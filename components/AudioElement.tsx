@@ -6,7 +6,7 @@ function AudioElement() {
 	const [isClient, setIsClient] = useState(false);
 	const ref = React.useRef<HTMLAudioElement>(null);
 
-	const { songActive, isPlayingSong, handleSetPlaying } = usePlayer();
+	const { songActive, isPlayingSong } = usePlayer();
 
 	useEffect(() => {
 		setIsClient(true);

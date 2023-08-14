@@ -8,7 +8,7 @@ function Footer() {
 				{ImgFooter.map((item) => {
 					return (
 						<div key={item.src} className="relative bg-white rounded-md flex items-center justify-center aspect-[1/0.5]">
-							<img src={item.src} alt="" className="object-cover h-auto w-auto max-h-[80%] max-w-[80%]" />
+							<img src={item.src} alt="" className="object-contain h-auto w-[100px] max-h-[80%] max-w-[80%]" />
 						</div>
 					);
 				})}
