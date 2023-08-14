@@ -37,7 +37,7 @@ function MusicSong({ song, trending, top, onClick, list }: { song: Song; trendin
 	return (
 		<div
 			className={twMerge(
-				`grid grid-cols-4 items-center p-[10px]  md:px-[10px] text-[#ffffff80] text-sm border-b-2 border-[#ffffff1a] cursor-pointer group rounded-md relative hover:bg-[var(--border-player)]`,
+				`grid grid-cols-4 items-center p-[10px]  md:px-[10px] text-[#ffffff80] text-sm border-b-2 border-[#ffffff1a] cursor-pointer group rounded-md hover:bg-[var(--border-player)] relative`,
 				isPlaying && `bg-[var(--border-player)]`,
 				list && isPlaying && `bg-[var(--purple-primary)] hover:bg-[var(--purple-primary)]`
 			)}
@@ -45,13 +45,14 @@ function MusicSong({ song, trending, top, onClick, list }: { song: Song; trendin
 			onMouseLeave={() => {
 				setCheckHover(false);
 				setShowOther(false);
-			}}
-			onClick={() => {
-				onClick?.();
-				handleSetNewActiveSong(song);
-				handleClick();
 			}}>
-			<div className="col-span-3 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]">
+			<div
+				className="col-span-4 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]"
+				onClick={() => {
+					onClick?.();
+					handleSetNewActiveSong(song);
+					handleClick();
+				}}>
 				{top && <span className={twMerge(`stroke-rank`, top === 1 && `rank-1`, top === 2 && `rank-2`, top === 3 && `rank-3`)}>{top}</span>}
 				<div className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`)}>
 					<img
@@ -87,7 +88,7 @@ function MusicSong({ song, trending, top, onClick, list }: { song: Song; trendin
 					)}
 				</div>
 			</div>
-			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)] font-bold">{song.time_format}</span>
+			<span className="absolute top-[50%] translate-y-[-50%] right-4 text-xs group-hover:hidden text-[var(--text-secondary)] font-bold">{song.time_format}</span>
 			<div className="absolute right-4">
 				<div className="flex items-center gap-x-2 md:gap-x-4">
 					<FavoriteButton id={song._id} />

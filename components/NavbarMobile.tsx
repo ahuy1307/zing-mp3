@@ -243,10 +243,10 @@ function NavbarMobile() {
 							</Link>
 						</li>
 						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/history" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
-							<Link className="flex items-center gap-x-4" href="/history">
+							<div className="flex items-center gap-x-4 cursor-pointer" onClick={() => handleToProfile()}>
 								<RadioMusicIcon />
 								<span className="uppercase">History</span>
-							</Link>
+							</div>
 						</li>
 					</ul>
 				</div>

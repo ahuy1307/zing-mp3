@@ -10,6 +10,13 @@ function AudioElement() {
 
 	useEffect(() => {
 		setIsClient(true);
+		if (!ref.current) return;
+
+		if (isPlayingSong) {
+			ref.current!.play();
+		} else {
+			ref.current!.pause();
+		}
 	}, []);
 
 	const handleCanPlay = () => {

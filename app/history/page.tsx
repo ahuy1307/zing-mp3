@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 
@@ -17,7 +18,12 @@ function HistoryPage() {
 	const [isLoading, setIsLoading] = useState(false);
 	const { accessToken } = useAuth();
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
+	const router = useRouter();
 	useEffect(() => {
+		if (accessToken !== "") {
+			router.push("/");
+			router.refresh();
+		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/play-history/get-by-token`, {
