@@ -6,6 +6,7 @@ import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { useAuth } from "@/context/AuthProvider";
 import { useFavorite } from "@/context/FavoriteProvider";
+import { usePlayer } from "@/context/PlayProvider";
 import { RandomIcon } from "@/icon";
 import { Song } from "@/interface";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
@@ -18,10 +19,12 @@ import { twMerge } from "tailwind-merge";
 
 function ProfilePage() {
 	const { favoriteSongs, getFavoriteSongs, isLoading } = useFavorite();
+	const [listSong, setListSong] = useState<Song[]>([]);
 	const { accessToken } = useAuth();
 	const [listSinger, setListSinger] = useState<{ singer: string; song: Song }[]>([]);
 	const [widthCurrent, setWidthCurrent] = useState(0);
 	const router = useRouter();
+	const { handleSetListSong } = usePlayer();
 
 	const checkValueInArray = (
 		singer: string,
@@ -37,6 +40,7 @@ function ProfilePage() {
 	const handleSize = () => {
 		if (typeof window !== "undefined") setWidthCurrent(window.innerWidth);
 	};
+
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			window.scrollTo({ top: 0, behavior: "smooth" });
@@ -61,6 +65,11 @@ function ProfilePage() {
 				});
 			}
 		});
+		favoriteSongs.map((item) => {
+			setListSong((prev) => {
+				return [...prev, item.music];
+			});
+		});
 		setListSinger([...list]);
 
 		if (typeof window !== "undefined") setWidthCurrent(window.innerWidth);
@@ -70,11 +79,15 @@ function ProfilePage() {
 		return () => window.removeEventListener("resize", handleSize);
 	}, [favoriteSongs.length, router]);
 
+	const handlePlay = () => {
+		handleSetListSong(listSong);
+	};
+
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
 				<div className="mt-[100px] mb-[24px] flex items-center gap-x-2 px-[10px]">
 					<h1 className="text-[var(--text-primary)] font-bold text-2xl">Thư Viện</h1>
 					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group">
@@ -187,7 +200,7 @@ function ProfilePage() {
 									);
 								})}
 						{favoriteSongs.map((item) => {
-							return <MusicSong song={item.music} key={item.music._id} trending={true} />;
+							return <MusicSong song={item.music} key={item.music._id} onClick={handlePlay} />;
 						})}
 						{!isLoading && favoriteSongs.length === 0 && <span className="text-[var(--text-primary)]">Chưa thêm bài hát nào vào thư viện...</span>}
 					</div>

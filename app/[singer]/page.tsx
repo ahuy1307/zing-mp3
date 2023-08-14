@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { Skeleton } from "antd";
 import axios from "axios";
@@ -13,12 +14,16 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
-import { BsFillPlayFill } from "react-icons/bs";
+import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 
 function OnlySingerPage() {
 	const pathName = usePathname();
 	const [isLoading, setIsLoading] = useState(false);
 	const [listSong, setListSong] = useState<Song[]>([]);
+	const { handleSetListSong, isPlayingSong, handleSetPlaying, handleSetNewActiveSong } = usePlayer();
+	const [first, setFirst] = useState(false); //check click first time
+
+	const Icon = isPlayingSong && first ? BsPauseFill : BsFillPlayFill;
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -38,11 +43,17 @@ function OnlySingerPage() {
 		fetchData();
 	}, []);
 
+	const handlePlay = () => {
+		handleSetListSong(listSong);
+		handleSetPlaying(true);
+		setFirst(true);
+	};
+
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]  pb-[80px]">
 				<div className="relative mt-[100px]">
 					{listSong.length === 0 && (
 						<>
@@ -71,7 +82,19 @@ function OnlySingerPage() {
 								<div className="flex items-center gap-x-2 md:ml-auto">
 									<h1 className="text-[var(--text-primary)] font-bold text-2xl md:text-3xl">{listSong[0].name_singer}</h1>
 									<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group">
-										<BsFillPlayFill className="w-7 h-7 relative left-[2px] group-hover:text-[var(--purple-primary)] text-white" />
+										<Icon
+											className="w-7 h-7 group-hover:text-[var(--purple-primary)] text-white"
+											onClick={() => {
+												if (!first) {
+													handleSetListSong(listSong);
+													handleSetPlaying(true);
+													setFirst(true);
+													handleSetNewActiveSong(listSong[0]);
+												} else {
+													handleSetPlaying(!isPlayingSong);
+												}
+											}}
+										/>
 									</button>
 								</div>
 								<p className="text-center">{String(listSong[listSong.length - 1]?.favorite).replace(/(.)(?=(\d{3})+$)/g, "$1.")} quan tâm</p>
@@ -105,7 +128,7 @@ function OnlySingerPage() {
 								})}
 						{listSong.map((item) => {
 							return !isLoading ? (
-								<MusicSong key={item._id} song={item} trending={true} />
+								<MusicSong key={item._id} song={item} onClick={handlePlay} />
 							) : (
 								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 									<Skeleton.Button

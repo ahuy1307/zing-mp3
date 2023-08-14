@@ -1,10 +1,12 @@
 "use client";
 import FormModal from "@/components/FormModal";
 import MusicSong from "@/components/MusicSong";
+import MusicWaves from "@/components/MusicWaves";
 import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { usePlayer } from "@/context/PlayProvider";
 import { hotAlbum, popularAlbum } from "@/dataAlbum";
 import { RandomIcon } from "@/icon";
 import { Song } from "@/interface";
@@ -16,7 +18,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import { BsPlayCircle, BsPlayFill } from "react-icons/bs";
+import { BsPauseFill, BsPlayCircle, BsPlayFill } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 
 function AlbumSingerPage() {
@@ -25,6 +27,9 @@ function AlbumSingerPage() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [listSong, setListSong] = useState<Song[]>([]);
 	const [listSinger, setListSinger] = useState<Song[]>([]);
+	const [first, setFirst] = useState(false);
+	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, isPlayingSong } = usePlayer();
+	const Icon = isPlayingSong && first ? BsPauseFill : BsPlayFill;
 
 	let checkPopuLar = popularAlbum.find((item) => item.link === pathName);
 
@@ -42,9 +47,6 @@ function AlbumSingerPage() {
 	};
 
 	useEffect(() => {
-		// if (typeof window !== "undefined") {
-		// 	window.scrollTo({ top: 0, behavior: "smooth" });
-		// }
 		const fetchData = async () => {
 			setIsLoading(true);
 			let res;
@@ -96,20 +98,51 @@ function AlbumSingerPage() {
 		fetchData();
 	}, []);
 
+	const handlePlay = () => {
+		handleSetListSong(listSong);
+		handleSetPlaying(true);
+		setFirst(true);
+	};
+
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
 				<div className="mt-[100px] px-[10px] flex flex-col lg:flex-row lg:gap-x-8">
 					<div className="flex flex-col background-album pt-[30px] pb-[20px] md:flex-row md:gap-x-6 lg:flex-col lg:w-max ">
-						<div className="relative w-max m-auto md:m-0 group overflow-hidden rounded-lg shadow ">
+						<div
+							className="relative w-max m-auto md:m-0 group overflow-hidden rounded-lg shadow cursor-pointer"
+							onClick={() => {
+								handleSetListSong(listSong);
+								if (!first) {
+									handleSetNewActiveSong(listSong[Math.floor(Math.random() * listSong.length)]);
+									setFirst(true);
+									handleSetPlaying(true);
+								} else {
+									handleSetPlaying(!isPlayingSong);
+								}
+							}}>
 							<img
 								src={album?.thumbnail}
-								className="w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] object-cover group-hover:scale-110 transition-all duration-500 rounded-lg lg:w-[300px] lg:h-[300px]"
+								className={twMerge(
+									`w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] object-cover group-hover:scale-110 group-hover:brightness-[70%] transition-all duration-500 rounded-lg lg:w-[300px] lg:h-[300px]`,
+									first && isPlayingSong && `brightness-[70%] scale-110`
+								)}
 								alt=""
 							/>
-							<BsPlayCircle className="w-10 h-10 text-white absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] hidden group-hover:block" />
+							<BsPlayCircle
+								className={twMerge(
+									`w-10 h-10 text-white absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] hidden group-hover:block`,
+									first && isPlayingSong && `group-hover:hidden`
+								)}
+							/>
+							<MusicWaves
+								className={twMerge(
+									`w-10 h-10 text-white absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-10 invisible`,
+									first && isPlayingSong ? `visible` : `invisible`
+								)}
+							/>
 						</div>
 						<div className="flex flex-col gap-y-2 items-center mt-4 md:items-start lg:items-center">
 							<p className="font-bold text-xl lg:max-w-[300px] text-center">{album?.title}</p>
@@ -127,9 +160,20 @@ function AlbumSingerPage() {
 								<div className="w-[100px] h-[10px] bg-gray-700/20 rounded-full"></div>
 							)}
 
-							<button className="flex items-center m-auto mt-6 bg-[var(--purple-primary)] px-6 py-2 rounded-full text-white group hover:bg-white border-none outline-none origin-center transition-all duration-300 hover:ring-2 md:m-0 md:mt-6">
-								<BsPlayFill className="w-6 h-6 text-white group-hover:text-[var(--purple-primary)]" />
-								<span className="uppercase text-sm group-hover:text-[var(--purple-primary)]">Tạm dừng</span>
+							<button
+								className="flex items-center m-auto mt-6 bg-[var(--purple-primary)] px-6 py-2 rounded-full text-white group hover:bg-white border-none outline-none origin-center transition-all duration-300 hover:ring-2 md:m-0 md:mt-6"
+								onClick={() => {
+									handleSetListSong(listSong);
+									if (!first) {
+										handleSetNewActiveSong(listSong[Math.floor(Math.random() * listSong.length)]);
+										setFirst(true);
+										handleSetPlaying(true);
+									} else {
+										handleSetPlaying(!isPlayingSong);
+									}
+								}}>
+								<Icon className="w-6 h-6 text-white group-hover:text-[var(--purple-primary)]" />
+								<span className="uppercase text-sm group-hover:text-[var(--purple-primary)]">{!first ? "Phát ngẫu nhiên" : isPlayingSong ? "Tạm dừng" : "Tiếp tục phát"}</span>
 							</button>
 						</div>
 					</div>
@@ -154,7 +198,7 @@ function AlbumSingerPage() {
 								})}
 						{listSong.map((item, index) => {
 							return !isLoading ? (
-								<MusicSong key={item._id} song={item} trending={true} />
+								<MusicSong key={item._id} song={item} onClick={handlePlay} />
 							) : (
 								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 									<Skeleton.Button

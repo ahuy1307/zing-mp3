@@ -2,6 +2,7 @@
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 import { Tooltip } from "antd";
+import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineDownload, AiOutlineEye, AiOutlineHeart } from "react-icons/ai";
 import { BsFillPlayFill, BsThreeDots } from "react-icons/bs";
@@ -26,7 +27,9 @@ function SearchItem({ song }: { song: Song }) {
 				<BsFillPlayFill className="w-6 h-6 absolute top-[50%] translate-y-[-50%] left-2 hidden group-hover:block" color="white" />
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)] text-sm">
 					<h3 className="font-bold">{song.name_music}</h3>
-					<p className="text-[var(--text-secondary)] line-clamp-1">{song.name_singer}</p>
+					<Link href={`/${song.slug_name_singer}`} className="text-[var(--text-secondary)] line-clamp-1 hover:underline">
+						{song.name_singer}
+					</Link>
 				</div>
 			</div>
 			<span className="ml-auto text-xs group-hover:hidden text-[var(--text-secondary)]">{song.time_format}</span>

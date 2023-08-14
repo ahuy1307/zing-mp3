@@ -24,7 +24,7 @@ function ScrollToTop() {
 
 	return (
 		<>
-			{position > 1400 && (
+			{position > 1000 && (
 				<button
 					onClick={handleScrollToTop}
 					className="fixed right-4 bottom-6 -rotate-45 rounded-full bg-gray-100 aspect-square p-2 sm:bottom-6 sm:right-6 opacity-100 pointer-events-auto shadow">

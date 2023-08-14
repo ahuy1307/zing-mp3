@@ -205,7 +205,9 @@ function NavbarMobile() {
 										logout();
 										toast.success("Đăng xuất thành công");
 										setShowNav(false);
-										router.refresh();
+										if (pathName.includes("profile")) {
+											router.push("/");
+										}
 									}
 								}}>
 								{userData.accessToken === "" ? `Đăng nhập` : `Đăng xuất`}

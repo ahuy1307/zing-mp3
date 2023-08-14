@@ -27,6 +27,7 @@ export default function FavoriteProvider({ children }: { children: ReactNode }) 
 	const [favoriteSongs, setFavoriteSongs] = useState([]);
 
 	const getFavoriteSongs = async (accessToken: string) => {
+		if (accessToken === "") return;
 		setIsLoading(true);
 		try {
 			const res = await axios.get(`${apiUrl}/favorite/get-authorization-token`, {
@@ -38,7 +39,6 @@ export default function FavoriteProvider({ children }: { children: ReactNode }) 
 			setFavoriteSongs(res.data.data);
 		} catch (error) {
 			setIsLoading(false);
-			console.log(error);
 		}
 	};
 

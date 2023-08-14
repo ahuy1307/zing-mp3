@@ -5,23 +5,25 @@ import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { Skeleton } from "antd";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BsFillPlayFill } from "react-icons/bs";
+import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 
 function SingerAlbum() {
 	const pathName = usePathname();
 	const nameSinger = pathName.split("/album")[0].split("/")[1];
 	const [isLoading, setIsLoading] = useState(false);
 	const [listSong, setListSong] = useState<Song[]>([]);
+	const [first, setFirst] = useState(false);
+	const { isPlayingSong, handleSetListSong, handleSetPlaying, handleSetNewActiveSong } = usePlayer();
+
+	const Icon = isPlayingSong && first ? BsPauseFill : BsFillPlayFill;
 
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/music/get-singer-name`, {
@@ -36,6 +38,11 @@ function SingerAlbum() {
 		fetchData();
 	}, []);
 
+	const handlePlay = () => {
+		handleSetListSong(listSong);
+		handleSetPlaying(true);
+		setFirst(true);
+	};
 	return (
 		<>
 			<Navbar />
@@ -51,8 +58,19 @@ function SingerAlbum() {
 						<>
 							<div className="mb-[14px] flex items-center gap-x-2">
 								<h1 className="text-[var(--text-primary)] font-bold text-2xl">{listSong[0].name_singer} - Tất Cả Bài Hát</h1>
-								<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group">
-									<BsFillPlayFill className="w-7 h-7 relative left-[2px] group-hover:text-[var(--purple-primary)] text-white" />
+								<button
+									className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group"
+									onClick={() => {
+										if (!first) {
+											handleSetListSong(listSong);
+											handleSetPlaying(true);
+											setFirst(true);
+											handleSetNewActiveSong(listSong[0]);
+										} else {
+											handleSetPlaying(!isPlayingSong);
+										}
+									}}>
+									<Icon className="w-7 h-7 relative left-[2px] group-hover:text-[var(--purple-primary)] text-white" />
 								</button>
 							</div>
 						</>
@@ -74,7 +92,7 @@ function SingerAlbum() {
 								})}
 						{listSong.map((item, index) => {
 							return !isLoading ? (
-								<MusicSong key={item._id} song={item} trending={true} />
+								<MusicSong key={item._id} song={item} onClick={handlePlay} />
 							) : (
 								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 									<Skeleton.Button

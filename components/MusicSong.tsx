@@ -3,18 +3,44 @@ import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineDownload } from "re
 import { twMerge } from "tailwind-merge";
 import { BsThreeDots, BsFillPlayFill } from "react-icons/bs";
 import { Skeleton, Tooltip } from "antd";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 import FavoriteButton from "./FavoriteButton";
+import Link from "next/link";
+import { usePlayer } from "@/context/PlayProvider";
+import { useSound } from "use-sound";
+import MusicWaves from "./MusicWaves";
 
-function MusicSong({ song, trending, top }: { song: Song; trending?: boolean; top?: number }) {
+function MusicSong({ song, trending, top, onClick, list }: { song: Song; trending?: boolean; top?: number; onClick?: () => void; list?: boolean }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(false);
+	const { songActive, handleSetPlaying, isPlayingSong, handleSetNewActiveSong } = usePlayer();
+	const [volume, setVolume] = useState(1);
 
+	useEffect(() => {
+		if (songActive._id === song._id) {
+			setIsPlaying(true);
+		} else {
+			setIsPlaying(false);
+		}
+	}, [songActive._id]);
+
+	const handleClick = () => {
+		if (songActive._id === song._id) {
+			handleSetPlaying(!isPlayingSong);
+		} else {
+			handleSetPlaying(true);
+		}
+	};
 	return (
 		<div
-			className="grid grid-cols-4 items-center p-[10px] md:px-[10px] text-[#ffffff80] text-sm border-b-2 border-[#ffffff1a] cursor-pointer group hover:bg-[var(--border-player)] rounded-md relative"
+			className={twMerge(
+				`grid grid-cols-4 items-center p-[10px]  md:px-[10px] text-[#ffffff80] text-sm border-b-2 border-[#ffffff1a] cursor-pointer group rounded-md relative hover:bg-[var(--border-player)]`,
+				isPlaying && `bg-[var(--border-player)]`,
+				list && isPlaying && `bg-[var(--purple-primary)] hover:bg-[var(--purple-primary)]`
+			)}
 			onMouseEnter={() => setCheckHover(true)}
 			onMouseLeave={() => {
 				setCheckHover(false);
@@ -22,18 +48,39 @@ function MusicSong({ song, trending, top }: { song: Song; trending?: boolean; to
 			}}>
 			<div className="col-span-3 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]">
 				{top && <span className={twMerge(`stroke-rank`, top === 1 && `rank-1`, top === 2 && `rank-2`, top === 3 && `rank-3`)}>{top}</span>}
-				<div className="relative">
+				<div
+					className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`)}
+					onClick={() => {
+						onClick?.();
+						handleSetNewActiveSong(song);
+						handleClick();
+					}}>
 					<img
 						src={song.image_music}
-						className={twMerge(`w-[60px] h-[60px] object-cover auto-cols-[60px] rounded-md group-hover:brightness-[70%] transition-all duration-700`, trending && `w-[50px] h-[50px]`)}
+						className={twMerge(
+							`w-full h-[50px] object-cover auto-cols-[60px] rounded-md transition-all duration-700 group-hover:brightness-[70%]`,
+							trending && `h-[60px]`,
+							isPlaying && `brightness-[70%]`
+						)}
 						alt=""
 					/>
-					<BsFillPlayFill className={twMerge(`w-7 h-7 absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] hidden group-hover:block`)} color="white" />
+					<BsFillPlayFill
+						className={twMerge(
+							`w-7 h-7 absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] hidden group-hover:block`,
+							isPlaying && `block`,
+							isPlayingSong && `hidden group-hover:hidden`,
+							!isPlaying && `group-hover:block`
+						)}
+						color="white"
+					/>
+					<MusicWaves className={twMerge(`absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] invisible`, isPlaying && isPlayingSong && `visible`)} />
 				</div>
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)]">
-					<h3 className="font-bold">{song.name_music}</h3>
-					<p className="text-[var(--text-secondary)] line-clamp-1 hover:underline">{song.name_singer}</p>
-					{!trending && (
+					<h3 className="font-bold line-clamp-1">{song.name_music}</h3>
+					<Link href={`/${song.slug_name_singer}`} className="text-[var(--text-secondary)] line-clamp-1 hover:underline text-xs">
+						{song.name_singer}
+					</Link>
+					{trending && (
 						<div className="flex items-center gap-x-2 text-[var(--text-secondary)]">
 							<AiFillHeart />
 							{formatNumber(song.favorite, 0)}

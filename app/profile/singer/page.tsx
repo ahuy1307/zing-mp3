@@ -3,19 +3,22 @@ import FormModal from "@/components/FormModal";
 import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
+import { apiUrl } from "@/constant";
 import { useAuth } from "@/context/AuthProvider";
 import { useFavorite } from "@/context/FavoriteProvider";
+import { usePlayer } from "@/context/PlayProvider";
 import { RandomIcon } from "@/icon";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
+import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AiOutlineArrowRight } from "react-icons/ai";
 
 function SingerPage() {
 	const { favoriteSongs, getFavoriteSongs, isLoading } = useFavorite();
 	const { accessToken } = useAuth();
 	const [listSinger, setListSinger] = useState<{ singer: string; song: Song }[]>([]);
+	const { handleSetNewActiveSong, handleSetListSong, handleSetPlaying } = usePlayer();
 
 	const checkValueInArray = (
 		singer: string,
@@ -29,9 +32,6 @@ function SingerPage() {
 	};
 
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-		}
 		if (accessToken !== "") {
 			getFavoriteSongs(accessToken);
 		}
@@ -51,11 +51,24 @@ function SingerPage() {
 
 		setListSinger([...list]);
 	}, [favoriteSongs.length]);
+
+	const handleStartMusic = async (singer: string) => {
+		const res = await axios.get(`${apiUrl}/music/get-singer-name`, {
+			params: {
+				_singer: decodeURIComponent(singer),
+			},
+		});
+		handleSetListSong(res.data.data);
+		const random = Math.floor(Math.random() * res.data.data.length);
+		handleSetNewActiveSong(res.data.data[random]);
+		handleSetPlaying(true);
+	};
+
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+			<div className="px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
 				<h2 className="mt-[100px] text-2xl text-[var(--text-primary)] font-bold px-[10px]">Nghệ Sĩ</h2>
 				<div className="mt-8 overflow-x-scroll scroll-artist flex w-full flex-col gap-y-2 px-[10px]">
 					<div className="flex w-full flex-wrap gap-y-8">
@@ -72,22 +85,21 @@ function SingerPage() {
 														alt=""
 													/>
 												</div>
-												<div className="absolute right-4 bottom-2 shadow bg-white p-2 rounded-full cursor-pointer">
-													<RandomIcon />
-												</div>
 											</div>
 										</Link>
-										<Link href={`${item.song.slug_name_singer}`}>
+										<Link href={`/${item.song.slug_name_singer}`}>
 											<p className="text-center pt-4 text-sm hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1 text-[var(--text-primary)]">
 												{item.singer}
 											</p>
 										</Link>
-										<Link href={`${item.song.slug_name_singer}`}>
-											<p className="text-center pt-2 cursor-pointer text-xs text-[var(--text-secondary)]">{formatNumber(item.song.favorite)} quan tâm</p>
-										</Link>
+										<p className="text-center pt-2 cursor-pointer text-xs text-[var(--text-secondary)]">{formatNumber(item.song.favorite)} quan tâm</p>
 										<button className="flex gap-x-3 mt-2 items-center hover:border-[var(--purple-primary)] border-2 border-transparent group m-auto py-1 px-2 rounded-full">
 											<RandomIcon width="18px" height="18px" className="group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]" />
-											<span className="text-xs font-bold group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]">GÓC NHẠC</span>
+											<span
+												className="text-xs font-bold group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]"
+												onClick={() => handleStartMusic(item.song.slug_name_singer)}>
+												GÓC NHẠC
+											</span>
 										</button>
 									</div>
 								</>

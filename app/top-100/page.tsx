@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { Skeleton } from "antd";
 import axios from "axios";
@@ -16,11 +17,9 @@ function Top100() {
 	const [type, setType] = useState("view");
 	const [listSong, setListSong] = useState<Song[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
 
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			try {
@@ -51,14 +50,24 @@ function Top100() {
 	const handleChangeType = (type: string) => {
 		setType(type);
 	};
+
+	const handlePlay = () => {
+		handleSetListSong(listSong);
+	};
+
+	const handlePlayRandom = () => {
+		const random = Math.floor(Math.random() * listSong.length);
+		handleSetNewActiveSong(listSong[random]);
+		handleSetPlaying(true);
+	};
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
 				<div className="mt-[100px] mb-[42px] flex items-center gap-x-2 px-[10px]">
 					<h1 className="text-[var(--text-primary)] font-bold text-2xl">Top Trending</h1>
-					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group">
+					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group" onClick={handlePlayRandom}>
 						<BsFillPlayFill className="w-7 h-7 relative left-[2px] group-hover:text-[var(--purple-primary)] text-white" />
 					</button>
 				</div>
@@ -97,7 +106,7 @@ function Top100() {
 							})}
 					{listSong.map((item, index) => {
 						return !isLoading ? (
-							<MusicSong key={item._id} song={item} trending={true} top={index + 1} />
+							<MusicSong key={item._id} song={item} top={index + 1} onClick={handlePlay} />
 						) : (
 							<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 								<Skeleton.Button

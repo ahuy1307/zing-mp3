@@ -6,24 +6,18 @@ import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
 import { useAuth } from "@/context/AuthProvider";
+import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 
 function HistoryPage() {
-	const [historySongs, setHistorySongs] = useState<
-		{
-			music: Song;
-		}[]
-	>([]);
+	const [historySongs, setHistorySongs] = useState<Song[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { accessToken } = useAuth();
-
+	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-		}
 		const fetchData = async () => {
 			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/play-history/get-by-token`, {
@@ -31,20 +25,34 @@ function HistoryPage() {
 					Authorization: `Bearer ${accessToken}`,
 				},
 			});
-			setHistorySongs(res.data.data);
+			res.data.data.map((item: any) => {
+				setHistorySongs((prev) => {
+					return [...prev, item.music];
+				});
+			});
 			setIsLoading(false);
 		};
 		fetchData();
 	}, []);
 
+	const handlePlay = () => {
+		handleSetListSong(historySongs);
+	};
+
+	const handlePlayRandom = () => {
+		const random = Math.floor(Math.random() * historySongs.length);
+		handleSetNewActiveSong(historySongs[random]);
+		handleSetPlaying(true);
+	};
+
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
 				<div className="mt-[100px] mb-[24px] flex items-center gap-x-2 px-[10px]">
 					<h1 className="text-[var(--text-primary)] font-bold text-2xl">Lịch Sử Nghe Nhạc</h1>
-					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group">
+					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group" onClick={handlePlayRandom}>
 						<BsFillPlayFill className="w-7 h-7 relative left-[2px] group-hover:text-[var(--purple-primary)] text-white" />
 					</button>
 				</div>
@@ -66,7 +74,7 @@ function HistoryPage() {
 									);
 								})}
 						{historySongs.map((item) => {
-							return <MusicSong song={item.music} key={item.music._id} trending={true} />;
+							return <MusicSong song={item} key={item._id} onClick={handlePlay} />;
 						})}
 						{!isLoading && historySongs.length === 0 && <span className="text-[var(--text-primary)]">Chưa nghe bài hát nào...</span>}
 					</div>

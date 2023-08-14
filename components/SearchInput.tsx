@@ -4,6 +4,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
 import axios from "axios";
+import Link from "next/link";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiMagnifyingGlass } from "react-icons/hi2";
@@ -93,10 +94,13 @@ function SearchInput() {
 							setSearchFocus(true);
 						}, 100);
 					}}>
-					<p className="text-sm font-bold px-[10px] py-[15px] text-[var(--text-primary)]">{searchResult.length === 0 ? `Nhập thông tin tìm kiếm` : "Gợi ý kết quả"}</p>
+					<p className="text-sm font-bold px-[10px] py-[15px] text-[var(--text-primary)]">{searchTitle === "" ? `Nhập thông tin tìm kiếm` : "Gợi ý kết quả"}</p>
+					{searchResult.length === 0 && searchTitle !== "" && <h3 className="text-[var(--text-primary)] text-center pt-4 pb-6">Không tìm thấy gì cả...</h3>}
 					{searchResult.length > 0 && (
 						<div>
-							<div className="flex items-center gap-x-2 p-2 hover:bg-[var(--border-player)] rounded-md cursor-pointer">
+							<Link
+								href={`/${searchResult[searchResult.length - 1].slug_name_singer}`}
+								className="flex items-center gap-x-2 p-2 hover:bg-[var(--border-player)] rounded-md cursor-pointer">
 								<img src={searchResult[searchResult.length - 1].image_music} className="w-[52px] h-[52px] rounded-full object-cover" alt="" />
 								<div className="text-sm">
 									<p className="font-bold text-[var(--text-primary)]">{searchResult[searchResult.length - 1].name_singer}</p>
@@ -106,7 +110,7 @@ function SearchInput() {
 										<span>{formatNumber(searchResult[searchResult.length - 1].favorite, 0)} quan tâm</span>
 									</div>
 								</div>
-							</div>
+							</Link>
 							{searchResult.map((item: Song) => {
 								return <SearchItem song={item} key={item._id} />;
 							})}
