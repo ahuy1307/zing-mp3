@@ -281,26 +281,52 @@ body img {
 	}
 }
 .input-time {
-	-webkit-appearance: none;
+	/* -webkit-appearance: none;
 	height: 4px;
 	border-radius: 10px;
 	background: gray;
 	background-image: linear-gradient(var(--purple-primary), var(--purple-primary));
-	background-repeat: no-repeat;
+	background-repeat: no-repeat; */
 }
 
 .input-time {
 	width: 100%;
 	-webkit-appearance: none;
 	height: 4px;
-	background: #d3d3d3;
 	outline: none;
 	background: gray;
-	/* background-image: linear-gradient(var(--purple-primary), var(--purple-primary)); */
+	background-image: linear-gradient(var(--purple-primary), var(--purple-primary));
 	background-repeat: no-repeat;
-	-webkit-transition: 0.2s;
-	transition: all 0.1s;
+	-webkit-transition: 0.1s;
+	transition: 0.1s all ease-out;
 	cursor: pointer;
+	border-radius: 10px;
+}
+
+.input-volume {
+	width: 100%;
+	-webkit-appearance: none;
+	height: 6px;
+	outline: none;
+	background: gray;
+	background-image: linear-gradient(var(--purple-primary), var(--purple-primary));
+	background-repeat: no-repeat;
+	-webkit-transition: 0.1s;
+	transition: 0.1s all ease-out;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+.input-volume::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 14px;
+	height: 14px;
+	background: var(--purple-primary);
+	border-radius: 50%;
+	cursor: pointer;
+	-webkit-transition: 0.1s;
+	transition: 0.1s all ease-out;
 }
 
 .slider-time:hover .input-time {
@@ -310,6 +336,7 @@ body img {
 .slider-time:hover .input-time::-webkit-slider-thumb {
 	width: 12px;
 	height: 12px;
+	transition: 0.1s all ease-out;
 	border-radius: 50%;
 	background: var(--purple-primary);
 	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.6);

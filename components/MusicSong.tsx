@@ -16,7 +16,8 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
-	const { songActive, handleSetPlaying, isPlayingSong, handleSetNewActiveSong } = usePlayer();
+	const { songActive, handleSetPlaying, isPlayingSong, handleSetNewActiveSong, handleSetTime } = usePlayer();
+
 	const [volume, setVolume] = useState(1);
 
 	useEffect(() => {
@@ -28,6 +29,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 	}, [songActive._id]);
 
 	const handleClick = () => {
+		handleSetTime(0);
 		if (songActive._id === song._id) {
 			handleSetPlaying(!isPlayingSong);
 		} else {
@@ -47,7 +49,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 				setShowOther(false);
 			}}>
 			<div
-				className="col-span-4 flex gap-x-5 md:gap-x-6 relative items-center px-[10px]"
+				className="col-span-4 flex gap-x-4 md:gap-x-4 relative items-center px-[10px]"
 				onClick={() => {
 					onClick?.();
 					handleSetNewActiveSong(song);
@@ -83,7 +85,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 				</div>
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)]">
 					<h3 className="font-bold line-clamp-1">{song.name_music}</h3>
-					<Link href={`/${song.slug_name_singer}`} className="text-[var(--text-secondary)] line-clamp-1 hover:underline text-xs">
+					<Link href={`/${song.slug_name_singer}`} className="text-[var(--text-secondary)] line-clamp-1 hover:underline text-xs md:w-[150px]">
 						{song.name_singer}
 					</Link>
 					{trending && (

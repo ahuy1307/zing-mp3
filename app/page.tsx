@@ -1,6 +1,5 @@
 import AlbumContent from "@/components/AlbumContent";
 import Banner from "@/components/Banner";
-import Footer from "@/components/Footer";
 import FormModal from "@/components/FormModal";
 import MusicContent from "@/components/MusicContent";
 import Navbar from "@/components/Navbar";
@@ -19,7 +18,6 @@ export default function Home() {
 			<AlbumContent title="Album Hot" data={hotAlbum} />
 			<ThemeModal />
 			<FormModal />
-			<Footer />
 		</>
 	);
 }

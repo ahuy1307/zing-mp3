@@ -1,5 +1,6 @@
 "use client";
 import { apiUrl } from "@/constant";
+import { usePlayer } from "@/context/PlayProvider";
 import useDebounce from "@/hooks/useDebounce";
 import { Song } from "@/interface";
 import formatNumber from "@/utils/formatNumber";
@@ -10,6 +11,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { ClipLoader } from "react-spinners";
 import { twMerge } from "tailwind-merge";
+import MusicSong from "./MusicSong";
 import SearchItem from "./SearchItem";
 
 function SearchInput() {
@@ -19,6 +21,7 @@ function SearchInput() {
 	const [isSearching, setIsSearching] = useState(false);
 	const debounceSearch = useDebounce(searchTitle, 1000);
 	const [searchFocus, setSearchFocus] = useState(false);
+	const { handleSetListSong } = usePlayer();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const handleClickOutside = (event: Event) => {
@@ -54,6 +57,9 @@ function SearchInput() {
 		return () => window.removeEventListener("click", (e) => handleClickOutside(e));
 	}, [searchFocus]);
 
+	const handlePlay = () => {
+		handleSetListSong(searchResult);
+	};
 	return (
 		<div className="relative" ref={wrapperRef}>
 			<label htmlFor="search">
@@ -104,7 +110,7 @@ function SearchInput() {
 								<img src={searchResult[searchResult.length - 1].image_music} className="w-[52px] h-[52px] rounded-full object-cover" alt="" />
 								<div className="text-sm">
 									<p className="font-bold text-[var(--text-primary)]">{searchResult[searchResult.length - 1].name_singer}</p>
-									<div className="text-[var(--text-secondary)] flex gap-x-1">
+									<div className="text-[var(--text-secondary)] flex gap-x-1 text-xs lg:text-sm">
 										<span>{searchResult[searchResult.length - 1].category}</span>
 										<span>-</span>
 										<span>{formatNumber(searchResult[searchResult.length - 1].favorite, 0)} quan tâm</span>
@@ -112,7 +118,7 @@ function SearchInput() {
 								</div>
 							</Link>
 							{searchResult.map((item: Song) => {
-								return <SearchItem song={item} key={item._id} />;
+								return <MusicSong song={item} key={item._id} onClick={handlePlay} />;
 							})}
 						</div>
 					)}

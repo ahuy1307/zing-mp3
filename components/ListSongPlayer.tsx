@@ -32,7 +32,7 @@ function ListSongPlayer() {
 	return (
 		<div
 			className={twMerge(
-				`bg-[var(--primary-bg)] fixed right-0 top-0 botttom-0 w-[330px] h-[calc(100vh-70px)] z-50 px-[10px] translate-x-[100%] transition-all duration-500 opacity-0 overflow-hidden overflow-y-scroll scroll-search	`,
+				`bg-[var(--primary-bg)] fixed right-0 top-0 botttom-0 w-[330px] h-[calc(100vh-70px)] z-50 px-[10px] translate-x-[100%] transition-all duration-500 opacity-0 overflow-hidden overflow-y-scroll scroll-search md:h-[calc(100vh-90px)] md:w-[400px]`,
 				isOpen && `translate-x-[0] opacity-100`
 			)}>
 			<div className="flex items-center py-[10px] mt-[20px] gap-x-3 text-[var(--text-primary)] fixed w-full h-[50px] top-0 left-4 right-0">
