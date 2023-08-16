@@ -47,21 +47,39 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 	return (
 		<>
 			{!isFavorite ? (
-				<Tooltip title="Thêm vào thư viện" color="black">
+				<>
+					<div className="hidden lg:block">
+						<Tooltip title="Thêm vào thư viện" color="black">
+							<AiOutlineHeart
+								color="var(--text-primary)"
+								className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`, play && `block`)}
+								onClick={() => favoriteMusic()}
+							/>
+						</Tooltip>
+					</div>
 					<AiOutlineHeart
 						color="var(--text-primary)"
-						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`, play && `block`)}
+						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`, play && `block`)}
 						onClick={() => favoriteMusic()}
 					/>
-				</Tooltip>
+				</>
 			) : (
-				<Tooltip title="Xóa khỏi thư viện" color="black">
+				<>
+					<div className="hidden lg:block">
+						<Tooltip title="Xóa khỏi thư viện" color="black">
+							<AiFillHeart
+								color="var(--purple-primary)"
+								className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`, play && `block`)}
+								onClick={() => unFavoriteMusic()}
+							/>
+						</Tooltip>
+					</div>
 					<AiFillHeart
 						color="var(--purple-primary)"
-						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`, play && `block`)}
+						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`, play && `block`)}
 						onClick={() => unFavoriteMusic()}
 					/>
-				</Tooltip>
+				</>
 			)}
 		</>
 	);

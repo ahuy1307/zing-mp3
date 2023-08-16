@@ -95,13 +95,18 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 			<div className="absolute right-4">
 				<div className="flex items-center gap-x-2 md:gap-x-4">
 					<FavoriteButton id={song._id} />
-					<Tooltip title="Khác" color="black">
+					<Tooltip title="Khác" color="black" className="hidden lg:block">
 						<BsThreeDots
 							color="var(--text-primary)"
 							className="w-8 h-8 md:w-9 md:h-9 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible"
-							onClick={() => setShowOther(true)}
+							onClick={() => setShowOther(!showOther)}
 						/>
 					</Tooltip>
+					<BsThreeDots
+						color="var(--text-primary)"
+						className="w-8 h-8 md:w-9 md:h-9 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:visible invisible lg:hidden"
+						onClick={() => setShowOther(!showOther)}
+					/>
 				</div>
 				<div
 					className={twMerge(
