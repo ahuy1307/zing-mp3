@@ -53,7 +53,7 @@ function OnlySingerPage() {
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]  pb-[80px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]  pb-[80px] md:pb-[120px]">
 				<div className="relative mt-[100px]">
 					{listSong.length === 0 && (
 						<>

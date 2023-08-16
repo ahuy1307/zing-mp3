@@ -9,7 +9,7 @@ import { hotAlbum, popularAlbum } from "@/dataAlbum";
 
 export default function Home() {
 	return (
-		<>
+		<div className="pb-[100px] md:pb-[120px]">
 			<NavbarMobile />
 			<Navbar />
 			<Banner />
@@ -18,6 +18,6 @@ export default function Home() {
 			<AlbumContent title="Album Hot" data={hotAlbum} />
 			<ThemeModal />
 			<FormModal />
-		</>
+		</div>
 	);
 }

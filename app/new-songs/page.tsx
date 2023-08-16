@@ -52,7 +52,7 @@ function NewSongs() {
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px] md:pb-[120px]">
 				<div className="mt-[100px] mb-[42px] flex items-center gap-x-4 px-[10px]">
 					<h1 className="text-[var(--text-primary)] font-bold text-2xl">Nhạc Mới</h1>
 					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group" onClick={handlePlayRandom}>

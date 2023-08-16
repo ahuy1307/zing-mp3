@@ -5,7 +5,7 @@ import { BsPlayCircle, BsThreeDots } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 function AlbumContent({ title, data }: { title: string; data: any[] }) {
 	return (
-		<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[100px]">
+		<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
 			<h1 className="font-bold text-lg pb-6 pt-6">{title}</h1>
 			<div className="grid grid-cols-2 gap-4 px-[10px] md:px-[0px] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-6">
 				{data.map((item, index) => {

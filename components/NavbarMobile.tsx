@@ -106,7 +106,7 @@ function NavbarMobile() {
 
 	return (
 		<>
-			<div className={twMerge(`flex justify-between items-center navbar-mb px-1 py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
+			<div className={twMerge(`flex justify-between items-center navbar-mb px-[10px] py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
 				<HiBars3
 					className="w-6 h-6 cursor-pointer"
 					color="var(--text-primary)"

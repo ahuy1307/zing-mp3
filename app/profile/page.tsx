@@ -87,7 +87,7 @@ function ProfilePage() {
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px] md:pb-[120px]">
 				<div className="mt-[100px] mb-[24px] flex items-center gap-x-2 px-[10px]">
 					<h1 className="text-[var(--text-primary)] font-bold text-2xl">Thư Viện</h1>
 					<button className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group">

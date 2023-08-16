@@ -28,7 +28,7 @@ function AlbumSingerPage() {
 	const [listSong, setListSong] = useState<Song[]>([]);
 	const [listSinger, setListSinger] = useState<Song[]>([]);
 	const [first, setFirst] = useState(false);
-	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, isPlayingSong } = usePlayer();
+	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, isPlayingSong, songActive } = usePlayer();
 	const Icon = isPlayingSong && first ? BsPauseFill : BsPlayFill;
 
 	let checkPopuLar = popularAlbum.find((item) => item.link === pathName);
@@ -97,18 +97,30 @@ function AlbumSingerPage() {
 
 		fetchData();
 	}, []);
+	useEffect(() => {
+		document.getElementById(songActive._id)?.scrollIntoView({
+			behavior: "smooth",
+			block: "center",
+		});
+	}, [songActive._id]);
 
-	const handlePlay = () => {
+	const handlePlay = (item: Song) => {
 		handleSetListSong(listSong);
 		handleSetPlaying(true);
 		setFirst(true);
+		if (songActive._id === item._id) {
+			handleSetPlaying(!isPlayingSong);
+		} else {
+			handleSetNewActiveSong(item);
+			handleSetPlaying(true);
+		}
 	};
 
 	return (
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
+			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px] md:pb-[120px]">
 				<div className="mt-[100px] px-[10px] flex flex-col lg:flex-row lg:gap-x-8">
 					<div className="flex flex-col background-album pt-[30px] pb-[20px] md:flex-row md:gap-x-6 lg:flex-col lg:w-max ">
 						<div
@@ -198,7 +210,9 @@ function AlbumSingerPage() {
 								})}
 						{listSong.map((item, index) => {
 							return !isLoading ? (
-								<MusicSong key={item._id} song={item} onClick={handlePlay} />
+								<div key={item._id} id={item._id} onClick={() => handlePlay(item)}>
+									<MusicSong song={item} />
+								</div>
 							) : (
 								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 									<Skeleton.Button

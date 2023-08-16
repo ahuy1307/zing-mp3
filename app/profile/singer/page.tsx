@@ -68,7 +68,7 @@ function SingerPage() {
 		<>
 			<Navbar />
 			<NavbarMobile />
-			<div className="px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px]">
+			<div className="px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px] pb-[80px] md:pb-[120px]">
 				<h2 className="mt-[100px] text-2xl text-[var(--text-primary)] font-bold px-[10px]">Nghệ Sĩ</h2>
 				<div className="mt-8 overflow-x-scroll scroll-artist flex w-full flex-col gap-y-2 px-[10px]">
 					<div className="flex w-full flex-wrap gap-y-8">

@@ -54,11 +54,6 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 					onClick?.();
 					handleSetNewActiveSong(song);
 					handleClick();
-				}}
-				onTouchStart={() => {
-					onClick?.();
-					handleSetNewActiveSong(song);
-					handleClick();
 				}}>
 				{top && <span className={twMerge(`stroke-rank`, top === 1 && `rank-1`, top === 2 && `rank-2`, top === 3 && `rank-3`)}>{top}</span>}
 				<div className={twMerge(`relative min-w-[50px] w-[50px]`, trending && `min-w-[60px] w-[60px]`, search && `min-w-[50px] w-[50px]`)}>

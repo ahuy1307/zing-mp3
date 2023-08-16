@@ -127,7 +127,7 @@ function PlayMusic() {
 				<div className="flex items-center gap-x-4 h-full px-[10px]">
 					<img src={songActive.image_music} className={twMerge(`w-[40px] h-[40px] md:w-[64px] md:h-[64px] rounded-full md:hidden`, isPlayingSong ? `spin` : `returnSpin`)} alt="" />
 					<img src={songActive.image_music} className={twMerge(`hidden md:block w-[64px] h-[64px] rounded-md`)} alt="" />
-					<div className="flex flex-col gap-y-1 w-[100px] max-w-[80px] lg:w-auto lg:max-w-none">
+					<div className="flex flex-col gap-y-1 w-[100px] max-w-[80px] lg:w-auto lg:max-w-none xl:w-[150px]">
 						<h3 className="line-clamp-1">{songActive.name_music}</h3>
 						<span className="text-[var(--text-secondary)] text-xs line-clamp-1">{songActive.name_singer}</span>
 					</div>
@@ -161,7 +161,7 @@ function PlayMusic() {
 							</div>
 						</div>
 					</div>
-					<div className="px-[30px] lg:pl-8 flex flex-col justify-center w-full lg:max-w-[600px] xl:max-w-[800px]">
+					<div className="md:px-[30px] lg:pl-8 flex flex-col justify-center w-full lg:max-w-[600px] xl:max-w-[800px]">
 						<div className="flex gap-x-2 items-center md:gap-x-4 justify-center md:pb-2">
 							<Tooltip title={isRandom ? `Tắt phát ngẫu nhiên` : `Bật phát ngẫu nhiên`} color="black">
 								<div className="w-[24px] hidden md:block hover:bg-[var(--border-player)] rounded-full h-full cursor-pointer" onClick={() => handleSetRandom(!isRandom)}>
