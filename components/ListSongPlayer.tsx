@@ -43,10 +43,10 @@ function ListSongPlayer() {
 					<Icon className="w-7 h-7 relative left-[1px] group-hover:text-[var(--purple-primary)] text-white" />
 				</button>
 			</div>
-			<div className="grid grid-cols-1 pt-[100px] overflow-y-scroll scroll-search h-full z-[8]">
+			<div className="flex flex-col pt-[100px] overflow-y-scroll scroll-search h-full z-[8] overflow-hidden">
 				{listSongData.map((item, index) => {
 					return (
-						<div key={index} id={item._id} onClick={() => handlePlay(item)}>
+						<div key={index} id={item._id} onClick={() => handlePlay(item)} className="h-max">
 							<MusicSong song={item} list={true} />
 						</div>
 					);
