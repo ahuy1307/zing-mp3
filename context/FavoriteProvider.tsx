@@ -32,6 +32,7 @@ export default function FavoriteProvider({ children }: { children: ReactNode }) 
 			return;
 		}
 		setIsLoading(true);
+
 		try {
 			const res = await axios.get(`${apiUrl}/favorite/get-authorization-token`, {
 				headers: {

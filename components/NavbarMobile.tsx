@@ -93,7 +93,7 @@ function NavbarMobile() {
 			<div className={twMerge(`flex justify-between items-center navbar-mb px-1 py-2 fixed top-0 right-0 left-0 md:hidden z-[3]`, heightCurrent > 133 && `isScroll`)}>
 				<HiBars3 className="w-6 h-6 cursor-pointer" color="var(--text-primary)" />
 				<Link href="/" className="relative w-[120px] h-[40px]">
-					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority />
 				</Link>
 				<div className="flex items-center gap-x-2">
 					<HiMagnifyingGlass className="w-6 h-6 cursor-pointer mr-2" color="var(--text-primary)" onClick={() => setShowSearch(true)} />
@@ -116,7 +116,7 @@ function NavbarMobile() {
 					}}
 				/>
 				<Link href="/" className="relative w-[120px] h-[40px]">
-					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+					<Image src="/images/logo.png" className="h-[40px] aspect-square cursor-pointer" fill alt="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority />
 				</Link>
 				<div className="flex items-center gap-x-2">
 					{!showSearch ? (

@@ -26,6 +26,7 @@ function HistoryProvider({ children }: { children: ReactNode }) {
 			setHistorySong([]);
 			return;
 		}
+		setHistorySong([]);
 		setIsLoading(true);
 		try {
 			const res = await axios.get(`${apiUrl}/play-history/get-by-token`, {

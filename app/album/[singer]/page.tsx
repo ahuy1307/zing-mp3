@@ -17,7 +17,6 @@ import axios from "axios";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsPauseFill, BsPlayCircle, BsPlayFill } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 
@@ -30,7 +29,6 @@ function AlbumSingerPage() {
 	const [first, setFirst] = useState(false);
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, isPlayingSong, songActive } = usePlayer();
 	const Icon = isPlayingSong && first ? BsPauseFill : BsPlayFill;
-
 	let checkPopuLar = popularAlbum.find((item) => item.link === pathName);
 
 	const album = checkPopuLar === undefined ? hotAlbum.find((item) => item.link === pathName) : checkPopuLar;
@@ -97,8 +95,9 @@ function AlbumSingerPage() {
 
 		fetchData();
 	}, []);
+
 	useEffect(() => {
-		document.getElementById(songActive._id)?.scrollIntoView({
+		document.getElementById(`song-${songActive._id}`)?.scrollIntoView({
 			behavior: "smooth",
 			block: "center",
 			inline: "center",
@@ -204,7 +203,7 @@ function AlbumSingerPage() {
 								})}
 						{listSong.map((item, index) => {
 							return !isLoading ? (
-								<div key={item._id} id={item._id}>
+								<div key={item._id} id={`song-${item._id}`}>
 									<MusicSong song={item} onClick={handlePlay} />
 								</div>
 							) : (

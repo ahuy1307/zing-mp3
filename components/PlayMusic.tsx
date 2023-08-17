@@ -1,4 +1,6 @@
 "use client";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { useListMusic } from "@/hooks/useListMusic";
 import { MVIcon, OnlyOneSongIcon, RandomIcon } from "@/icon";
@@ -45,7 +47,8 @@ function PlayMusic() {
 	const [volume, setVolume] = useState(() => {
 		return currentVolume * 10;
 	});
-
+	const { accessToken } = useAuth();
+	const { addHistorySong } = useHistory();
 	const onNextSong = () => {
 		if (listSongData.length === 0) return;
 		const index = listSongData.findIndex((item) => item._id === songActive._id);
@@ -55,14 +58,17 @@ function PlayMusic() {
 				random = Math.floor(Math.random() * listSongData.length);
 			}
 			handleSetNewActiveSong(listSongData[random]);
+			addHistorySong(accessToken, listSongData[random]._id);
 			handleSetPlaying(true);
 			return;
 		}
 
 		if (index === listSongData.length - 1) {
 			handleSetNewActiveSong(listSongData[0]);
+			addHistorySong(accessToken, listSongData[0]._id);
 		} else {
 			handleSetNewActiveSong(listSongData[index + 1]);
+			addHistorySong(accessToken, listSongData[index + 1]._id);
 		}
 		handleSetTime(0);
 		handleSetPlaying(true);
@@ -78,15 +84,19 @@ function PlayMusic() {
 				random = Math.floor(Math.random() * listSongData.length);
 			}
 			handleSetNewActiveSong(listSongData[random]);
+			addHistorySong(accessToken, listSongData[random]._id);
 			handleSetPlaying(true);
 			return;
 		}
 
 		if (index === 0) {
 			handleSetNewActiveSong(listSongData[listSongData.length - 1]);
+			addHistorySong(accessToken, listSongData[listSongData.length - 1]._id);
 		} else {
 			handleSetNewActiveSong(listSongData[index - 1]);
+			addHistorySong(accessToken, listSongData[index - 1]._id);
 		}
+		addHistorySong(accessToken, songActive._id);
 		handleSetTime(0);
 		handleSetPlaying(true);
 	};

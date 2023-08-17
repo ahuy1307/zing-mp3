@@ -3,7 +3,7 @@
 import { usePlayer } from "@/context/PlayProvider";
 import { useListMusic } from "@/hooks/useListMusic";
 import { Song } from "@/interface";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 import MusicSong from "./MusicSong";
@@ -12,12 +12,32 @@ function ListSongPlayer() {
 	const { listSongData, isPlayingSong, songActive, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
 	const { isOpen } = useListMusic();
 	const Icon = isPlayingSong ? BsPauseFill : BsFillPlayFill;
+	const [width, setWidth] = useState(0);
+	const handleChangeWidth = () => {
+		if (typeof window !== "undefined") {
+			setWidth(window.innerWidth);
+		}
+	};
 
 	useEffect(() => {
-		document.getElementById(songActive._id)?.scrollIntoView({
+		if (typeof window !== "undefined") {
+			setWidth(window.innerWidth);
+		}
+		window.addEventListener("resize", handleChangeWidth, { passive: true });
+
+		return () => window.removeEventListener("resize", handleChangeWidth);
+	}, []);
+	useEffect(() => {
+		document.getElementById(`list-${songActive._id}`)?.scrollIntoView({
 			behavior: "smooth",
 			block: "end",
 		});
+		if (width > 1200) {
+			document.getElementById(`song-${songActive._id}`)?.scrollIntoView({
+				behavior: "smooth",
+				block: "end",
+			});
+		}
 	}, [songActive]);
 
 	const handlePlay = (item: Song) => {
@@ -46,7 +66,7 @@ function ListSongPlayer() {
 			<div className="flex flex-col pt-[100px] overflow-y-scroll scroll-search h-full z-[8] overflow-hidden">
 				{listSongData.map((item, index) => {
 					return (
-						<div key={index} id={item._id} onClick={() => handlePlay(item)} className="h-max">
+						<div key={index} id={`list-${item._id}`} onClick={() => handlePlay(item)} className="h-max">
 							<MusicSong song={item} list={true} />
 						</div>
 					);

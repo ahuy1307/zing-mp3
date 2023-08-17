@@ -17,7 +17,8 @@ import { BsFillPlayFill } from "react-icons/bs";
 function HistoryPage() {
 	const { historySong, isLoading, getHistorySongs } = useHistory();
 	const { accessToken } = useAuth();
-	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
+	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, songActive } = usePlayer();
+
 	const router = useRouter();
 	useEffect(() => {
 		if (accessToken === "") {
@@ -27,7 +28,7 @@ function HistoryPage() {
 		if (accessToken !== "") {
 			getHistorySongs(accessToken);
 		}
-	}, [accessToken]);
+	}, [accessToken, songActive._id]);
 
 	const handlePlay = () => {
 		handleSetListSong(historySong);

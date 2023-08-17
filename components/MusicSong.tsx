@@ -18,7 +18,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
-	const { songActive, handleSetPlaying, isPlayingSong, handleSetNewActiveSong, handleSetTime } = usePlayer();
+	const { songActive, handleSetPlaying, isPlayingSong, handleSetNewActiveSong } = usePlayer();
 	const { accessToken } = useAuth();
 	const { addHistorySong } = useHistory();
 
