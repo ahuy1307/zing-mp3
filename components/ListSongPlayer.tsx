@@ -32,10 +32,10 @@ function ListSongPlayer() {
 	return (
 		<div
 			className={twMerge(
-				`bg-[var(--primary-bg)] fixed right-0 top-0 botttom-0 w-[330px] h-[calc(100vh-70px)] z-50 px-[10px] translate-x-[100%] transition-all duration-500 opacity-0 overflow-hidden overflow-y-scroll scroll-search md:h-[calc(100vh-90px)] md:w-[400px]`,
+				`bg-[var(--primary-bg)] fixed right-0 top-0 botttom-0 w-[330px] h-[calc(100vh-70px)] z-50 px-[10px] translate-x-[100%] transition-all duration-500 opacity-0  md:h-[calc(100vh-90px)] md:w-[400px]`,
 				isOpen && `translate-x-[0] opacity-100`
 			)}>
-			<div className="flex items-center py-[10px] mt-[20px] gap-x-3 text-[var(--text-primary)] fixed w-full h-[50px] top-0 left-4 right-0">
+			<div className="flex items-center pb-[30px] pt-[50px] px-[20px] gap-x-3 text-[var(--text-primary)] fixed w-full h-[50px] top-0 left-0 right-0 bg-[var(--primary-bg)] z-10">
 				<span className="font-bold text-2xl">Danh Sách Phát</span>
 				<button
 					className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group"
@@ -43,7 +43,7 @@ function ListSongPlayer() {
 					<Icon className="w-7 h-7 relative left-[1px] group-hover:text-[var(--purple-primary)] text-white" />
 				</button>
 			</div>
-			<div className="grid grid-cols-1 mt-[100px]">
+			<div className="grid grid-cols-1 pt-[100px] overflow-y-scroll scroll-search h-full z-[8]">
 				{listSongData.map((item, index) => {
 					return (
 						<div key={index} id={item._id} onClick={() => handlePlay(item)}>

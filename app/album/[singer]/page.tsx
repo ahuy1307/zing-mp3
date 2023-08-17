@@ -101,19 +101,13 @@ function AlbumSingerPage() {
 		document.getElementById(songActive._id)?.scrollIntoView({
 			behavior: "smooth",
 			block: "center",
+			inline: "center",
 		});
 	}, [songActive._id]);
 
-	const handlePlay = (item: Song) => {
+	const handlePlay = () => {
 		handleSetListSong(listSong);
-		handleSetPlaying(true);
 		setFirst(true);
-		if (songActive._id === item._id) {
-			handleSetPlaying(!isPlayingSong);
-		} else {
-			handleSetNewActiveSong(item);
-			handleSetPlaying(true);
-		}
 	};
 
 	return (
@@ -210,8 +204,8 @@ function AlbumSingerPage() {
 								})}
 						{listSong.map((item, index) => {
 							return !isLoading ? (
-								<div key={item._id} id={item._id} onClick={() => handlePlay(item)}>
-									<MusicSong song={item} />
+								<div key={item._id} id={item._id}>
+									<MusicSong song={item} onClick={handlePlay} />
 								</div>
 							) : (
 								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
@@ -278,7 +272,7 @@ function AlbumSingerPage() {
 								return (
 									<>
 										<div key={item._id} className={twMerge(`w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[16px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]`)}>
-											<Link href={`${item.slug_name_singer}`}>
+											<Link href={`/${item.slug_name_singer}`}>
 												<p className="text-center pt-2 text-sm md:text-base hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1">
 													{item.name_singer}
 												</p>

@@ -59,7 +59,7 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 					</div>
 					<AiOutlineHeart
 						color="var(--text-primary)"
-						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`, play && `block`)}
+						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`)}
 						onClick={() => favoriteMusic()}
 					/>
 				</>
@@ -76,7 +76,7 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 					</div>
 					<AiFillHeart
 						color="var(--purple-primary)"
-						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`, play && `block`)}
+						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`)}
 						onClick={() => unFavoriteMusic()}
 					/>
 				</>

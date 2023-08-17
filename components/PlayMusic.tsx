@@ -41,7 +41,7 @@ function PlayMusic() {
 	const volumeRef: any = useRef(null);
 	const timeRef: any = useRef(null);
 	const [showOther, setShowOther] = useState(false);
-
+	const [checkHover, setCheckHover] = useState(false);
 	const [volume, setVolume] = useState(() => {
 		return currentVolume * 10;
 	});
@@ -123,7 +123,15 @@ function PlayMusic() {
 
 	return (
 		<>
-			<div className="fixed h-[70px] bottom-0 left-0 right-0 bg-[var(--player-bg)] text-[var(--text-primary)] z-[99] md:h-[90px] md:px-[20px]">
+			<div
+				className="fixed h-[70px] bottom-0 left-0 right-0 bg-[var(--player-bg)] text-[var(--text-primary)] z-[99] md:h-[90px] md:px-[20px]"
+				onMouseLeave={() => {
+					setCheckHover(false);
+				}}
+				onMouseEnter={() => {
+					setCheckHover(true);
+					setShowOther(false);
+				}}>
 				<div className="flex items-center gap-x-4 h-full px-[10px]">
 					<img src={songActive.image_music} className={twMerge(`w-[40px] h-[40px] md:w-[64px] md:h-[64px] rounded-full md:hidden`, isPlayingSong ? `spin` : `returnSpin`)} alt="" />
 					<img src={songActive.image_music} className={twMerge(`hidden md:block w-[64px] h-[64px] rounded-md`)} alt="" />
@@ -135,12 +143,18 @@ function PlayMusic() {
 						<FavoriteButton id={songActive._id} play={true} />
 						<div className="relative hidden lg:block">
 							<Tooltip title="Khác" color="black">
-								<BsThreeDots color="var(--text-primary)" className="w-8 h-8 md:w-9 md:h-9 ml-auto hover:bg-[var(--border-color)] rounded-full p-1" onClick={() => setShowOther(true)} />
+								<BsThreeDots
+									color="var(--text-primary)"
+									className="w-8 h-8 md:w-9 md:h-9 ml-auto hover:bg-[var(--border-color)] rounded-full p-1"
+									onClick={() => {
+										setShowOther(!showOther);
+									}}
+								/>
 							</Tooltip>
 							<div
 								className={twMerge(
 									`absolute left-0 top-0 translate-y-[-100%] bg-[var(--primary-bg)] w-[240px] flex-col rounded-md py-1 scale-0 transition-all duration-300 origin-bottom text-sm`,
-									showOther && `scale-100`
+									showOther && checkHover && `scale-100`
 								)}>
 								<div className="flex items-center gap-x-2 p-2">
 									<img src={songActive.image_music} className="w-[45px] h-[45px] object-cover rounded-md" alt="" />

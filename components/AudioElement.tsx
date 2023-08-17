@@ -13,15 +13,16 @@ function AudioElement() {
 		if (!ref.current) return;
 
 		ref.current!.currentTime = timeCurrent;
-		if (isPlayingSong) {
-			ref.current!.play();
-		} else {
-			ref.current!.pause();
-		}
 		ref.current!.volume = currentVolume;
+		if (isPlayingSong) {
+			ref.current && ref.current.play();
+		} else {
+			ref.current && ref.current.pause();
+		}
 	}, []);
 
 	const handleCanPlay = () => {
+		ref.current!.volume = currentVolume;
 		if (isPlayingSong) {
 			ref.current && ref.current.play();
 		} else {

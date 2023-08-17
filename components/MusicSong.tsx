@@ -79,7 +79,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 					<MusicWaves className={twMerge(`absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] invisible`, isPlaying && isPlayingSong && `visible`)} />
 				</div>
 				<div className="flex flex-col gap-y-[2px] text-[var(--text-primary)]">
-					<h3 className="font-bold line-clamp-1">{song.name_music}</h3>
+					<h3 className="font-bold line-clamp-1 w-[140px] md:w-[200px]">{song.name_music}</h3>
 					<Link href={`/${song.slug_name_singer}`} className="text-[var(--text-secondary)] line-clamp-1 hover:underline text-xs md:w-[150px]">
 						{song.name_singer}
 					</Link>
@@ -94,7 +94,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 			<span className="absolute top-[50%] translate-y-[-50%] right-4 text-xs group-hover:hidden text-[var(--text-secondary)] font-bold">{song.time_format}</span>
 			<div className="absolute right-4">
 				<div className="flex items-center gap-x-2 md:gap-x-4">
-					<FavoriteButton id={song._id} />
+					{!list && <FavoriteButton id={song._id} />}
 					<Tooltip title="Khác" color="black" className="hidden lg:block">
 						<BsThreeDots
 							color="var(--text-primary)"
