@@ -43,13 +43,13 @@ function NavbarMobile() {
 	};
 	const { handleSetListSong } = usePlayer();
 
-	const handleToProfile = () => {
+	const handleToProfile = (type: string) => {
 		if (accessToken === "") {
 			setShowNav(false);
 			formModal.onOpen();
 			return;
 		}
-		router.push("/profile");
+		router.push(`/${type}`);
 	};
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -226,7 +226,7 @@ function NavbarMobile() {
 								`hover:text-[var(--purple-primary)] pl-6 py-2 flex items-center gap-x-4 cursor-pointer`,
 								pathName === "/profile" && `bg-[var(--border-player)] text-[var(--purple-primary)]`
 							)}
-							onClick={() => handleToProfile()}>
+							onClick={() => handleToProfile("profile")}>
 							<MusicIcon />
 							<span className="uppercase">Cá nhân</span>
 						</li>
@@ -249,7 +249,7 @@ function NavbarMobile() {
 							</Link>
 						</li>
 						<li className={twMerge(`hover:text-[var(--purple-primary)] pl-6 py-2`, pathName === "/history" && `bg-[var(--border-player)] text-[var(--purple-primary)]`)}>
-							<div className="flex items-center gap-x-4 cursor-pointer" onClick={() => handleToProfile()}>
+							<div className="flex items-center gap-x-4 cursor-pointer" onClick={() => handleToProfile("history")}>
 								<RadioMusicIcon />
 								<span className="uppercase">History</span>
 							</div>

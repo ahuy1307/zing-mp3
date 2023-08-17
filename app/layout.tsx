@@ -9,6 +9,7 @@ import FavoriteProvider from "@/context/FavoriteProvider";
 import PlayerProvider from "@/context/PlayProvider";
 import AudioElement from "@/components/AudioElement";
 import PlayMusic from "@/components/PlayMusic";
+import HistoryProvider from "@/context/HistoryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,13 +24,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className={inter.className}>
 				<ToasterProvider />
 				<AuthProvider>
-					<PlayerProvider>
-						<FavoriteProvider>
-							<ThemeContextProvider>{children}</ThemeContextProvider>
-							<PlayMusic />
-						</FavoriteProvider>
-						<AudioElement />
-					</PlayerProvider>
+					<HistoryProvider>
+						<PlayerProvider>
+							<FavoriteProvider>
+								<ThemeContextProvider>{children}</ThemeContextProvider>
+								<PlayMusic />
+							</FavoriteProvider>
+							<AudioElement />
+						</PlayerProvider>
+					</HistoryProvider>
 				</AuthProvider>
 				<ScrollToTop />
 			</body>

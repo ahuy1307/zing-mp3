@@ -74,6 +74,12 @@ function AudioElement() {
 
 	useEffect(() => {
 		if (!ref.current) return;
+		handleSetTime(0);
+		ref.current!.currentTime = 0;
+	}, [songActive._id]);
+
+	useEffect(() => {
+		if (!ref.current) return;
 
 		ref.current!.volume = currentVolume;
 	}, [currentVolume]);

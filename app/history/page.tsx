@@ -6,6 +6,7 @@ import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
 import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import axios from "axios";
@@ -14,40 +15,27 @@ import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 
 function HistoryPage() {
-	const [historySongs, setHistorySongs] = useState<Song[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const { historySong, isLoading, getHistorySongs } = useHistory();
 	const { accessToken } = useAuth();
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
 	const router = useRouter();
 	useEffect(() => {
-		if (accessToken !== "") {
+		if (accessToken === "") {
 			router.push("/");
 			router.refresh();
 		}
-		const fetchData = async () => {
-			setIsLoading(true);
-			const res = await axios.get(`${apiUrl}/play-history/get-by-token`, {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			});
-			res.data.data.map((item: any) => {
-				setHistorySongs((prev) => {
-					return [...prev, item.music];
-				});
-			});
-			setIsLoading(false);
-		};
-		fetchData();
-	}, []);
+		if (accessToken !== "") {
+			getHistorySongs(accessToken);
+		}
+	}, [accessToken]);
 
 	const handlePlay = () => {
-		handleSetListSong(historySongs);
+		handleSetListSong(historySong);
 	};
 
 	const handlePlayRandom = () => {
-		const random = Math.floor(Math.random() * historySongs.length);
-		handleSetNewActiveSong(historySongs[random]);
+		const random = Math.floor(Math.random() * historySong.length);
+		handleSetNewActiveSong(historySong[random]);
 		handleSetPlaying(true);
 	};
 
@@ -65,7 +53,7 @@ function HistoryPage() {
 				<div className="px-[10px]">
 					<div className="mt-4 grid grid-cols-1 gap-x-2">
 						{isLoading &&
-							historySongs.length === 0 &&
+							historySong.length === 0 &&
 							Array(10)
 								.fill(0)
 								.map((item, index) => {
@@ -79,10 +67,10 @@ function HistoryPage() {
 										</div>
 									);
 								})}
-						{historySongs.map((item) => {
+						{historySong.map((item) => {
 							return <MusicSong song={item} key={item._id} onClick={handlePlay} />;
 						})}
-						{!isLoading && historySongs.length === 0 && <span className="text-[var(--text-primary)]">Chưa nghe bài hát nào...</span>}
+						{!isLoading && historySong.length === 0 && <span className="text-[var(--text-primary)]">Chưa nghe bài hát nào...</span>}
 					</div>
 				</div>
 			</div>

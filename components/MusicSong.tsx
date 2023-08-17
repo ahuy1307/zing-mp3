@@ -11,14 +11,16 @@ import Link from "next/link";
 import { usePlayer } from "@/context/PlayProvider";
 import { useSound } from "use-sound";
 import MusicWaves from "./MusicWaves";
+import { useHistory } from "@/context/HistoryProvider";
+import { useAuth } from "@/context/AuthProvider";
 
 function MusicSong({ song, trending, top, onClick, list, search }: { song: Song; trending?: boolean; top?: number; onClick?: () => void; list?: boolean; search?: boolean }) {
 	const [checkHover, setCheckHover] = useState(false);
 	const [showOther, setShowOther] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const { songActive, handleSetPlaying, isPlayingSong, handleSetNewActiveSong, handleSetTime } = usePlayer();
-
-	const [volume, setVolume] = useState(1);
+	const { accessToken } = useAuth();
+	const { addHistorySong } = useHistory();
 
 	useEffect(() => {
 		if (songActive._id === song._id) {
@@ -29,7 +31,6 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 	}, [songActive._id]);
 
 	const handleClick = () => {
-		handleSetTime(0);
 		if (songActive._id === song._id) {
 			handleSetPlaying(!isPlayingSong);
 		} else {
@@ -52,6 +53,7 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 				className="col-span-4 flex gap-x-4 md:gap-x-4 relative items-center px-[10px]"
 				onClick={() => {
 					onClick?.();
+					addHistorySong(accessToken, song._id);
 					handleSetNewActiveSong(song);
 					handleClick();
 				}}>
