@@ -41,6 +41,11 @@ function AudioElement() {
 	}, [isPlayingSong]);
 
 	const handleEnded = () => {
+		if (listSongData.length === 1) {
+			handleSetPlaying(false);
+			ref.current?.pause();
+			return;
+		}
 		if (!isRepeat) {
 			if (isRandom) {
 				let random = Math.floor(Math.random() * listSongData.length);

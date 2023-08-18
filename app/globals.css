@@ -350,7 +350,7 @@ body img {
 }
 
 .spin {
-	animation: spinner linear 4s infinite;
+	animation: spinner linear 8s infinite;
 }
 
 .returnSpin {

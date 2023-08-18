@@ -16,6 +16,7 @@ import { HiVolumeOff, HiVolumeUp } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 import FavoriteButton from "./FavoriteButton";
 import ListSongPlayer from "./ListSongPlayer";
+import PlayMobile from "./PlayMobile";
 
 function PlayMusic() {
 	const {
@@ -40,13 +41,13 @@ function PlayMusic() {
 	const { onOpen, onClose, isOpen } = useListMusic();
 	const [prevVolume, setPrevVolume] = useState(0);
 	const IconVolume = currentVolume !== 0 ? HiVolumeUp : HiVolumeOff;
-	const volumeRef: any = useRef(null);
-	const timeRef: any = useRef(null);
 	const [showOther, setShowOther] = useState(false);
 	const [checkHover, setCheckHover] = useState(false);
 	const [volume, setVolume] = useState(() => {
 		return currentVolume * 10;
 	});
+	const [showMobilePlay, setShowMobilePlay] = useState(false);
+
 	const { accessToken } = useAuth();
 	const { addHistorySong } = useHistory();
 	const onNextSong = () => {
@@ -140,7 +141,8 @@ function PlayMusic() {
 				onMouseEnter={() => {
 					setCheckHover(true);
 					setShowOther(false);
-				}}>
+				}}
+				onClick={() => setShowMobilePlay(true)}>
 				<div className="flex items-center gap-x-4 h-full px-[10px]">
 					<img src={songActive.image_music} className={twMerge(`w-[40px] h-[40px] md:w-[64px] md:h-[64px] rounded-full md:hidden`, isPlayingSong ? `spin` : `returnSpin`)} alt="" />
 					<img src={songActive.image_music} className={twMerge(`hidden md:block w-[64px] h-[64px] rounded-md`)} alt="" />
@@ -149,7 +151,9 @@ function PlayMusic() {
 						<span className="text-[var(--text-secondary)] text-xs line-clamp-1">{songActive.name_singer}</span>
 					</div>
 					<div className="flex pl-4 gap-x-2 xl:gap-x-4">
-						<FavoriteButton id={songActive._id} play={true} />
+						<div onClick={() => setTimeout(() => setShowMobilePlay(false), 0)}>
+							<FavoriteButton id={songActive._id} play={true} />
+						</div>
 						<div className="relative hidden lg:block">
 							<Tooltip title="Khác" color="black">
 								<BsThreeDots
@@ -165,7 +169,7 @@ function PlayMusic() {
 									`absolute left-0 top-0 translate-y-[-100%] bg-[var(--primary-bg)] w-[240px] flex-col rounded-md py-1 scale-0 transition-all duration-300 origin-bottom text-sm`,
 									showOther && checkHover && `scale-100`
 								)}>
-								<div className="flex items-center gap-x-2 p-2">
+								<div className="flex items-center gap-x-2 p-2" onClick={() => setShowMobilePlay(false)}>
 									<img src={songActive.image_music} className="w-[45px] h-[45px] object-cover rounded-md" alt="" />
 									<div className="text-[var(--text-primary)]">
 										<h1 className="font-bold">{songActive.name_music}</h1>
@@ -191,15 +195,28 @@ function PlayMusic() {
 									<RandomIcon className={twMerge(`hidden md:block text-[var(--text-primary)]`, isRandom && `text-[var(--purple-primary)]`)} />
 								</div>
 							</Tooltip>
-							<div className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer" onClick={onPrevSong}>
+							<div
+								className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer"
+								onClick={() => {
+									onPrevSong();
+									setTimeout(() => setShowMobilePlay(false), 0);
+								}}>
 								<BiSkipPrevious className="w-10 h-10" />
 							</div>
 							<div
 								className="w-max h-full md:border-2 border-[var(--text-primary)] rounded-full p-[2px] hover:border-[var(--purple-primary)] cursor-pointer group"
-								onClick={handlePlaying}>
+								onClick={() => {
+									handlePlaying();
+									setTimeout(() => setShowMobilePlay(false), 0);
+								}}>
 								<Icon className="w-8 h-8 md:relative group-hover:text-[var(--purple-primary)]" />
 							</div>
-							<div className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer" onClick={onNextSong}>
+							<div
+								className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer"
+								onClick={() => {
+									onNextSong();
+									setTimeout(() => setShowMobilePlay(false), 0);
+								}}>
 								<BiSkipNext className="w-10 h-10 " />
 							</div>
 							<Tooltip title={isRepeat ? `Tắt phát lại` : `Bật phát lại`} color="black">
@@ -221,7 +238,6 @@ function PlayMusic() {
 								id=""
 								style={setBackgroundSizesTime()}
 								className="input-time"
-								ref={timeRef}
 								onInput={(e: any) => {
 									if (isPlayingSong) {
 										handleSetNewTime((Number(e.target.value) * Number(songActive.seconds)) / 100);
@@ -262,7 +278,6 @@ function PlayMusic() {
 									value={volume}
 									min={0}
 									max={10}
-									ref={volumeRef}
 									className={twMerge(`input-volume`)}
 									onInput={(e: any) => setVolume(Number(e.target.value))}
 								/>
@@ -274,7 +289,6 @@ function PlayMusic() {
 							value={volume}
 							min={0}
 							max={10}
-							ref={volumeRef}
 							className={twMerge(`input-volume hidden xl:block`)}
 							onInput={(e: any) => setVolume(Number(e.target.value))}
 						/>
@@ -285,6 +299,7 @@ function PlayMusic() {
 							onClick={() => {
 								if (isOpen) onClose();
 								else onOpen();
+								setTimeout(() => setShowMobilePlay(false), 0);
 							}}>
 							<BsMusicNoteList />
 						</div>
@@ -292,6 +307,7 @@ function PlayMusic() {
 				</div>
 			</div>
 			<ListSongPlayer />
+			<PlayMobile className={showMobilePlay ? `translate-y-0` : ``} setShow={setShowMobilePlay} />
 		</>
 	);
 }

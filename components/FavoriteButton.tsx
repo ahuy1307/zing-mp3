@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
 
-function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
+function FavoriteButton({ id, play, mobile }: { id: string; play?: boolean; mobile?: boolean }) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const { favoriteSongs, getFavoriteSongs, addFavoriteSong, removeFavoriteSong } = useFavorite();
 	const { accessToken } = useAuth();
@@ -52,14 +52,17 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 						<Tooltip title="Thêm vào thư viện" color="black">
 							<AiOutlineHeart
 								color="var(--text-primary)"
-								className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`, play && `block`)}
+								className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`)}
 								onClick={() => favoriteMusic()}
 							/>
 						</Tooltip>
 					</div>
 					<AiOutlineHeart
-						color="var(--text-primary)"
-						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`)}
+						className={twMerge(
+							`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden text-[var(--text-primary)]`,
+							play && `block`,
+							mobile && `text-white`
+						)}
 						onClick={() => favoriteMusic()}
 					/>
 				</>
@@ -68,15 +71,18 @@ function FavoriteButton({ id, play }: { id: string; play?: boolean }) {
 					<div className="hidden lg:block">
 						<Tooltip title="Xóa khỏi thư viện" color="black">
 							<AiFillHeart
-								color="var(--purple-primary)"
-								className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden`, play && `block`)}
+								color=""
+								className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block hidden text-[var(--purple-primary)]`)}
 								onClick={() => unFavoriteMusic()}
 							/>
 						</Tooltip>
 					</div>
 					<AiFillHeart
-						color="var(--purple-primary)"
-						className={twMerge(`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden`)}
+						className={twMerge(
+							`w-8 h-8 md:w-8 md:h-8 ml-auto hover:bg-[var(--border-color)] rounded-full p-1 group-hover:block lg:group-hover:hidden hidden text-[var(--purple-primary)]`,
+							play && `block`,
+							mobile && `text-white`
+						)}
 						onClick={() => unFavoriteMusic()}
 					/>
 				</>
