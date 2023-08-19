@@ -1,4 +1,6 @@
 "use client";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -7,7 +9,8 @@ function AudioElement() {
 	const ref = React.useRef<HTMLAudioElement>(null);
 
 	const { songActive, isPlayingSong, isRepeat, listSongData, handleSetNewActiveSong, handleSetPlaying, currentVolume, handleSetTime, timeCurrent, newTime, isRandom } = usePlayer();
-
+	const { addHistorySong } = useHistory();
+	const { accessToken } = useAuth();
 	useEffect(() => {
 		setIsClient(true);
 		if (!ref.current) return;
@@ -53,6 +56,7 @@ function AudioElement() {
 				while (random === index) {
 					random = Math.floor(Math.random() * listSongData.length);
 				}
+				addHistorySong(accessToken, listSongData[random]._id);
 				handleSetNewActiveSong(listSongData[random]);
 				handleSetPlaying(true);
 				return;
@@ -62,9 +66,12 @@ function AudioElement() {
 			const index = listSongData.findIndex((item) => item._id === songActive._id);
 
 			if (index === listSongData.length - 1) {
+				addHistorySong(accessToken, listSongData[0]._id);
+
 				handleSetNewActiveSong(listSongData[0]);
 			} else {
 				handleSetNewActiveSong(listSongData[index + 1]);
+				addHistorySong(accessToken, listSongData[index + 1]._id);
 			}
 			handleSetPlaying(true);
 		} else {
