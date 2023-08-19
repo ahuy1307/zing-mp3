@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { Skeleton } from "antd";
@@ -24,6 +26,8 @@ function OnlySingerPage() {
 	const [first, setFirst] = useState(false); //check click first time
 
 	const Icon = isPlayingSong && first ? BsPauseFill : BsFillPlayFill;
+	const { addHistorySong } = useHistory();
+	const { accessToken } = useAuth();
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -87,9 +91,10 @@ function OnlySingerPage() {
 											onClick={() => {
 												if (!first) {
 													handleSetListSong(listSong);
+													addHistorySong(accessToken, listSong[0]._id);
+													handleSetNewActiveSong(listSong[0]);
 													handleSetPlaying(true);
 													setFirst(true);
-													handleSetNewActiveSong(listSong[0]);
 												} else {
 													handleSetPlaying(!isPlayingSong);
 												}

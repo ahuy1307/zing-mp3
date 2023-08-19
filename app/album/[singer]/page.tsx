@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { hotAlbum, popularAlbum } from "@/dataAlbum";
 import { RandomIcon } from "@/icon";
@@ -30,8 +32,9 @@ function AlbumSingerPage() {
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, isPlayingSong, songActive } = usePlayer();
 	const Icon = isPlayingSong && first ? BsPauseFill : BsPlayFill;
 	let checkPopuLar = popularAlbum.find((item) => item.link === pathName);
-
 	const album = checkPopuLar === undefined ? hotAlbum.find((item) => item.link === pathName) : checkPopuLar;
+	const { addHistorySong } = useHistory();
+	const { accessToken } = useAuth();
 
 	const checkValueInArray = (
 		singer: string,
@@ -121,7 +124,9 @@ function AlbumSingerPage() {
 							onClick={() => {
 								handleSetListSong(listSong);
 								if (!first) {
-									handleSetNewActiveSong(listSong[Math.floor(Math.random() * listSong.length)]);
+									const random = Math.floor(Math.random() * listSong.length);
+									addHistorySong(accessToken, listSong[random]._id);
+									handleSetNewActiveSong(listSong[random]);
 									setFirst(true);
 									handleSetPlaying(true);
 								} else {
@@ -170,7 +175,9 @@ function AlbumSingerPage() {
 								onClick={() => {
 									handleSetListSong(listSong);
 									if (!first) {
-										handleSetNewActiveSong(listSong[Math.floor(Math.random() * listSong.length)]);
+										const random = Math.floor(Math.random() * listSong.length);
+										addHistorySong(accessToken, listSong[random]._id);
+										handleSetNewActiveSong(listSong[random]);
 										setFirst(true);
 										handleSetPlaying(true);
 									} else {

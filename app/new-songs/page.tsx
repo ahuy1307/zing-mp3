@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { Skeleton } from "antd";
@@ -16,6 +18,8 @@ function NewSongs() {
 	const [listSong, setListSong] = useState<Song[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
+	const { addHistorySong } = useHistory();
+	const { accessToken } = useAuth();
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -45,6 +49,7 @@ function NewSongs() {
 
 	const handlePlayRandom = () => {
 		const random = Math.floor(Math.random() * listSong.length);
+		addHistorySong(accessToken, listSong[random]._id);
 		handleSetNewActiveSong(listSong[random]);
 		handleSetPlaying(true);
 	};

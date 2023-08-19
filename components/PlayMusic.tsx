@@ -16,6 +16,7 @@ import { HiOutlineChevronDoubleUp, HiVolumeOff, HiVolumeUp } from "react-icons/h
 import { twMerge } from "tailwind-merge";
 import FavoriteButton from "./FavoriteButton";
 import ListSongPlayer from "./ListSongPlayer";
+import MVMusic from "./MVMusic";
 import PlayMobile from "./PlayMobile";
 
 function PlayMusic() {
@@ -46,10 +47,11 @@ function PlayMusic() {
 	const [volume, setVolume] = useState(() => {
 		return currentVolume * 10;
 	});
-	const [showMobilePlay, setShowMobilePlay] = useState(false);
-
 	const { accessToken } = useAuth();
 	const { addHistorySong } = useHistory();
+	const [showMobilePlay, setShowMobilePlay] = useState(false);
+	const [showMV, setShowMV] = useState(false);
+
 	const onNextSong = () => {
 		if (listSongData.length === 0) return;
 		const index = listSongData.findIndex((item) => item._id === songActive._id);
@@ -261,7 +263,12 @@ function PlayMusic() {
 						</div>
 					</div>
 					<div className="gap-x-2 items-center hidden md:flex ml-auto xl:gap-x-4">
-						<div className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer p-1">
+						<div
+							className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer p-1"
+							onClick={() => {
+								setShowMV(true);
+								handleSetPlaying(false);
+							}}>
 							<MVIcon className="relative top-[-2px]" />
 						</div>
 						<div className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer p-2 relative group">
@@ -319,6 +326,7 @@ function PlayMusic() {
 			<div className="md:hidden">
 				<PlayMobile className={showMobilePlay ? `translate-y-0` : ``} setShow={setShowMobilePlay} />
 			</div>
+			<MVMusic setShow={setShowMV} show={showMV} className={showMV ? `translate-y-0` : ``} />
 		</>
 	);
 }

@@ -6,6 +6,7 @@ import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
 import { useAuth } from "@/context/AuthProvider";
 import { useFavorite } from "@/context/FavoriteProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { RandomIcon } from "@/icon";
 import { Song } from "@/interface";
@@ -19,6 +20,7 @@ function SingerPage() {
 	const { accessToken } = useAuth();
 	const [listSinger, setListSinger] = useState<{ singer: string; song: Song }[]>([]);
 	const { handleSetNewActiveSong, handleSetListSong, handleSetPlaying } = usePlayer();
+	const { addHistorySong } = useHistory();
 
 	const checkValueInArray = (
 		singer: string,
@@ -60,6 +62,7 @@ function SingerPage() {
 		});
 		handleSetListSong(res.data.data);
 		const random = Math.floor(Math.random() * res.data.data.length);
+		addHistorySong(accessToken, res.data.data[random]._id);
 		handleSetNewActiveSong(res.data.data[random]);
 		handleSetPlaying(true);
 	};
