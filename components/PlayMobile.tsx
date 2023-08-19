@@ -88,7 +88,7 @@ function PlayMobile({ className, setShow }: { className?: string; setShow?: Reac
 	};
 
 	return (
-		<div className={twMerge(`fixed inset-0 w-full h-full bg-[var(--primary-bg)] z-[99] translate-y-[100%] transition-all duration-500`, className)}>
+		<div className={twMerge(`fixed inset-0 w-full h-full bg-[var(--primary-bg)] z-[99] translate-y-[100%] transition-all duration-700`, className)}>
 			<div
 				className="absolute inset-0 bg-white w-full h-full -z-20"
 				style={{

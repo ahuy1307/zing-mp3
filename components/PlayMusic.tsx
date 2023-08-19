@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineDownload, AiOutlineEye, AiOutlineHeart } from "react-icons/ai";
 import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
 import { BsFillPlayFill, BsMusicNoteList, BsPauseFill, BsThreeDots } from "react-icons/bs";
-import { HiVolumeOff, HiVolumeUp } from "react-icons/hi";
+import { HiOutlineChevronDoubleUp, HiVolumeOff, HiVolumeUp } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 import FavoriteButton from "./FavoriteButton";
 import ListSongPlayer from "./ListSongPlayer";
@@ -141,17 +141,30 @@ function PlayMusic() {
 				onMouseEnter={() => {
 					setCheckHover(true);
 					setShowOther(false);
-				}}
-				onClick={() => setShowMobilePlay(true)}>
+				}}>
+				<div className="absolute top-0 translate-y-[-70%] right-[6px] bg-[var(--player-bg)] py-2 px-2 rounded-t-full opacity-90 md:hidden" onClick={() => setShowMobilePlay(true)}>
+					<HiOutlineChevronDoubleUp color="white" size={25} strokeWidth={3} />
+				</div>
 				<div className="flex items-center gap-x-4 h-full px-[10px]">
-					<img src={songActive.image_music} className={twMerge(`w-[40px] h-[40px] md:w-[64px] md:h-[64px] rounded-full md:hidden`, isPlayingSong ? `spin` : `returnSpin`)} alt="" />
-					<img src={songActive.image_music} className={twMerge(`hidden md:block w-[64px] h-[64px] rounded-md`)} alt="" />
-					<div className="flex flex-col gap-y-1 w-[100px] max-w-[80px] lg:w-auto lg:max-w-none xl:w-[150px]">
-						<h3 className="line-clamp-1">{songActive.name_music}</h3>
-						<span className="text-[var(--text-secondary)] text-xs line-clamp-1">{songActive.name_singer}</span>
+					<div className="flex items-center gap-x-4" onClick={() => setShowMobilePlay(true)}>
+						<div className={twMerge(`relative min-w-[40px] w-[40px] md:min-w-[64px] md:w-[64px]`)}>
+							<img
+								src={songActive.image_music}
+								className={twMerge(
+									`w-full h-[40px] object-cover auto-cols-[60px] transition-all duration-700 group-hover:brightness-[70%] rounded-full md:hidden`,
+									isPlayingSong ? `spin` : `returnSpin`
+								)}
+								alt=""
+							/>
+							<img src={songActive.image_music} className={twMerge(`hidden md:block w-[64px] h-[64px] rounded-md object-cover`)} alt="" />
+						</div>
+						<div className="flex flex-col gap-y-1 w-[100px] max-w-[80px] lg:w-auto lg:max-w-none xl:w-[150px]">
+							<h3 className="line-clamp-1">{songActive.name_music}</h3>
+							<span className="text-[var(--text-secondary)] text-xs line-clamp-1">{songActive.name_singer}</span>
+						</div>
 					</div>
 					<div className="flex pl-4 gap-x-2 xl:gap-x-4">
-						<div onClick={() => setTimeout(() => setShowMobilePlay(false), 0)}>
+						<div>
 							<FavoriteButton id={songActive._id} play={true} />
 						</div>
 						<div className="relative hidden lg:block">
@@ -169,7 +182,7 @@ function PlayMusic() {
 									`absolute left-0 top-0 translate-y-[-100%] bg-[var(--primary-bg)] w-[240px] flex-col rounded-md py-1 scale-0 transition-all duration-300 origin-bottom text-sm`,
 									showOther && checkHover && `scale-100`
 								)}>
-								<div className="flex items-center gap-x-2 p-2" onClick={() => setShowMobilePlay(false)}>
+								<div className="flex items-center gap-x-2 p-2">
 									<img src={songActive.image_music} className="w-[45px] h-[45px] object-cover rounded-md" alt="" />
 									<div className="text-[var(--text-primary)]">
 										<h1 className="font-bold">{songActive.name_music}</h1>
@@ -199,7 +212,6 @@ function PlayMusic() {
 								className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer"
 								onClick={() => {
 									onPrevSong();
-									setTimeout(() => setShowMobilePlay(false), 0);
 								}}>
 								<BiSkipPrevious className="w-10 h-10" />
 							</div>
@@ -207,7 +219,6 @@ function PlayMusic() {
 								className="w-max h-full md:border-2 border-[var(--text-primary)] rounded-full p-[2px] hover:border-[var(--purple-primary)] cursor-pointer group"
 								onClick={() => {
 									handlePlaying();
-									setTimeout(() => setShowMobilePlay(false), 0);
 								}}>
 								<Icon className="w-8 h-8 md:relative group-hover:text-[var(--purple-primary)]" />
 							</div>
@@ -215,7 +226,6 @@ function PlayMusic() {
 								className="hover:bg-[var(--border-player)] rounded-full w-max h-full cursor-pointer"
 								onClick={() => {
 									onNextSong();
-									setTimeout(() => setShowMobilePlay(false), 0);
 								}}>
 								<BiSkipNext className="w-10 h-10 " />
 							</div>
@@ -299,7 +309,6 @@ function PlayMusic() {
 							onClick={() => {
 								if (isOpen) onClose();
 								else onOpen();
-								setTimeout(() => setShowMobilePlay(false), 0);
 							}}>
 							<BsMusicNoteList />
 						</div>
@@ -307,7 +316,9 @@ function PlayMusic() {
 				</div>
 			</div>
 			<ListSongPlayer />
-			<PlayMobile className={showMobilePlay ? `translate-y-0` : ``} setShow={setShowMobilePlay} />
+			<div className="md:hidden">
+				<PlayMobile className={showMobilePlay ? `translate-y-0` : ``} setShow={setShowMobilePlay} />
+			</div>
 		</>
 	);
 }
