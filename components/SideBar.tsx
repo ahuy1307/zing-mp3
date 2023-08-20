@@ -28,7 +28,7 @@ function SideBar() {
 	return (
 		<div
 			className={twMerge(
-				`w-[70px] bg-[var(--sidebar-bg)] h-[100vh] fixed flex flex-col justify-between bottom-0 left-0 items-center transition-all duration-500 z-30 xl:w-[240px]`,
+				`w-[70px] bg-[var(--sidebar-bg)] h-[100vh] fixed flex flex-col justify-between bottom-0 left-0 items-center transition-all duration-500 z-30 xl:w-[240px] md:pb-[90px]`,
 				extend && `w-[240px] items-start bg-[var(--sidebar-popup-bg)]`
 			)}>
 			<div className="w-full">
