@@ -10,6 +10,7 @@ import PlayerProvider from "@/context/PlayProvider";
 import AudioElement from "@/components/AudioElement";
 import PlayMusic from "@/components/PlayMusic";
 import HistoryProvider from "@/context/HistoryProvider";
+import QueryProvider from "@/context/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,17 +24,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body className={inter.className}>
 				<ToasterProvider />
-				<AuthProvider>
-					<HistoryProvider>
-						<PlayerProvider>
-							<FavoriteProvider>
-								<ThemeContextProvider>{children}</ThemeContextProvider>
-								<PlayMusic />
-							</FavoriteProvider>
-							<AudioElement />
-						</PlayerProvider>
-					</HistoryProvider>
-				</AuthProvider>
+				<QueryProvider>
+					<AuthProvider>
+						<HistoryProvider>
+							<PlayerProvider>
+								<FavoriteProvider>
+									<ThemeContextProvider>{children}</ThemeContextProvider>
+									<PlayMusic />
+								</FavoriteProvider>
+								<AudioElement />
+							</PlayerProvider>
+						</HistoryProvider>
+					</AuthProvider>
+				</QueryProvider>
 				<ScrollToTop />
 			</body>
 		</html>

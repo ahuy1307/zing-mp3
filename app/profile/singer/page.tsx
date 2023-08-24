@@ -1,4 +1,5 @@
 "use client";
+import { getFavoriteSong } from "@/actions/getFavoriteSong";
 import FormModal from "@/components/FormModal";
 import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
@@ -14,11 +15,10 @@ import formatNumber from "@/utils/formatNumber";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 function SingerPage() {
-	const { favoriteSongs, getFavoriteSongs, isLoading } = useFavorite();
 	const { accessToken } = useAuth();
-	const [listSinger, setListSinger] = useState<{ singer: string; song: Song }[]>([]);
 	const { handleSetNewActiveSong, handleSetListSong, handleSetPlaying } = usePlayer();
 	const { addHistorySong } = useHistory();
 
@@ -33,26 +33,25 @@ function SingerPage() {
 		return index !== -1;
 	};
 
-	useEffect(() => {
-		if (accessToken !== "") {
-			getFavoriteSongs(accessToken);
-		}
-		let list: {
-			singer: string;
-			song: Song;
-		}[] = [];
+	const { data } = useQuery({
+		queryFn: () => getFavoriteSong(accessToken),
+		queryKey: ["favorite", { accessToken }],
+	});
 
-		favoriteSongs.map((item) => {
-			if (!checkValueInArray(item.music.name_singer, list)) {
-				list.push({
-					singer: item.music.name_singer,
-					song: item.music,
+	let listSinger: {
+		singer: string;
+		song: Song;
+	}[] = [];
+
+	data &&
+		data.map((item) => {
+			if (!checkValueInArray(item.name_singer, listSinger)) {
+				listSinger.push({
+					singer: item.name_singer,
+					song: item,
 				});
 			}
 		});
-
-		setListSinger([...list]);
-	}, [favoriteSongs.length]);
 
 	const handleStartMusic = async (singer: string) => {
 		const res = await axios.get(`${apiUrl}/music/get-singer-name`, {
@@ -75,39 +74,40 @@ function SingerPage() {
 				<h2 className="mt-[100px] text-2xl text-[var(--text-primary)] font-bold px-[10px]">Nghệ Sĩ</h2>
 				<div className="mt-8 overflow-x-scroll scroll-artist flex w-full flex-col gap-y-2 px-[10px]">
 					<div className="flex w-full flex-wrap gap-y-8">
-						{listSinger.map((item, index) => {
-							return (
-								<>
-									<div key={item.singer} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[24px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]">
-										<Link href={`/${item.song.slug_name_singer}`}>
-											<div className="relative ">
-												<div className="overflow-hidden rounded-full h-0 pb-[100%]">
-													<img
-														src={item.song.image_music}
-														className="rounded-full hover:scale-125 transition-all duration-500 cursor-pointer w-full overflow-hidden"
-														alt=""
-													/>
+						{listSinger &&
+							listSinger.map((item, index) => {
+								return (
+									<>
+										<div key={item.singer} className="w-[50%] flex-shrink-0 px-[10px] sm:px-[12px] md:px[24px] sm:w-[33.3%] lg:w-[25%] 2xl:w-[20%]">
+											<Link href={`/${item.song.slug_name_singer}`}>
+												<div className="relative ">
+													<div className="overflow-hidden rounded-full h-0 pb-[100%]">
+														<img
+															src={item.song.image_music}
+															className="rounded-full hover:scale-125 transition-all duration-500 cursor-pointer w-full overflow-hidden"
+															alt=""
+														/>
+													</div>
 												</div>
-											</div>
-										</Link>
-										<Link href={`/${item.song.slug_name_singer}`}>
-											<p className="text-center pt-4 text-sm hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1 text-[var(--text-primary)]">
-												{item.singer}
-											</p>
-										</Link>
-										<p className="text-center pt-2 cursor-pointer text-xs text-[var(--text-secondary)]">{formatNumber(item.song.favorite)} quan tâm</p>
-										<button className="flex gap-x-3 mt-2 items-center hover:border-[var(--purple-primary)] border-2 border-transparent group m-auto py-1 px-2 rounded-full">
-											<RandomIcon width="18px" height="18px" className="group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]" />
-											<span
-												className="text-xs font-bold group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]"
-												onClick={() => handleStartMusic(item.song.slug_name_singer)}>
-												GÓC NHẠC
-											</span>
-										</button>
-									</div>
-								</>
-							);
-						})}
+											</Link>
+											<Link href={`/${item.song.slug_name_singer}`}>
+												<p className="text-center pt-4 text-sm hover:underline hover:text-[var(--purple-primary)] cursor-pointer line-clamp-1 text-[var(--text-primary)]">
+													{item.singer}
+												</p>
+											</Link>
+											<p className="text-center pt-2 cursor-pointer text-xs text-[var(--text-secondary)]">{formatNumber(item.song.favorite)} quan tâm</p>
+											<button className="flex gap-x-3 mt-2 items-center hover:border-[var(--purple-primary)] border-2 border-transparent group m-auto py-1 px-2 rounded-full">
+												<RandomIcon width="18px" height="18px" className="group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]" />
+												<span
+													className="text-xs font-bold group-hover:text-[var(--purple-primary)] text-[var(--text-primary)]"
+													onClick={() => handleStartMusic(item.song.slug_name_singer)}>
+													GÓC NHẠC
+												</span>
+											</button>
+										</div>
+									</>
+								);
+							})}
 					</div>
 				</div>
 			</div>

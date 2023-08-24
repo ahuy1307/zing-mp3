@@ -1,4 +1,5 @@
 "use client";
+import { getFavoriteSong } from "@/actions/getFavoriteSong";
 import FormModal from "@/components/FormModal";
 import MusicSong from "@/components/MusicSong";
 import Navbar from "@/components/Navbar";
@@ -20,6 +21,7 @@ function HistoryPage() {
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying, songActive } = usePlayer();
 
 	const router = useRouter();
+
 	useEffect(() => {
 		if (accessToken === "") {
 			router.push("/");

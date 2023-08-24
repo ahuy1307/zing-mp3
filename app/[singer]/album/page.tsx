@@ -1,45 +1,37 @@
 "use client";
+import { getSingerMusic } from "@/actions/getSingerMusic";
 import FormModal from "@/components/FormModal";
 import MusicSong from "@/components/MusicSong";
 import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
-import { apiUrl } from "@/constant";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
-import { Song } from "@/interface";
 import { Skeleton } from "antd";
-import axios from "axios";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
+import { useQuery } from "react-query";
 
 function SingerAlbum() {
 	const pathName = usePathname();
 	const nameSinger = pathName.split("/album")[0].split("/")[1];
-	const [isLoading, setIsLoading] = useState(false);
-	const [listSong, setListSong] = useState<Song[]>([]);
 	const [first, setFirst] = useState(false);
 	const { isPlayingSong, handleSetListSong, handleSetPlaying, handleSetNewActiveSong } = usePlayer();
+	const { addHistorySong } = useHistory();
+	const { accessToken } = useAuth();
 
 	const Icon = isPlayingSong && first ? BsPauseFill : BsFillPlayFill;
 
-	useEffect(() => {
-		const fetchData = async () => {
-			setIsLoading(true);
-			const res = await axios.get(`${apiUrl}/music/get-singer-name`, {
-				params: {
-					_singer: nameSinger,
-				},
-			});
-			setListSong(res.data.data);
-			setIsLoading(false);
-		};
-
-		fetchData();
-	}, []);
+	const { data, isLoading } = useQuery({
+		queryFn: () => getSingerMusic(decodeURIComponent(nameSinger)),
+		queryKey: ["album-singer", { nameSinger }],
+	});
 
 	const handlePlay = () => {
-		handleSetListSong(listSong);
+		if (!data) return;
+		handleSetListSong(data);
 		handleSetPlaying(true);
 		setFirst(true);
 	};
@@ -49,23 +41,25 @@ function SingerAlbum() {
 			<NavbarMobile />
 			<div className="text-[var(--text-primary)] px-[10px] md:pl-[100px] xl:pl-[300px] md:px-[30px] xl:px-[60px]">
 				<div className="mt-[100px] px-[10px]">
-					{listSong.length === 0 && (
+					{!data && (
 						<div className="flex gap-x-2 items-center font-bold text-xl">
 							<div className="bg-gray-700/20 w-[300px] rounded-full h-[24px]"></div>
 						</div>
 					)}
-					{listSong.length > 0 && (
+					{data && (
 						<>
 							<div className="mb-[14px] flex items-center gap-x-2">
-								<h1 className="text-[var(--text-primary)] font-bold text-2xl">{listSong[0].name_singer} - Tất Cả Bài Hát</h1>
+								<h1 className="text-[var(--text-primary)] font-bold text-2xl">{data[0].name_singer} - Tất Cả Bài Hát</h1>
 								<button
 									className="bg-[var(--purple-primary)] rounded-full p-[6px] hover:bg-white hover:ring-2 origin-center transition-all duration-300 group"
 									onClick={() => {
+										if (!data) return;
 										if (!first) {
-											handleSetListSong(listSong);
+											handleSetListSong(data);
+											if (accessToken !== "") addHistorySong(accessToken, data[0]._id);
 											handleSetPlaying(true);
 											setFirst(true);
-											handleSetNewActiveSong(listSong[0]);
+											handleSetNewActiveSong(data[0]);
 										} else {
 											handleSetPlaying(!isPlayingSong);
 										}
@@ -76,7 +70,7 @@ function SingerAlbum() {
 						</>
 					)}
 					<div className="mt-5 grid grid-cols-1 gap-x-2">
-						{listSong.length === 0 &&
+						{!data &&
 							Array(10)
 								.fill(0)
 								.map((item, index) => {
@@ -90,37 +84,38 @@ function SingerAlbum() {
 										</div>
 									);
 								})}
-						{listSong.map((item, index) => {
-							return !isLoading ? (
-								<MusicSong key={item._id} song={item} onClick={handlePlay} />
-							) : (
-								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
-									<Skeleton.Button
-										active
-										rootClassName="bg-gray-700/30 rounded-md trending-skeleton"
-										style={{
-											width: "50px",
-											height: "50px",
-										}}></Skeleton.Button>
-									<div className="flex flex-col mt-2">
+						{data &&
+							data.map((item, index) => {
+								return !isLoading ? (
+									<MusicSong key={item._id} song={item} onClick={handlePlay} />
+								) : (
+									<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 										<Skeleton.Button
 											active
-											size="large"
+											rootClassName="bg-gray-700/30 rounded-md trending-skeleton"
 											style={{
-												height: "10px",
-											}}
-										/>
-										<Skeleton.Input
-											active
-											size="large"
-											style={{
-												height: "10px",
-											}}
-										/>
+												width: "50px",
+												height: "50px",
+											}}></Skeleton.Button>
+										<div className="flex flex-col mt-2">
+											<Skeleton.Button
+												active
+												size="large"
+												style={{
+													height: "10px",
+												}}
+											/>
+											<Skeleton.Input
+												active
+												size="large"
+												style={{
+													height: "10px",
+												}}
+											/>
+										</div>
 									</div>
-								</div>
-							);
-						})}
+								);
+							})}
 					</div>
 				</div>
 			</div>

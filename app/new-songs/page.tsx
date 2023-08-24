@@ -1,58 +1,41 @@
 "use client";
+import { getNewSong } from "@/actions/getNewSong";
 import FormModal from "@/components/FormModal";
 import MusicSong from "@/components/MusicSong";
 import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
-import { apiUrl } from "@/constant";
 import { useAuth } from "@/context/AuthProvider";
 import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { Skeleton } from "antd";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
+import { useQuery } from "react-query";
 
 function NewSongs() {
-	const [listSong, setListSong] = useState<Song[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
 	const { addHistorySong } = useHistory();
 	const { accessToken } = useAuth();
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			window.scrollTo({ top: 0, behavior: "smooth" });
-		}
-		const fetchData = async () => {
-			setIsLoading(true);
-			try {
-				const res = await axios.get(`${apiUrl}/music/new-music`, {
-					params: {
-						_limit: 100,
-					},
-				});
-
-				setListSong(res.data.data);
-				setIsLoading(false);
-			} catch (error) {
-				setIsLoading(false);
-			}
-		};
-		fetchData();
-	}, []);
+	const { data, isLoading } = useQuery({
+		queryFn: () => getNewSong(),
+		queryKey: ["new"],
+	});
 
 	const handlePlay = () => {
-		handleSetListSong(listSong);
+		handleSetListSong(data!);
 	};
 
 	const handlePlayRandom = () => {
-		const random = Math.floor(Math.random() * listSong.length);
-		addHistorySong(accessToken, listSong[random]._id);
-		handleSetNewActiveSong(listSong[random]);
+		if (!data) return;
+		const random = Math.floor(Math.random() * data.length);
+		if (accessToken !== "") addHistorySong(accessToken, data[random]._id);
+		handleSetNewActiveSong(data[random]);
 		handleSetPlaying(true);
 	};
+
 	return (
 		<>
 			<Navbar />
@@ -65,7 +48,7 @@ function NewSongs() {
 					</button>
 				</div>
 				<div className="mt-5 grid grid-cols-1 gap-x-2">
-					{listSong.length === 0 &&
+					{!data &&
 						Array(10)
 							.fill(0)
 							.map((item, index) => {
@@ -79,37 +62,38 @@ function NewSongs() {
 									</div>
 								);
 							})}
-					{listSong.map((item, index) => {
-						return !isLoading ? (
-							<MusicSong key={item._id} song={item} onClick={handlePlay} />
-						) : (
-							<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
-								<Skeleton.Button
-									active
-									rootClassName="bg-gray-700/30 rounded-md trending-skeleton"
-									style={{
-										width: "50px",
-										height: "50px",
-									}}></Skeleton.Button>
-								<div className="flex flex-col mt-2">
+					{data &&
+						data.map((item, index) => {
+							return !isLoading ? (
+								<MusicSong key={item._id} song={item} onClick={handlePlay} />
+							) : (
+								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 									<Skeleton.Button
 										active
-										size="large"
+										rootClassName="bg-gray-700/30 rounded-md trending-skeleton"
 										style={{
-											height: "10px",
-										}}
-									/>
-									<Skeleton.Input
-										active
-										size="large"
-										style={{
-											height: "10px",
-										}}
-									/>
+											width: "50px",
+											height: "50px",
+										}}></Skeleton.Button>
+									<div className="flex flex-col mt-2">
+										<Skeleton.Button
+											active
+											size="large"
+											style={{
+												height: "10px",
+											}}
+										/>
+										<Skeleton.Input
+											active
+											size="large"
+											style={{
+												height: "10px",
+											}}
+										/>
+									</div>
 								</div>
-							</div>
-						);
-					})}
+							);
+						})}
 				</div>
 			</div>
 			<ThemeModal />

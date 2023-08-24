@@ -1,10 +1,13 @@
 "use client";
+import { getAllTrending } from "@/actions/getTrendingType";
 import FormModal from "@/components/FormModal";
 import MusicSong from "@/components/MusicSong";
 import Navbar from "@/components/Navbar";
 import NavbarMobile from "@/components/NavbarMobile";
 import ThemeModal from "@/components/ThemeModal";
 import { apiUrl } from "@/constant";
+import { useAuth } from "@/context/AuthProvider";
+import { useHistory } from "@/context/HistoryProvider";
 import { usePlayer } from "@/context/PlayProvider";
 import { Song } from "@/interface";
 import { useGetTrendingSong } from "@/utils/useGetTrendingSong";
@@ -12,45 +15,33 @@ import { Skeleton } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
+import { useQuery } from "react-query";
 import { twMerge } from "tailwind-merge";
 
 function TopTrending() {
 	const [type, setType] = useState("all");
-	const [listSong, setListSong] = useState<Song[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
 	const { handleSetListSong, handleSetNewActiveSong, handleSetPlaying } = usePlayer();
+	const { accessToken } = useAuth();
+	const { addHistorySong } = useHistory();
 
-	useEffect(() => {
-		const fetchData = async () => {
-			setIsLoading(true);
-			try {
-				const res = await axios.get(`${apiUrl}/music/trending`, {
-					params: {
-						_limit: 100,
-					},
-				});
-
-				const list = useGetTrendingSong(res.data.data, type);
-				setListSong(list);
-				setIsLoading(false);
-			} catch (error) {
-				setIsLoading(false);
-			}
-		};
-		fetchData();
-	}, [type]);
+	const { data, isLoading } = useQuery({
+		queryFn: () => getAllTrending(type!),
+		queryKey: ["trending", { type }],
+	});
 
 	const handleChangeType = (type: string) => {
 		setType(type);
 	};
 
 	const handlePlay = () => {
-		handleSetListSong(listSong);
+		handleSetListSong(data!);
 	};
 
 	const handlePlayRandom = () => {
-		const random = Math.floor(Math.random() * listSong.length);
-		handleSetNewActiveSong(listSong[random]);
+		if (!data) return;
+		const random = Math.floor(Math.random() * data.length);
+		handleSetNewActiveSong(data[random]);
+		if (accessToken !== "") addHistorySong(accessToken, data[random]._id);
 		handleSetPlaying(true);
 	};
 	return (
@@ -99,7 +90,7 @@ function TopTrending() {
 					</button>
 				</div>
 				<div className="mt-5 grid grid-cols-1 gap-x-2">
-					{listSong.length === 0 &&
+					{!data &&
 						Array(10)
 							.fill(0)
 							.map((item, index) => {
@@ -113,37 +104,38 @@ function TopTrending() {
 									</div>
 								);
 							})}
-					{listSong.map((item) => {
-						return !isLoading ? (
-							<MusicSong key={item._id} song={item} onClick={handlePlay} />
-						) : (
-							<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
-								<Skeleton.Button
-									active
-									rootClassName="bg-gray-700/30 rounded-md trending-skeleton"
-									style={{
-										width: "50px",
-										height: "50px",
-									}}></Skeleton.Button>
-								<div className="flex flex-col mt-2">
+					{data &&
+						data.map((item) => {
+							return !isLoading ? (
+								<MusicSong key={item._id} song={item} onClick={handlePlay} />
+							) : (
+								<div key={item._id} className="flex gap-x-4 pb-3 p-[10px]">
 									<Skeleton.Button
 										active
-										size="large"
+										rootClassName="bg-gray-700/30 rounded-md trending-skeleton"
 										style={{
-											height: "10px",
-										}}
-									/>
-									<Skeleton.Input
-										active
-										size="large"
-										style={{
-											height: "10px",
-										}}
-									/>
+											width: "50px",
+											height: "50px",
+										}}></Skeleton.Button>
+									<div className="flex flex-col mt-2">
+										<Skeleton.Button
+											active
+											size="large"
+											style={{
+												height: "10px",
+											}}
+										/>
+										<Skeleton.Input
+											active
+											size="large"
+											style={{
+												height: "10px",
+											}}
+										/>
+									</div>
 								</div>
-							</div>
-						);
-					})}
+							);
+						})}
 				</div>
 			</div>
 			<ThemeModal />

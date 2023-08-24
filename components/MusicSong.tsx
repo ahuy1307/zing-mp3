@@ -53,7 +53,9 @@ function MusicSong({ song, trending, top, onClick, list, search }: { song: Song;
 				className="col-span-4 flex gap-x-4 md:gap-x-4 relative items-center px-[10px]"
 				onClick={() => {
 					onClick?.();
-					addHistorySong(accessToken, song._id);
+					if (accessToken !== "") {
+						addHistorySong(accessToken, song._id);
+					}
 					handleSetNewActiveSong(song);
 					handleClick();
 				}}>
