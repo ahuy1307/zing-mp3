@@ -1,4 +1,4 @@
-# Comic Clone
+# ZingMp3 Clone
 
 Free Zing Mp3 website using Next + Tailwind </br>
 Clone website by using API from https://api-kaito-music.vercel.app/
